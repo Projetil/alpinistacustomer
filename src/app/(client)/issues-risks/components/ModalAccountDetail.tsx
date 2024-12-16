@@ -103,13 +103,13 @@ const ModalAccountDetail = ({
               </p>
             </div>
           </div>
-          <div className="flex gap-4">
-            {/*  <Button
+          {/* <div className="flex gap-4">
+             <Button
               onClick={exportToPDF}
               className="border-none text-white bg-[#1A69C4]"
             >
               Exportar
-            </Button> */}
+            </Button>
             <Button
               onClick={() => {
                 setOpen();
@@ -119,7 +119,7 @@ const ModalAccountDetail = ({
             >
               Editar
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-row w-full ">
           <div className="w-full flex overflow-x-auto">
