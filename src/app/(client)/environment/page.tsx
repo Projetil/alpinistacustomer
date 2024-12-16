@@ -1,13 +1,48 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsBuildings } from "react-icons/bs";
 import EnvironmentTable from "./components/EnvironmentTable";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { IPagedEnvironment } from "@/types/IEnvironment";
+import EnvironmentService from "@/services/EnvironmentsService";
 
 const tabs = ["Internos", "Terceiros"];
 
 export default function EnvironmentPage() {
   const [currentTab, setCurrentTab] = useState("Internos");
+  const navigation = useRouter();
+  const [pageInter, setPageInter] = useState(1);
+  const [pageExternal, setPageExternal] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [interEnv, setInterEnv] = useState<IPagedEnvironment>();
+  const [externalEnv, setExternalEnv] = useState<IPagedEnvironment>();
+
+  const fetchEnvsIntern = async () => {
+    try {
+      const res = await EnvironmentService.GetAll(pageInter, 10, 1);
+      setInterEnv(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchEnvsExternal = async () => {
+    try {
+      const res = await EnvironmentService.GetAll(pageInter, 10, 2);
+      setExternalEnv(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEnvsIntern();
+  }, [pageInter, loading]);
+
+  useEffect(() => {
+    fetchEnvsExternal();
+  }, [pageExternal, loading]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -33,12 +68,29 @@ export default function EnvironmentPage() {
             ))}
           </div>
         </div>
-        <Button className="hidden lg:flex bg-[#3088EE]">
+        <Button
+          onClick={() => navigation.push("/environment/new-environment")}
+          className="hidden lg:flex bg-[#3088EE]"
+        >
           <span className="font-light text-2xl">+</span>
           Novo Ambiente
         </Button>
       </section>
-      <EnvironmentTable />
+      {currentTab === "Internos" ? (
+        <EnvironmentTable
+          updateTable={() => setLoading(!loading)}
+          pageInter={pageInter}
+          setPageInter={setPageInter}
+          interns={interEnv}
+        />
+      ) : (
+        <EnvironmentTable
+          updateTable={() => setLoading(!loading)}
+          pageInter={pageExternal}
+          setPageInter={setPageExternal}
+          interns={externalEnv}
+        />
+      )}
       <section className="flex lg:hidden w-full justify-end p-4">
         <Button className="bg-[#3088EE] p-4">
           <span className="font-light text-2xl">+</span>
