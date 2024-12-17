@@ -24,6 +24,8 @@ import DynamicTableManagment from "./components/DynamicTableManagment";
 import DynamicTableManagmentTop from "./components/DynamicTableManagmentTop";
 import LineChartTimeLineManagment from "./components/charts/LineChartTimeLineManagment";
 import ActiveTableIntrusion from "./components/charts/ActiveTableIntrusion";
+import ThirdPartiesTable from "./components/ThirdPartiesTable";
+import ConformityTable from "./components/ConformityTable";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -83,6 +85,7 @@ const environmentTableData = [
     number: 77,
   },
 ];
+
 const ageTableData = [
   {
     envName: "AMBIENTE NAME",
@@ -194,6 +197,162 @@ const vulnerabilityTable = [
   {
     name: "Lorem Ipsum",
     number: 77
+  },
+]
+
+const thirdPartiesTable = [
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+  {
+    name: "someone@example.com",
+  risks: 42,
+  info: 21,
+  low: 21,
+  medium: 21,
+  high: 21,
+  crit: 21,
+  },
+]
+
+const conformityTable = [
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
+  },
+  {
+    name: "Questionário ABC2404",
+    status: "Em andamento",
+    filled: 77,
+    shipping: "01/01/2024"
   },
 ]
 
@@ -616,6 +775,62 @@ export default function HomePage() {
               </>
             )}
 
+      {currentTab === 6 && (
+        <>
+        <div className="max-w-[400px] w-full my-4">
+
+         <CardContainer title="Terceiros ativos" data={50}/>
+        </div>
+
+        <div className="w-full">
+          <ThirdPartiesTable data={thirdPartiesTable}/>
+        </div>
+        </>
+      )}
+
+{currentTab === 7 && (
+        <>
+        <div className="w-full flex flex-col gap-3 mt-4">
+          <ConformityTable data={conformityTable}/>
+          {
+            conformityTable.map((item, index) => (
+              <>
+                <Accordion
+              type="single"
+              collapsible
+              className="w-full lg:hidden"
+            >
+              <AccordionItem value={index.toString()} className="border-none">
+                <AccordionTrigger className="text-lgtext-black bg-white px-3 ">
+                  {item.name}
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                   <div className="mt-2 bg-white rounded-lg p-4">
+                    <div className="flex flex-col mb-5">
+                        <p>Status:</p>
+                        <span className="font-semibold">{item.status}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                    <div className="flex flex-col">
+                        <p>Preenchido:</p>
+                        <span className="font-semibold">{item.filled}%</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <p>Data de envio:</p>
+                        <span className="font-semibold">{item.shipping}</span>
+                    </div>
+                    </div>
+                   </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+              </>
+            ))
+          }
+        </div>
+        </>
+      )}
     </main>
   );
 }
