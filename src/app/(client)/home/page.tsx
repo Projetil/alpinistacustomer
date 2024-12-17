@@ -13,21 +13,24 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 import CardContainerAttackSurface from "./components/CardContainerAttackSurface";
+import CardContainer from "./components/CardContainer";
+import TotalDangers from "./components/charts/TotalDangers";
+import LineChartTimeLine from "./components/charts/LineChartTimeLine";
 
 const tabs = [
-  "Todos",
-  "Superfície de ataques",
-  "Inteligência de ameaças",
-  "Gestão de vulnerabilidade",
-  "Teste de intrusão",
-  "Terceiros",
-  "Conformidade",
+  { value: 1, name: "Todos" },
+  { value: 2, name: "Superfície de ataques" },
+  { value: 3, name: "Inteligência de ameaças" },
+  { value: 4, name: "Gestão de vulnerabilidade" },
+  { value: 5, name: "Teste de intrusão" },
+  { value: 6, name: "Terceiros" },
+  { value: 7, name: "Conformidade" },
 ];
 
 export default function HomePage() {
-  const [currentTab, setCurrentTab] = useState("Todos");
+  const [currentTab, setCurrentTab] = useState(1);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -42,17 +45,17 @@ export default function HomePage() {
           {tabs.map((tab, index) => (
             <button
               key={index}
-              onClick={() => setCurrentTab(tab)}
+              onClick={() => setCurrentTab(tab.value)}
               className={`${
-                currentTab == tab ? "bg-[#F0F8FF] text-sm text-[#1A69C4]" : ""
+                currentTab == tab.value ? "bg-[#F0F8FF] text-sm text-[#1A69C4]" : ""
               } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
             >
-              {tab}
+              {tab.name}
             </button>
           ))}
         </div>
       </section>
-      {currentTab == "Todos" && (
+      {currentTab === 1 && (
         <>
           <Risks />
           <section className="flex flex-col lg:flex-row gap-5 w-full mt-8 overflow-x-auto">
@@ -121,46 +124,108 @@ export default function HomePage() {
           </section>
         </>
       )}
-      {currentTab == "Superfície de ataques" && (
+      {currentTab === 2 && (
         <>
-        <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
+          <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
           <div className="w-full mb-4">
-            <Accordion type="single" defaultValue="1" collapsible className="w-full">
+            <Accordion
+              type="single"
+              defaultValue="1"
+              collapsible
+              className="w-full"
+            >
               <AccordionItem value="1" className="border-none">
-              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
-                Ativos
-              </AccordionTrigger>
-              <AccordionContent className="border-none bg-[#F8F7F9] ">
-                <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                  <CardContainerAttackSurface title="Endereços IP"/>
-                  <CardContainerAttackSurface title="Subdomínios"/>
-                  <CardContainerAttackSurface title="Aplicações WEB"/>
-                  <CardContainerAttackSurface title="Contas e-mail"/>
-                </div>
-              </AccordionContent>
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  Ativos
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                    <CardContainerAttackSurface title="Endereços IP" />
+                    <CardContainerAttackSurface title="Subdomínios" />
+                    <CardContainerAttackSurface title="Aplicações WEB" />
+                    <CardContainerAttackSurface title="Contas e-mail" />
+                  </div>
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
 
           <div className="w-full mb-4">
-            <Accordion type="single" defaultValue="2"  collapsible  className="w-full">
+            <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
               <AccordionItem value="2" className="border-none">
-              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
-                Riscos (Issues)
-              </AccordionTrigger>
-              <AccordionContent className="border-none bg-[#F8F7F9] ">
-                <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                  <CardContainerAttackSurface title="Aplicações WEB"/>
-                  <CardContainerAttackSurface title="Redes"/>
-                  <CardContainerAttackSurface title="Marca"/>
-                  <CardContainerAttackSurface title="Vazamentos de dados"/>
-                </div>
-              </AccordionContent>
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  Riscos (Issues)
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                    <CardContainerAttackSurface title="Aplicações WEB" />
+                    <CardContainerAttackSurface title="Redes" />
+                    <CardContainerAttackSurface title="Marca" />
+                    <CardContainerAttackSurface title="Vazamentos de dados" />
+                  </div>
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
         </>
       )}
+
+      {currentTab === 3  && 
+      (<>
+          <div className="w-full mb-4 mt-6">
+            
+            <Accordion
+              type="single"
+              defaultValue="1"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="1" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Inteligência de ameaças</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                    </div>
+                </AccordionTrigger>
+              <TotalDangers/>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-6 md:grid-rows-2 gap-3">
+                    <CardContainer title="Credencias" data={50} className="md:col-span-2"/>
+                    <CardContainer title="Vazamentos" data={50}className="md:col-span-2"/> 
+                    <CardContainer title="Domínios Similares" data={50} className="md:col-span-2"/>
+                    <CardContainer title="Redes Sociais" data={50}className="md:col-span-3"/>
+                    <CardContainer title="Mobile" data={50}className="md:col-span-3"/>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div> 
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="2" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Linha do tempo</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                    </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <LineChartTimeLine/>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div> 
+      </>)}
     </main>
   );
 }
