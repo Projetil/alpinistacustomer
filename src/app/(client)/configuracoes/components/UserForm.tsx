@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useCustomerContext } from "@/contexts/CustomerContext";
 import CustomerService from "@/services/CustomerService";
 import UserService from "@/services/UserService";
+import { formatPhone } from "@/utils/formatString";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -17,7 +18,17 @@ const schemaUser = z.object({
   cargo: z.string().optional(),
   phone: z.string().optional(),
   currentPassword: z.string().optional(),
-  newPassword: z.string().optional(),
+  newPassword: z
+    .string()
+    .optional()
+    .refine(
+      (value) =>
+        !value || /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$/.test(value),
+      {
+        message:
+          "Senha deve ter pelo menos 1 letra maiúscula, 1 caractere especial e 1 número",
+      }
+    ),
   repeatPassword: z.string().optional(),
 });
 
@@ -48,6 +59,7 @@ const UserForm = () => {
         {
           ...customers,
           name: data.name,
+          number: Number(data.phone?.replace(/\D/g, "")),
           position: data.cargo,
         },
         customers?.id ?? 0
@@ -76,7 +88,7 @@ const UserForm = () => {
       name: customers?.name,
       email: customers?.email,
       cargo: customers?.position,
-      phone: customers?.number.toString(),
+      phone: formatPhone(customers?.number.toString() || ""),
     });
   }, [customers]);
 
@@ -137,11 +149,15 @@ const UserForm = () => {
               Telefone
             </Label>
             <Input
-              disabled
               placeholder="Telefone"
               className="border-[#D8D9E0] border-[2px]"
               type="phone"
               {...register("phone")}
+              onChange={(e) => {
+                const formattedValue = formatPhone(e.target.value);
+                e.target.value = formattedValue;
+                register("phone").onChange(e);
+              }}
             />
             {errors.phone && (
               <p className="text-red-500 text-sm">{errors.phone.message}</p>

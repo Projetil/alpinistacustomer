@@ -158,7 +158,7 @@ const Sidebar: React.FC = () => {
         </button>
         <Button
           variant={"ghost"}
-          className={`flex items-center w-full h-full p-4 text-[#63636E] ${
+          className={`flex items-center w-full mt-20 p-4 text-[#63636E] ${
             isOpen ? "justify-start" : "justify-center"
           }`}
         >
