@@ -10,12 +10,17 @@ import {
 const endpoint = "/Questionaries";
 
 const QuestionnaryService = {
-  GetAll: async (pageNumber: number, pageSize: number, companyId?: number) => {
+  GetAll: async (
+    pageNumber: number,
+    pageSize: number,
+    customerId?: number,
+    companyId?: number
+  ) => {
     try {
       const res = await api.get(
         `${endpoint}?pageNumber=${pageNumber}&pageSize=${pageSize}${
           companyId ? `&companyId=${companyId}` : ""
-        }`
+        }${customerId ? `&customerId=${customerId}` : ""}`
       );
       return res.data as IPagedQuestionnary;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

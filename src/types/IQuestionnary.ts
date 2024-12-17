@@ -57,3 +57,10 @@ export interface IQuestionDtoForm {
   maxFiles?: number;
   options?: string[];
 }
+
+export enum AnswerType {
+  "Resposta curta" = 1,
+  "Arquivo" = 2,
+  "1 a 5" = 3,
+  "Opções" = 4,
+}

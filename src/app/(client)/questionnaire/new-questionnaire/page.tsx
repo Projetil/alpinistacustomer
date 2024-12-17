@@ -5,13 +5,25 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { FaListAlt, FaRegTrashAlt } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import ModalSendQuest from "./components/ModalSendQuest";
-import { IQuestionDtoForm } from "@/types/IQuestionnary";
+import { IQuestionDtoForm, IQuestionnary } from "@/types/IQuestionnary";
+import { useSearchParams } from "next/navigation";
+import QuestionnaryService from "@/services/QuestionnaryService";
 
-export default function NewQuestionnairePage() {
+export default function NewQuestionnaire() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <NewQuestionnairePage />
+    </Suspense>
+  );
+}
+
+function NewQuestionnairePage() {
+  const searchParams = useSearchParams();
+  const modelId = searchParams.get("id") ?? "";
   const [selectedOption, setSelectedOption] = useState("1");
   const [checkboxOptions, setCheckboxOptions] = useState(1);
   const [questionsLenght, setQuestionsLenght] = useState(1);
@@ -22,6 +34,7 @@ export default function NewQuestionnairePage() {
   const [optionValues, setOptionValues] = useState<string[]>([]);
   const [questions, setQuestions] = useState<IQuestionDtoForm[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modelQuestionnary, setModelQuestionnary] = useState<IQuestionnary>();
 
   const handleInputChange = (index: number, value: string) => {
     const updatedValues = [...optionValues];
@@ -60,6 +73,28 @@ export default function NewQuestionnairePage() {
   const handleOpenModalSendInfos = () => {
     setModalOpen(true);
   };
+
+  const fetchDataModel = async () => {
+    try {
+      const res = await QuestionnaryService.GetById(Number(modelId));
+      setModelQuestionnary(res);
+      setQuestionnaryTitle(res.title);
+      setQuestions(
+        res.questions.map((question) => ({
+          ...question,
+          type: question.answerType.toString() || "defaultType",
+        }))
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (modelId) {
+      fetchDataModel();
+    }
+  }, [modelId]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -278,6 +313,7 @@ export default function NewQuestionnairePage() {
         questions={questions}
         open={modalOpen}
         setOpen={() => setModalOpen(!modalOpen)}
+        modelData={modelQuestionnary}
       />
     </main>
   );

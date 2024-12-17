@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCustomerContext } from "@/contexts/CustomerContext";
 import QuestionnaryService from "@/services/QuestionnaryService";
-import { ICreateQuestion, IQuestionDtoForm } from "@/types/IQuestionnary";
+import {
+  ICreateQuestion,
+  IQuestionDtoForm,
+  IQuestionnary,
+} from "@/types/IQuestionnary";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { Plus } from "lucide-react";
@@ -35,11 +39,13 @@ const ModalSendQuest = ({
   setOpen,
   questions,
   questTitle,
+  modelData,
 }: {
   open: boolean;
   setOpen: () => void;
   questions: IQuestionDtoForm[];
   questTitle: string;
+  modelData?: IQuestionnary;
 }) => {
   const [respSize, setRespSize] = useState(1);
   const navigate = useRouter();
@@ -90,6 +96,15 @@ const ModalSendQuest = ({
       type: "1",
     });
   }, []);
+
+  useEffect(() => {
+    if (modelData) {
+      reset({
+        type: modelData.type.toString(),
+        limitDate: new Date(modelData.limitDate).toString(),
+      });
+    }
+  }, [modelData]);
 
   return (
     <Modal isOpen={open} onClose={setOpen}>
