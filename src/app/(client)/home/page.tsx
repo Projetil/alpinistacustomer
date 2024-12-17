@@ -18,6 +18,12 @@ import CardContainerAttackSurface from "./components/CardContainerAttackSurface"
 import CardContainer from "./components/CardContainer";
 import TotalDangers from "./components/charts/TotalDangers";
 import LineChartTimeLine from "./components/charts/LineChartTimeLine";
+import DonutCardCriticity from "./components/charts/DonutCardCriticity";
+import DonutCardStatus from "./components/charts/DonutCardStatus";
+import DynamicTableManagment from "./components/DynamicTableManagment";
+import DynamicTableManagmentTop from "./components/DynamicTableManagmentTop";
+import LineChartTimeLineManagment from "./components/charts/LineChartTimeLineManagment";
+import ActiveTableIntrusion from "./components/charts/ActiveTableIntrusion";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -28,6 +34,168 @@ const tabs = [
   { value: 6, name: "Terceiros" },
   { value: 7, name: "Conformidade" },
 ];
+
+const critData = {
+  total: 100,
+  crit: 3,
+  high: 7,
+  medium: 15,
+  low: 25,
+  info: 50,
+};
+
+const statusData = {
+  total: 109,
+  pendent: 50,
+  reopen: 25,
+  fixed: 15,
+  accepted: 7,
+  retest: 3,
+  treatment: 3,
+  notExist: 3,
+  notExecuted: 3,
+};
+
+const environmentTableData = [
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+];
+const ageTableData = [
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+  {
+    envName: "AMBIENTE NAME",
+    name: "Lorem Ipsum",
+    number: 77,
+  },
+];
+
+const activeTable = [
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+]
+
+const vulnerabilityTable = [
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+  {
+    name: "Lorem Ipsum",
+    number: 77
+  },
+]
 
 export default function HomePage() {
   const [currentTab, setCurrentTab] = useState(1);
@@ -47,7 +215,9 @@ export default function HomePage() {
               key={index}
               onClick={() => setCurrentTab(tab.value)}
               className={`${
-                currentTab == tab.value ? "bg-[#F0F8FF] text-sm text-[#1A69C4]" : ""
+                currentTab == tab.value
+                  ? "bg-[#F0F8FF] text-sm text-[#1A69C4]"
+                  : ""
               } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
             >
               {tab.name}
@@ -175,10 +345,9 @@ export default function HomePage() {
         </>
       )}
 
-      {currentTab === 3  && 
-      (<>
+      {currentTab === 3 && (
+        <>
           <div className="w-full mb-4 mt-6">
-            
             <Accordion
               type="single"
               defaultValue="1"
@@ -190,21 +359,41 @@ export default function HomePage() {
                   <div className="flex flex-col items-start">
                     <p>Inteligência de ameaças</p>
                     <span className="text-xs font-light">Últimos 30 dias</span>
-                    </div>
+                  </div>
                 </AccordionTrigger>
-              <TotalDangers/>
+                <TotalDangers />
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-6 md:grid-rows-2 gap-3">
-                    <CardContainer title="Credencias" data={50} className="md:col-span-2"/>
-                    <CardContainer title="Vazamentos" data={50}className="md:col-span-2"/> 
-                    <CardContainer title="Domínios Similares" data={50} className="md:col-span-2"/>
-                    <CardContainer title="Redes Sociais" data={50}className="md:col-span-3"/>
-                    <CardContainer title="Mobile" data={50}className="md:col-span-3"/>
+                    <CardContainer
+                      title="Credencias"
+                      data={50}
+                      className="md:col-span-2"
+                    />
+                     <CardContainer
+                      title="Vazamentos"
+                      data={50}
+                      className="md:col-span-2"
+                    />
+                    <CardContainer
+                      title="Domínios Similares"
+                      data={50}
+                      className="md:col-span-2"
+                    />
+                    <CardContainer
+                      title="Redes Sociais"
+                      data={50}
+                      className="md:col-span-3"
+                    />
+                    <CardContainer
+                      title="Mobile"
+                      data={50}
+                      className="md:col-span-3"
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-          </div> 
+          </div>
           <div className="w-full mb-4">
             <Accordion
               type="single"
@@ -217,15 +406,216 @@ export default function HomePage() {
                   <div className="flex flex-col items-start">
                     <p>Linha do tempo</p>
                     <span className="text-xs font-light">Últimos 30 dias</span>
-                    </div>
+                  </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  <LineChartTimeLine/>
+                  <LineChartTimeLine />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-          </div> 
-      </>)}
+          </div>
+        </>
+      )}
+
+      {currentTab === 4 && (
+        <>
+          <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="1"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="1" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Riscos</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                    <DonutCardCriticity conversionIndex={critData} />
+                    <DonutCardStatus conversionIndex={statusData} />
+
+                    <DynamicTableManagment title="Por ambiente" data={environmentTableData}/>
+                    <DynamicTableManagment title="Por idade" data={ageTableData}/>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="2" className="border-none">
+              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Top 10</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <div className="mt-6 grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-3">
+                  <DynamicTableManagmentTop title="Ativos" data={activeTable}/>
+                  <DynamicTableManagmentTop title="Vulnerabilidade" data={vulnerabilityTable}/>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="2" className="border-none">
+              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Linha do tempo</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <LineChartTimeLineManagment/>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="2" className="border-none">
+              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>IRR</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          
+        </>
+      )}
+
+      {currentTab === 5 && (
+              <>
+                <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
+                <div className="w-full mb-4">
+                  <Accordion
+                    type="single"
+                    defaultValue="1"
+                    collapsible
+                    className="w-full"
+                  >
+                    <AccordionItem value="1" className="border-none">
+                      <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                        <div className="flex flex-col items-start">
+                          <p>Riscos</p>
+                          <span className="text-xs font-light">Últimos 30 dias</span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="border-none bg-[#F8F7F9] ">
+                        <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                          <DonutCardCriticity conversionIndex={critData} />
+                          <DonutCardStatus conversionIndex={statusData} />
+
+                          <DynamicTableManagment title="Por ambiente" data={environmentTableData}/>
+                          <DynamicTableManagment title="Por idade" data={ageTableData}/>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+
+                <div className="w-full mb-4">
+                  <Accordion
+                    type="single"
+                    defaultValue="2"
+                    collapsible
+                    className="w-full"
+                  >
+                    <AccordionItem value="2" className="border-none">
+                    <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                        <div className="flex flex-col items-start">
+                          <p>Top 10</p>
+                          <span className="text-xs font-light">Últimos 30 dias</span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="border-none bg-[#F8F7F9] ">
+                        <div className="mt-6 grid grid-cols-1 gap-3">
+                        <ActiveTableIntrusion title="Ativos" data={activeTable}/>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+
+                <div className="w-full mb-4">
+                  <Accordion
+                    type="single"
+                    defaultValue="2"
+                    collapsible
+                    className="w-full"
+                  >
+                    <AccordionItem value="2" className="border-none">
+                    <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                        <div className="flex flex-col items-start">
+                          <p>Linha do tempo</p>
+                          <span className="text-xs font-light">Últimos 30 dias</span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="border-none bg-[#F8F7F9] ">
+                        <LineChartTimeLineManagment/>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+
+                <div className="w-full mb-4">
+                  <Accordion
+                    type="single"
+                    defaultValue="2"
+                    collapsible
+                    className="w-full"
+                  >
+                    <AccordionItem value="2" className="border-none">
+                    <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                        <div className="flex flex-col items-start">
+                          <p>IRR</p>
+                          <span className="text-xs font-light">Últimos 30 dias</span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="border-none bg-[#F8F7F9] ">
+                        
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+
+                
+              </>
+            )}
+
     </main>
   );
 }
