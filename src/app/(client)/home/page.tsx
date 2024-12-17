@@ -8,6 +8,13 @@ import Services from "./components/Services";
 import HorizontalBarChart from "./components/charts/HorizontalBarChart";
 import IRR from "./components/IRR";
 import Risks from "./components/Risks";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import CardContainerAttackSurface from "./components/CardContainerAttackSurface";
 
 const tabs = [
   "Todos",
@@ -112,6 +119,46 @@ export default function HomePage() {
           <section className="my-3 w-full">
             <IRR />
           </section>
+        </>
+      )}
+      {currentTab == "Superfície de ataques" && (
+        <>
+        <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
+          <div className="w-full mb-4">
+            <Accordion type="single" defaultValue="1" collapsible className="w-full">
+              <AccordionItem value="1" className="border-none">
+              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                Ativos
+              </AccordionTrigger>
+              <AccordionContent className="border-none bg-[#F8F7F9] ">
+                <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                  <CardContainerAttackSurface title="Endereços IP"/>
+                  <CardContainerAttackSurface title="Subdomínios"/>
+                  <CardContainerAttackSurface title="Aplicações WEB"/>
+                  <CardContainerAttackSurface title="Contas e-mail"/>
+                </div>
+              </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <div className="w-full mb-4">
+            <Accordion type="single" defaultValue="2"  collapsible  className="w-full">
+              <AccordionItem value="2" className="border-none">
+              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                Riscos (Issues)
+              </AccordionTrigger>
+              <AccordionContent className="border-none bg-[#F8F7F9] ">
+                <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                  <CardContainerAttackSurface title="Aplicações WEB"/>
+                  <CardContainerAttackSurface title="Redes"/>
+                  <CardContainerAttackSurface title="Marca"/>
+                  <CardContainerAttackSurface title="Vazamentos de dados"/>
+                </div>
+              </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </>
       )}
     </main>
