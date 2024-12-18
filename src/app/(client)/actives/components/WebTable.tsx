@@ -1,11 +1,10 @@
 "use client";
 import { Pagination } from "@/components/default/Pagination";
 import { FaArrowsAltV } from "react-icons/fa";
-import { activeTableData } from "@/app/data/tablesData";
-import CardActive from "./CardActiveTableMobile";
-import SeverityBadge from "../../components/SeverityBadge";
+import CardWeb from "./CardWebTableMobile";
+import { tableWebData } from "@/app/data/tableAtivos";
 
-const ActiveTable = () => {
+const WebTable = () => {
 
   return (
     <div className="w-full md:bg-white rounded-md">
@@ -26,14 +25,14 @@ const ActiveTable = () => {
               </th>
               <th className="py-3 px-4  text-sm font-semibold items-center">
                 <div className="flex items-center gap-2">
-                  SEVERIDADE <FaArrowsAltV />
+                  PORTA <FaArrowsAltV />
                 </div>
               </th>
         
             </tr>
           </thead>
           <tbody>
-            {activeTableData.map((row, index) => (
+            {tableWebData.map((row, index) => (
               <tr
                 key={index}
                 className={`${
@@ -41,13 +40,13 @@ const ActiveTable = () => {
                 }  text-[#636267] text-center`}
               >
                 <td className="py-3 px-4 text-sm max-w-[200px]">
-                  <div className="flex">{row.active}</div>
+                  <div className="flex">{row.actives}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <div className="flex justify-start">{row.issuesRisks}</div>
+                  <div className="flex justify-start">{row.issues}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <SeverityBadge severity={row.severity}/>
+                <div className="flex justify-start">{row.port}</div>
                 </td>
               </tr>
             ))}
@@ -55,13 +54,13 @@ const ActiveTable = () => {
         </table>
       </div>
       <div className="flex flex-col gap-4 md:hidden p-4">
-        {activeTableData.map((x, index) => {
+        {tableWebData.map((x, index) => {
           return (
-            <CardActive
+            <CardWeb
               key={index}
-              active={x.active}
-              issuesRisks={x.issuesRisks}
-              severity={x.severity}
+              actives={x.actives}
+              issues={x.issues}
+              port={x.port}
             />
           );
         })}
@@ -76,4 +75,4 @@ const ActiveTable = () => {
   );
 };
 
-export default ActiveTable;
+export default WebTable;

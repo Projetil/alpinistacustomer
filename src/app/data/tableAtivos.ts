@@ -61,3 +61,91 @@ export const tableAtivosData: ITableAtivos[] = [
     statusTextColor: "text-[#050506]",
   },
 ];
+
+interface ITableInfra {
+  actives: string;
+  issues: number;
+  ip: string
+}
+
+export const tableInfraData: ITableInfra[] = [
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    ip: "291.789.634",
+  },
+]
+
+interface ITableWeb {
+  actives: string;
+  issues: number;
+  port: number
+}
+
+export const tableWebData: ITableWeb[] = [
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+  {
+    actives: "Ativos",
+    issues: 420,
+    port: 6300,
+  },
+]
