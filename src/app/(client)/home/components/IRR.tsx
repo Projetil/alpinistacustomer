@@ -15,11 +15,11 @@ const IRR: React.FC = () => {
   };
 
   return (
-    <div className="w-full px-2 py-4 space-y-2 bg-white rounded-xl text-[#636267]">
+    <div className="w-full px-2 py-4 space-y-2 bg-[#F8F7F9] rounded-xl text-[#636267]">
       {/* Cabeçalho do Accordion */}
       <button
         onClick={toggleCard}
-        className={`flex justify-between items-center w-full text-left ${
+        className={`flex justify-between bg-white py-2 rounded-lg items-center w-full text-left ${
           isOpen ? "mb-8" : "mb-0"
         }`}
       >
@@ -40,17 +40,17 @@ const IRR: React.FC = () => {
       {isOpen && (
         <div className="flex flex-col space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
           {/* Gráfico de Pizza */}
-          <div className="p-4 bg-white rounded-lg shadow-lg">
+          <div className="p-4 bg-white rounded-lg">
             <PieChartIRR />
           </div>
 
           {/* Gráfico de Barras */}
-          <div className="p-4 bg-white rounded-lg shadow-lg">
+          <div className="p-4 bg-white rounded-lg">
             <BarChartIRR />
           </div>
 
           {/* Gráfico de Linha */}
-          <div className="p-4 bg-white rounded-lg shadow-lg">
+          <div className="p-4 bg-white rounded-lg">
             <LineChartIRR />
           </div>
         </div>

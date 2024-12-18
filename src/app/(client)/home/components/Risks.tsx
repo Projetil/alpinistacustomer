@@ -16,10 +16,10 @@ const CardRisks: React.FC = ({
   };
 
   return (
-    <div className="w-full px-2 py-4 space-y-2 bg-white rounded-xl text-[#636267]">
+    <div className="w-full px-2 py-4 space-y-2 bg-[#F8F7F9] rounded-xl text-[#636267]">
       <button
         onClick={toggleCard}
-        className={`flex justify-between items-center w-full text-left ${isOpen == true ? "mb-8" : "mb-0"}`}
+        className={`flex justify-between items-center bg-white py-2 rounded-lg w-full text-left ${isOpen == true ? "mb-8" : "mb-0"}`}
       >
         <div className="flex flex-col justify-center items-start px-2">
             <span className="text-lg font-bold">Riscos</span>

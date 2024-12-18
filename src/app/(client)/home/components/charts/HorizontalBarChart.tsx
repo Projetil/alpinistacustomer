@@ -28,7 +28,7 @@ const colors = {
 
 const HorizontalBarChart: React.FC = () => {
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md w-full max-w-2xl lg:max-w-none">
+    <div className="p-4 bg-white rounded-lg w-full max-w-2xl lg:max-w-none">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-700">
           Tempo médio de correção
