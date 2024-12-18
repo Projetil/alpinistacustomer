@@ -7,7 +7,7 @@ import CustomerService from "@/services/CustomerService";
 import UserService from "@/services/UserService";
 import { formatPhone } from "@/utils/formatString";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -46,6 +46,7 @@ type FormDataUser = z.infer<typeof schemaUser>;
 
 const UserForm = () => {
   const { customers } = useCustomerContext();
+  const navigator = useRouter();
   const {
     register,
     reset,
@@ -56,11 +57,10 @@ const UserForm = () => {
   });
 
   const onSubmit = async (data: FormDataUser) => {
-    await onSubmitCustomer(data);
     if (data.newPassword && data.currentPassword && data.repeatPassword) {
       await onSubmitPassword(data);
-      await signOut();
     }
+    await onSubmitCustomer(data);
     toast.success("Usuário atualizado com sucesso");
   };
 
@@ -88,6 +88,7 @@ const UserForm = () => {
         oldPassword: data.currentPassword ?? "",
         newPassword: data.newPassword ?? "",
       });
+      navigator.push("/signin");
     } catch (erro) {
       console.log(erro);
       toast.error("Erro ao atualizar senha");
