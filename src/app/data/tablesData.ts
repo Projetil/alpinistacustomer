@@ -3,6 +3,18 @@ export interface ActiveTable {
   issuesRisks: number;
   severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
 }
+
+export interface DomainTable {
+  active: string;
+  status: string;
+  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+}
+
+export interface MobileTable {
+  active: string;
+  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+}
+
 export interface EnvironmentTable {
   environment: string;
   active: string;
@@ -149,6 +161,75 @@ export const activeTableData: ActiveTable[] = [
   {
     active: "Ativo",
     issuesRisks: 420,
+    severity: "Crítico",
+  },
+];
+
+export const mobileTableData: MobileTable[] = [
+  {
+    active: "Ativo",
+    severity: "Crítico",
+  },
+  {
+    active: "Ativo",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    severity: "Médio",
+  },
+  {
+    active: "Ativo",
+    severity: "Baixo",
+  },
+  {
+    active: "Ativo",
+    severity: "Info",
+  },
+  {
+    active: "Ativo",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    severity: "Crítico",
+  },
+];
+
+export const domainTableData: DomainTable[] = [
+  {
+    active: "Ativo",
+    status: "Ativo",
+    severity: "Crítico",
+  },
+  {
+    active: "Ativo",
+    status: "Inativo",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    status: "Inativo",
+    severity: "Médio",
+  },
+  {
+    active: "Ativo",
+    status: "Inativo",
+    severity: "Baixo",
+  },
+  {
+    active: "Ativo",
+    status: "Inativo",
+    severity: "Info",
+  },
+  {
+    active: "Ativo",
+    status: "Inativo",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    status: "Inativo",
     severity: "Crítico",
   },
 ];

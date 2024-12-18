@@ -25,6 +25,8 @@ import { IoArrowBack } from "react-icons/io5";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import InfraTable from "./components/InfraTable";
 import WebTable from "./components/WebTable";
+import MobileTable from "./components/MobileTable";
+import DomainTable from "./components/DomainTable";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -386,6 +388,16 @@ export default function ActivesPage() {
       {currentTab === 3 && (
         <>
           <WebTable />
+        </>
+      )}
+      {currentTab === 4 && (
+        <>
+          <MobileTable />
+        </>
+      )}
+      {currentTab === 5 && (
+        <>
+          <DomainTable />
         </>
       )}
     </main>
