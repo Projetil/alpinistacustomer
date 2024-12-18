@@ -27,6 +27,9 @@ import InfraTable from "./components/InfraTable";
 import WebTable from "./components/WebTable";
 import MobileTable from "./components/MobileTable";
 import DomainTable from "./components/DomainTable";
+import CloudTable from "./components/CloudTable";
+import PeopleTable from "./components/PeopleTable";
+import EnvTable from "./components/EnvTable";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -39,8 +42,15 @@ const tabs = [
   { value: 8, name: "Ambientes" },
 ];
 
+const envTabs = [
+  { value: 1, name: "Interno" },
+  { value: 2, name: "Terceiro" },
+  
+];
+
 export default function ActivesPage() {
   const [currentTab, setCurrentTab] = useState(1);
+  const [currentEnvTab, setCurrentEnvTab] = useState(1);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -398,6 +408,52 @@ export default function ActivesPage() {
       {currentTab === 5 && (
         <>
           <DomainTable />
+        </>
+      )}
+      {currentTab === 6 && (
+        <>
+          <CloudTable />
+        </>
+      )}
+      {currentTab === 7 && (
+        <>
+          <PeopleTable />
+        </>
+      )}
+      {currentTab === 8 && (
+        <>
+          <section className="bg-white p-2 rounded-lg flex w-full lg:w-40">
+        <div className=" w-full overflow-x-auto flex">
+          {envTabs.map((tab, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentEnvTab(tab.value)}
+              className={`${
+                currentEnvTab == tab.value
+                  ? "bg-[#F0F8FF] text-sm text-[#1A69C4]"
+                  : ""
+              } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
+            >
+              {tab.name}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {
+        currentEnvTab === 1 && (
+          <div className="mt-4 w-full">
+            <EnvTable/>
+          </div>
+        )
+      }
+      {
+        currentEnvTab === 2  && (
+          <div className="mt-4 w-full">
+            <EnvTable/>
+          </div>
+        )
+      }
         </>
       )}
     </main>

@@ -10,9 +10,29 @@ export interface DomainTable {
   severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
 }
 
+export interface CloudTable {
+  active: string;
+  url: string;
+  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+}
+
+export interface PeopleTable {
+  active: string;
+  email: string;
+  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+}
+
 export interface MobileTable {
   active: string;
   severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+}
+
+export interface EnvTable {
+  active: string;
+  issues: string;
+  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+  ip: string;
+  port: number;
 }
 
 export interface EnvironmentTable {
@@ -231,5 +251,133 @@ export const domainTableData: DomainTable[] = [
     active: "Ativo",
     status: "Inativo",
     severity: "Crítico",
+  },
+];
+
+export const cloudTableData: CloudTable[] = [
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Crítico",
+  },
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Médio",
+  },
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Baixo",
+  },
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Info",
+  },
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    url: "http://www.example.com/index.html",
+    severity: "Crítico",
+  },
+];
+
+export const peopleTableData: PeopleTable[] = [
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Crítico",
+  },
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Médio",
+  },
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Baixo",
+  },
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Info",
+  },
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Alto",
+  },
+  {
+    active: "Ativo",
+    email: "someone@example.com",
+    severity: "Crítico",
+  },
+];
+
+export const envTableData: EnvTable[] = [
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Crítico",
+    ip:"291.789.634",
+    port: 6300
+  },
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Alto",
+    ip:"291.789.634",
+    port: 6300
+  },
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Médio",
+    ip:"291.789.634",
+    port: 6300
+  },
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Baixo",
+    ip:"291.789.634",
+    port: 6300
+  },
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Info",
+    ip:"291.789.634",
+    port: 6300
+  },
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Alto",
+    ip:"291.789.634",
+    port: 6300
+  },
+  {
+    active: "Ativo",
+    issues: "420",
+    severity: "Crítico",
+    ip:"291.789.634",
+    port: 6300
   },
 ];
