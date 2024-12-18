@@ -241,7 +241,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
             >
               04
             </p>
-            <p>Responsável financeiro </p>
+            <p>Responsável Interno</p>
           </div>
         </div>
         <div className="flex md:hidden gap-2 w-full mb-6">
@@ -342,6 +342,10 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         )}
         {tabs == 2 && (
           <div className="flex flex-col gap-4">
+            <p>
+              Por favor, insira as informações do ponto de contato técnico do
+              terceiro.
+            </p>
             <div className="flex flex-col md:flex-row gap-4 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
@@ -360,7 +364,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
-                  Teléfone<span className="text-red-500">*</span>
+                  Telefone<span className="text-red-500">*</span>
                 </Label>
                 <Input
                   placeholder="Insira o telefone"
@@ -415,6 +419,10 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         )}
         {tabs == 3 && (
           <div className="flex flex-col gap-4">
+            <p>
+              Por favor, insira as informações do ponto de contato comercial do
+              terceiro.
+            </p>
             <div className="flex flex-col md:flex-row gap-4 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
@@ -433,7 +441,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
-                  Teléfone<span className="text-red-500">*</span>
+                  Telefone<span className="text-red-500">*</span>
                 </Label>
                 <Input
                   placeholder="Insira o telefone"
@@ -488,6 +496,10 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         )}
         {tabs == 4 && (
           <div className="flex flex-col gap-4">
+            <p>
+              Por favor, insira as informações do ponto de contato da pessoa
+              responsável pelo terceiro dentro de sua empresa.
+            </p>
             <div className="flex flex-col md:flex-row gap-4 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
@@ -506,7 +518,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
-                  Teléfone<span className="text-red-500">*</span>
+                  Telefone<span className="text-red-500">*</span>
                 </Label>
                 <Input
                   placeholder="Insira o telefone"

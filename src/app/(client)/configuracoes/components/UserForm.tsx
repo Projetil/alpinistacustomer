@@ -7,30 +7,40 @@ import CustomerService from "@/services/CustomerService";
 import UserService from "@/services/UserService";
 import { formatPhone } from "@/utils/formatString";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signOut } from "next-auth/react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-const schemaUser = z.object({
-  name: z.string().optional(),
-  email: z.string().optional(),
-  cargo: z.string().optional(),
-  phone: z.string().optional(),
-  currentPassword: z.string().optional(),
-  newPassword: z
-    .string()
-    .optional()
-    .refine(
-      (value) =>
-        !value || /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$/.test(value),
-      {
-        message:
-          "Senha deve ter pelo menos 1 letra maiúscula, 1 caractere especial e 1 número",
-      }
-    ),
-  repeatPassword: z.string().optional(),
-});
+const schemaUser = z
+  .object({
+    name: z.string().optional(),
+    email: z.string().optional(),
+    cargo: z.string().optional(),
+    phone: z.string().optional(),
+    currentPassword: z.string().optional(),
+    newPassword: z
+      .string()
+      .optional()
+      .refine(
+        (value) =>
+          !value || /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$/.test(value),
+        {
+          message:
+            "Senha deve ter pelo menos 1 letra maiúscula, 1 caractere especial e 1 número",
+        }
+      ),
+    repeatPassword: z.string().optional(),
+  })
+  .refine((data) => !data.newPassword || data.repeatPassword, {
+    message: "Repetir nova senha é obrigatório",
+    path: ["repeatPassword"],
+  })
+  .refine((data) => data.newPassword === data.repeatPassword, {
+    message: "Nova senha e Repetir nova senha devem ser iguais",
+    path: ["repeatPassword"],
+  });
 
 type FormDataUser = z.infer<typeof schemaUser>;
 
@@ -49,6 +59,7 @@ const UserForm = () => {
     await onSubmitCustomer(data);
     if (data.newPassword && data.currentPassword && data.repeatPassword) {
       await onSubmitPassword(data);
+      await signOut();
     }
     toast.success("Usuário atualizado com sucesso");
   };
