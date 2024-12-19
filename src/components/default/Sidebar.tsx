@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
       {/* Sidebar */}
       <div
         className={`transition-all duration-300 ${
-          isOpen ? "w-[300px]" : "w-[80px]"
+          isOpen ? "w-[272px]" : "w-[80px]"
         } bg-white h-full md:flex flex-col justify-between items-start overflow-y-auto rounded-3xl px-3 py-6`}
       >
         <div className="flex items-center justify-between w-full mb-6">
