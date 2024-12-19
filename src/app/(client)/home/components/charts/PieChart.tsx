@@ -13,7 +13,7 @@ const data = [
 
 const PieChartHome: React.FC = () => {
   return (
-    <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md w-full max-w-sm mx-auto">
+    <div className="flex flex-col items-center p-4 bg-white rounded-lg w-full max-w-sm mx-auto">
       <ResponsiveContainer width="100%" height={200}>
         <PieChart>
           <Pie

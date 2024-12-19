@@ -35,7 +35,7 @@ const OvalDot: React.FC<CustomDotProps> = ({ cx, cy, fill }) => {
 
 const LineChartTimeLine: React.FC = () => {
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md w-full h-[400px]">
+    <div className="p-4 bg-white rounded-lg w-full h-[400px] mt-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-sm font-semibold text-gray-700">Quantidade de ameaças</h2>
         <button className="px-3 py-1 flex gap-2 text-xs items-center">Esse ano <MdKeyboardArrowDown/></button>

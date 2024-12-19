@@ -26,6 +26,8 @@ import LineChartTimeLineManagment from "./components/charts/LineChartTimeLineMan
 import ActiveTableIntrusion from "./components/charts/ActiveTableIntrusion";
 import ThirdPartiesTable from "./components/ThirdPartiesTable";
 import ConformityTable from "./components/ConformityTable";
+import DiffIRRChart from "./components/charts/DiffIRRChart";
+import IRRChart from "./components/charts/IRRChart";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -117,244 +119,244 @@ const ageTableData = [
 const activeTable = [
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
-]
+];
 
 const vulnerabilityTable = [
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
   {
     name: "Lorem Ipsum",
-    number: 77
+    number: 77,
   },
-]
+];
 
 const thirdPartiesTable = [
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
   {
     name: "someone@example.com",
-  risks: 42,
-  info: 21,
-  low: 21,
-  medium: 21,
-  high: 21,
-  crit: 21,
+    risks: 42,
+    info: 21,
+    low: 21,
+    medium: 21,
+    high: 21,
+    crit: 21,
   },
-]
+];
 
 const conformityTable = [
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
   {
     name: "Questionário ABC2404",
     status: "Em andamento",
     filled: 77,
-    shipping: "01/01/2024"
+    shipping: "01/01/2024",
   },
-]
+];
 
 export default function HomePage() {
   const [currentTab, setCurrentTab] = useState(1);
@@ -406,7 +408,7 @@ export default function HomePage() {
             <HorizontalBarChart />
           </section>
           <section className="my-3 w-full">
-            <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+            <div className="overflow-x-auto bg-white rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 {/* Cabeçalho */}
                 <thead className="bg-[#EEEEF0]">
@@ -520,15 +522,15 @@ export default function HomePage() {
                     <span className="text-xs font-light">Últimos 30 dias</span>
                   </div>
                 </AccordionTrigger>
-                <TotalDangers />
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <TotalDangers />
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-6 md:grid-rows-2 gap-3">
                     <CardContainer
                       title="Credencias"
                       data={50}
                       className="md:col-span-2"
                     />
-                     <CardContainer
+                    <CardContainer
                       title="Vazamentos"
                       data={50}
                       className="md:col-span-2"
@@ -598,8 +600,14 @@ export default function HomePage() {
                     <DonutCardCriticity conversionIndex={critData} />
                     <DonutCardStatus conversionIndex={statusData} />
 
-                    <DynamicTableManagment title="Por ambiente" data={environmentTableData}/>
-                    <DynamicTableManagment title="Por idade" data={ageTableData}/>
+                    <DynamicTableManagment
+                      title="Por ambiente"
+                      data={environmentTableData}
+                    />
+                    <DynamicTableManagment
+                      title="Por idade"
+                      data={ageTableData}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -614,7 +622,7 @@ export default function HomePage() {
               className="w-full"
             >
               <AccordionItem value="2" className="border-none">
-              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
                   <div className="flex flex-col items-start">
                     <p>Top 10</p>
                     <span className="text-xs font-light">Últimos 30 dias</span>
@@ -622,8 +630,14 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-3">
-                  <DynamicTableManagmentTop title="Ativos" data={activeTable}/>
-                  <DynamicTableManagmentTop title="Vulnerabilidade" data={vulnerabilityTable}/>
+                    <DynamicTableManagmentTop
+                      title="Ativos"
+                      data={activeTable}
+                    />
+                    <DynamicTableManagmentTop
+                      title="Vulnerabilidade"
+                      data={vulnerabilityTable}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -638,14 +652,14 @@ export default function HomePage() {
               className="w-full"
             >
               <AccordionItem value="2" className="border-none">
-              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
                   <div className="flex flex-col items-start">
                     <p>Linha do tempo</p>
                     <span className="text-xs font-light">Últimos 30 dias</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  <LineChartTimeLineManagment/>
+                  <LineChartTimeLineManagment />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -659,176 +673,213 @@ export default function HomePage() {
               className="w-full"
             >
               <AccordionItem value="2" className="border-none">
-              <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
                   <div className="flex flex-col items-start">
                     <p>IRR</p>
                     <span className="text-xs font-light">Últimos 30 dias</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  
+                  <div className="flex  flex-col items-center justify-center p-4 mt-4 bg-white rounded-lg">
+                    <div className="bg-[#F0F8FF] flex flex-col items-center p-4 w-full">
+                      <div className="flex gap-4 justify-center items-center w-full">
+                        <span className="text-sm">Diferença no último mês</span>
+                        <div className="w-16 py-2 text-[#028B53] bg-[#C3E7CF] flex justify-center items-center rounded-lg">+13,6%</div>
+                      </div>
+                      <div className="text-3xl font-bold text-black">14,744</div>
+                    </div>
+                    <DiffIRRChart />
+
+                    
+                  </div>
+                  <div className="p-6 w-full bg-white mt-4 rounded-lg">
+      <IRRChart />
+      <h1 className="mt-8 text-center">Month</h1>
+    </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </>
+      )}
+
+      {currentTab === 5 && (
+        <>
+          <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="1"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="1" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Riscos</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
+                    <DonutCardCriticity conversionIndex={critData} />
+                    <DonutCardStatus conversionIndex={statusData} />
+
+                    <DynamicTableManagment
+                      title="Por ambiente"
+                      data={environmentTableData}
+                    />
+                    <DynamicTableManagment
+                      title="Por idade"
+                      data={ageTableData}
+                    />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
 
-          
-        </>
-      )}
-
-      {currentTab === 5 && (
-              <>
-                <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
-                <div className="w-full mb-4">
-                  <Accordion
-                    type="single"
-                    defaultValue="1"
-                    collapsible
-                    className="w-full"
-                  >
-                    <AccordionItem value="1" className="border-none">
-                      <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
-                        <div className="flex flex-col items-start">
-                          <p>Riscos</p>
-                          <span className="text-xs font-light">Últimos 30 dias</span>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="border-none bg-[#F8F7F9] ">
-                        <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                          <DonutCardCriticity conversionIndex={critData} />
-                          <DonutCardStatus conversionIndex={statusData} />
-
-                          <DynamicTableManagment title="Por ambiente" data={environmentTableData}/>
-                          <DynamicTableManagment title="Por idade" data={ageTableData}/>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-
-                <div className="w-full mb-4">
-                  <Accordion
-                    type="single"
-                    defaultValue="2"
-                    collapsible
-                    className="w-full"
-                  >
-                    <AccordionItem value="2" className="border-none">
-                    <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
-                        <div className="flex flex-col items-start">
-                          <p>Top 10</p>
-                          <span className="text-xs font-light">Últimos 30 dias</span>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="border-none bg-[#F8F7F9] ">
-                        <div className="mt-6 grid grid-cols-1 gap-3">
-                        <ActiveTableIntrusion title="Ativos" data={activeTable}/>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-
-                <div className="w-full mb-4">
-                  <Accordion
-                    type="single"
-                    defaultValue="2"
-                    collapsible
-                    className="w-full"
-                  >
-                    <AccordionItem value="2" className="border-none">
-                    <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
-                        <div className="flex flex-col items-start">
-                          <p>Linha do tempo</p>
-                          <span className="text-xs font-light">Últimos 30 dias</span>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="border-none bg-[#F8F7F9] ">
-                        <LineChartTimeLineManagment/>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-
-                <div className="w-full mb-4">
-                  <Accordion
-                    type="single"
-                    defaultValue="2"
-                    collapsible
-                    className="w-full"
-                  >
-                    <AccordionItem value="2" className="border-none">
-                    <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
-                        <div className="flex flex-col items-start">
-                          <p>IRR</p>
-                          <span className="text-xs font-light">Últimos 30 dias</span>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="border-none bg-[#F8F7F9] ">
-                        
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-
-                
-              </>
-            )}
-
-      {currentTab === 6 && (
-        <>
-        <div className="max-w-[400px] w-full my-4">
-
-         <CardContainer title="Terceiros ativos" data={50}/>
-        </div>
-
-        <div className="w-full">
-          <ThirdPartiesTable data={thirdPartiesTable}/>
-        </div>
-        </>
-      )}
-
-{currentTab === 7 && (
-        <>
-        <div className="w-full flex flex-col gap-3 mt-4">
-          <ConformityTable data={conformityTable}/>
-          {
-            conformityTable.map((item, index) => (
-              <>
-                <Accordion
+          <div className="w-full mb-4">
+            <Accordion
               type="single"
+              defaultValue="2"
               collapsible
-              className="w-full lg:hidden"
+              className="w-full"
             >
-              <AccordionItem value={index.toString()} className="border-none">
-                <AccordionTrigger className="text-lgtext-black bg-white px-3 ">
-                  {item.name}
+              <AccordionItem value="2" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Top 10</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                   <div className="mt-2 bg-white rounded-lg p-4">
-                    <div className="flex flex-col mb-5">
-                        <p>Status:</p>
-                        <span className="font-semibold">{item.status}</span>
-                    </div>
-
-                    <div className="flex justify-between">
-                    <div className="flex flex-col">
-                        <p>Preenchido:</p>
-                        <span className="font-semibold">{item.filled}%</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <p>Data de envio:</p>
-                        <span className="font-semibold">{item.shipping}</span>
-                    </div>
-                    </div>
-                   </div>
+                  <div className="mt-6 grid grid-cols-1 gap-3">
+                    <ActiveTableIntrusion title="Ativos" data={activeTable} />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
+          </div>
+
+          <div className="w-full mb-4">
+            <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="2" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>Linha do tempo</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] ">
+                  <LineChartTimeLineManagment />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <div className="w-full mb-4">
+          <Accordion
+              type="single"
+              defaultValue="2"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="2" className="border-none">
+                <AccordionTrigger className="text-lg font-bold text-black bg-white px-3 ">
+                  <div className="flex flex-col items-start">
+                    <p>IRR</p>
+                    <span className="text-xs font-light">Últimos 30 dias</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-none bg-[#F8F7F9] rounded-lg">
+                  <div className="flex  flex-col items-center justify-center p-4 mt-4 bg-white rounded-lg">
+                    <div className="bg-[#F0F8FF] flex flex-col items-center p-4 w-full">
+                      <div className="flex gap-4 justify-center items-center w-full">
+                        <span className="text-sm">Diferença no último mês</span>
+                        <div className="w-16 py-2 text-[#028B53] bg-[#C3E7CF] flex justify-center items-center rounded-lg">+13,6%</div>
+                      </div>
+                      <div className="text-3xl font-bold text-black">14,744</div>
+                    </div>
+                    <DiffIRRChart />
+
+                    
+                  </div>
+                  <div className="p-6 w-full bg-white flex flex-col mt-4 rounded-lg">
+      <IRRChart />
+      <h1 className="mt-8 text-center">Month</h1>
+    </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </>
+      )}
+
+      {currentTab === 6 && (
+        <>
+          <div className="max-w-[400px] w-full my-4">
+            <CardContainer title="Terceiros ativos" data={50} />
+          </div>
+
+          <div className="w-full">
+            <ThirdPartiesTable data={thirdPartiesTable} />
+          </div>
+        </>
+      )}
+
+      {currentTab === 7 && (
+        <>
+          <div className="w-full flex flex-col gap-3 mt-4">
+            <ConformityTable data={conformityTable} />
+            {conformityTable.map((item, index) => (
+              <>
+                <Accordion
+                  key={index}
+                  type="single"
+                  collapsible
+                  className="w-full lg:hidden"
+                >
+                  <AccordionItem
+                    value={index.toString()}
+                    className="border-none"
+                  >
+                    <AccordionTrigger className="text-lg bg-white px-3 ">
+                      {item.name}
+                    </AccordionTrigger>
+                    <AccordionContent className="border-none bg-[#F8F7F9] ">
+                      <div className="mt-2 bg-white rounded-lg p-4">
+                        <div className="flex flex-col mb-5">
+                          <p>Status:</p>
+                          <span className="font-semibold">{item.status}</span>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <div className="flex flex-col">
+                            <p>Preenchido:</p>
+                            <span className="font-semibold">
+                              {item.filled}%
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <p>Data de envio:</p>
+                            <span className="font-semibold">
+                              {item.shipping}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </>
-            ))
-          }
-        </div>
+            ))}
+          </div>
         </>
       )}
     </main>

@@ -5,7 +5,7 @@ import { FiSearch } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import ActiveTable from "./components/ActiveTable";
 import { FaFilter } from "react-icons/fa";
-import { IoIosArrowDown, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import {
   Popover,
   PopoverContent,
@@ -98,7 +98,7 @@ export default function ActivesPage() {
           <Popover>
             <PopoverTrigger asChild>
               <button className="bg-transparent border border-gray-300 rounded-lg px-3 py-2 shadow-sm outline-none text-gray-700 flex items-center justify-between">
-                Selecione uma opção <IoIosArrowDown size={16} />
+                Selecione uma opção <LuChevronsUpDown size={16} />
               </button>
             </PopoverTrigger>
             <PopoverContent side="bottom" className="rounded-lg">
