@@ -12,6 +12,8 @@ import ModalSendQuest from "./components/ModalSendQuest";
 import { IQuestionDtoForm, IQuestionnary } from "@/types/IQuestionnary";
 import { useSearchParams } from "next/navigation";
 import QuestionnaryService from "@/services/QuestionnaryService";
+import EnvironmentService from "@/services/EnvironmentsService";
+import { IEnvironment } from "@/types/IEnvironment";
 
 export default function NewQuestionnaire() {
   return (
@@ -35,6 +37,7 @@ function NewQuestionnairePage() {
   const [questions, setQuestions] = useState<IQuestionDtoForm[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modelQuestionnary, setModelQuestionnary] = useState<IQuestionnary>();
+  const [thirthPart, setThirthPart] = useState<IEnvironment[]>();
 
   const handleInputChange = (index: number, value: string) => {
     const updatedValues = [...optionValues];
@@ -90,11 +93,24 @@ function NewQuestionnairePage() {
     }
   };
 
+  const fetchThirthPart = async () => {
+    try {
+      const res = await EnvironmentService.GetAll(0, 0, 2);
+      setThirthPart(res.items);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (modelId) {
       fetchDataModel();
     }
   }, [modelId]);
+
+  useEffect(() => {
+    fetchThirthPart();
+  }, []);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -309,6 +325,7 @@ function NewQuestionnairePage() {
         </form>
       </section>
       <ModalSendQuest
+        thirthData={thirthPart}
         questTitle={questionnaryTitle}
         questions={questions}
         open={modalOpen}

@@ -37,8 +37,14 @@ export interface ICreateQuestionnary {
   customerId: number;
   companyId: number;
   questions: ICreateQuestion[];
+  respondents: ICreateQuestionaryRespondents[];
   type: number;
   limitDate: string;
+}
+
+export interface ICreateQuestionaryRespondents {
+  email: string;
+  name: string;
 }
 
 export interface ICreateQuestion {
