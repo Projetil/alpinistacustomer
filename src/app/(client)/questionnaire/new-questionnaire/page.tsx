@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { FaListAlt, FaRegTrashAlt } from "react-icons/fa";
@@ -283,9 +283,24 @@ function NewQuestionnairePage() {
                       key={index}
                       className="flex flex-col items-start gap-2"
                     >
-                      <label className="items-center text-[#050506] font-semibold">
-                        Opção {index + 1}
-                      </label>
+                      <div className="w-full flex justify-between items-center">
+                        <label className="items-center text-[#050506] font-semibold">
+                          Opção {index + 1}
+                        </label>
+                        <Button
+                          onClick={() => {
+                            setCheckboxOptions(checkboxOptions - 1);
+                            setOptionValues((prev) =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                          }}
+                          variant={"outline"}
+                          className="mt-2 text-red-500 bg-transparent border-none justify-start font-semibold"
+                          type="button"
+                        >
+                          <Minus /> Remover
+                        </Button>
+                      </div>
                       <Input
                         placeholder={`Opção ${index + 1}`}
                         value={optionValues[index]}

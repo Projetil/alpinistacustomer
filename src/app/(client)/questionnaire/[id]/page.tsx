@@ -1,7 +1,12 @@
 "use client";
 
 import QuestionnaryService from "@/services/QuestionnaryService";
-import { AnswerType, IQuestion, IQuestionnary } from "@/types/IQuestionnary";
+import {
+  AnswerType,
+  IAnswer,
+  IQuestion,
+  IQuestionnary,
+} from "@/types/IQuestionnary";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,16 +19,18 @@ export default function QuestionnaryIndividualPage() {
   const { id } = useParams();
   const [questionnary, setQuestionnary] = useState<IQuestionnary>();
   const [question, setQuestion] = useState<IQuestion>();
+  const [answers, setAnswers] = useState<IAnswer[]>();
   const navigator = useRouter();
   const [focusedQuestionIndex, setFocusedQuestionIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const fetchData = async () => {
     try {
-      const res = await QuestionnaryService.GetById(Number(id));
+      const res = await QuestionnaryService.GetByIdWithAnswers(Number(id));
       setQuestionnary(res);
       setFocusedQuestionIndex(res.questions[0].id);
       setQuestion(res.questions[0]);
+      setAnswers(res.questions[0].answer);
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +99,7 @@ export default function QuestionnaryIndividualPage() {
               <button
                 onClick={() => {
                   setQuestion(question);
+                  setAnswers(question.answer);
                   setFocusedQuestionIndex(question.id);
                 }}
                 key={index}
@@ -135,6 +143,7 @@ export default function QuestionnaryIndividualPage() {
               <button
                 onClick={() => {
                   setQuestion(x);
+                  setAnswers(x.answer);
                   setFocusedQuestionIndex(x.id);
                 }}
                 key={index}
@@ -202,12 +211,9 @@ export default function QuestionnaryIndividualPage() {
           </div>
           <div className="flex flex-col gap-3 w-full rounded-lg bg-[#FFFFFF] p-3 mb-36 md:mb-3">
             <h4 className="text-[#050506] font-bold text-xl">Respostas (0)</h4>
-            {[1, 2, 3, 4, 5].map((x, index) => (
+            {answers?.map((x, index) => (
               <div key={index} className="bg-[#F8F7F9] p-3 flex flex-col gap-3">
-                <p className="text-[#050506] font-semibold">
-                  “Sed eu eros augue. Proin pharetra sagittis dolor eu sagittis.
-                  Vestibulum sed libero non elit cursus rutrum ac a metus.”
-                </p>
+                <p className="text-[#050506] font-semibold">{x.value}</p>
                 <div className="flex gap-2 items-center">
                   <FaRegUser className="bg-[#0D3C73] text-white p-1" />
                   <p className="text-[#636267] ">email@example.com</p>
