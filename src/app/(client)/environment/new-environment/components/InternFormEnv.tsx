@@ -207,7 +207,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           type="submit"
           className="p-2 bg-blue-500 text-white rounded-lg px-16 mt-6"
         >
-          {loading ? <LoadingSpinner /> : "Criar"}
+          {loading ? <LoadingSpinner /> : "Salvar"}
         </button>
       </div>
     </form>

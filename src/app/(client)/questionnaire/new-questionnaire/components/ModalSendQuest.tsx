@@ -4,9 +4,12 @@ import Modal from "@/components/default/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCustomerContext } from "@/contexts/CustomerContext";
+import EnvironmentService from "@/services/EnvironmentsService";
 import QuestionnaryService from "@/services/QuestionnaryService";
+import { IEnvironment } from "@/types/IEnvironment";
 import {
   ICreateQuestion,
+  ICreateQuestionaryRespondents,
   IQuestionDtoForm,
   IQuestionnary,
 } from "@/types/IQuestionnary";
@@ -16,6 +19,7 @@ import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { IoIosArrowDown } from "react-icons/io";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
@@ -40,14 +44,19 @@ const ModalSendQuest = ({
   questions,
   questTitle,
   modelData,
+  thirthData,
 }: {
   open: boolean;
   setOpen: () => void;
   questions: IQuestionDtoForm[];
   questTitle: string;
+  thirthData?: IEnvironment[];
   modelData?: IQuestionnary;
 }) => {
   const [respSize, setRespSize] = useState(1);
+  const [thirthIds, setThirthIds] = useState<number[]>([]);
+  const [openThirth, setOpenThirth] = useState(false);
+  const [thirthNames, setThirthNames] = useState<string[]>([]);
   const navigate = useRouter();
   const { customers } = useCustomerContext();
   const {
@@ -75,11 +84,39 @@ const ModalSendQuest = ({
         };
       });
 
+      const formatRespondents = async (): Promise<
+        ICreateQuestionaryRespondents[]
+      > => {
+        if (data.type === "1") {
+          if (data.responds) {
+            return data.responds.map((respond) => {
+              return {
+                name: respond.name ?? "",
+                email: respond.email ?? "",
+              };
+            });
+          }
+        }
+        if (data.type === "2") {
+          const result = thirthIds.map(async (id) => {
+            const res = await EnvironmentService.GetById(id);
+            return {
+              name: res.externalEnvironment?.tecnicalName ?? "",
+              email: res.externalEnvironment?.tecnicalEmail ?? "",
+            };
+          });
+
+          return Promise.all(result);
+        }
+        return [];
+      };
+
       await QuestionnaryService.Post({
         title: questTitle,
         companyId: customers?.companyId ?? 0,
         customerId: customers?.id ?? 0,
         questions: formatQuestion,
+        respondents: await formatRespondents(),
         type: data.type === "1" ? 1 : 2,
         limitDate: data.limitDate,
       });
@@ -105,6 +142,8 @@ const ModalSendQuest = ({
       });
     }
   }, [modelData]);
+
+  useEffect(() => {}, [openThirth]);
 
   return (
     <Modal isOpen={open} onClose={setOpen}>
@@ -215,17 +254,75 @@ const ModalSendQuest = ({
                   Selecione o(s) terceiro(s){" "}
                   <span className="text-red-500 ">*</span>
                 </Label>
-                <select
-                  className="bg-transparent py-2 rounded-md px-2 border border-[#DFDFE2] mt-2"
-                  {...register("thirthPart")}
+                <div
+                  onClick={() => setOpenThirth(!openThirth)}
+                  className="w-full h-12 border rounded-lg border-[#E6E6E8] flex justify-between items-center cursor-pointer"
                 >
-                  <option value="1">Terceiro 1</option>
-                  <option value="2">Terceiro 2</option>
-                  <option value="3">Terceiro 3</option>
-                </select>
-                {errors.type && (
-                  <span className="text-red-500">{errors.type.message}</span>
+                  <p className="px-2">
+                    {thirthNames.join(", ") || "Selecione os terceiros"}
+                  </p>
+                  <IoIosArrowDown />
+                </div>
+                {openThirth && (
+                  <div className="w-full max-w-[550px] relative border rounded-lg bg-[#FBFBFB] border-[#E6E6E8] mt-2 p-2">
+                    {thirthData?.map((control, index) => (
+                      <div key={index} className="flex items-center gap-2 mb-2">
+                        <input
+                          type="checkbox"
+                          id={`control-${index}`}
+                          checked={thirthIds.includes(control.id)}
+                          value={control.name}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setThirthNames([...thirthNames, control.name]);
+                              setThirthIds([...thirthIds, control.id]);
+                            } else {
+                              setThirthNames(
+                                thirthNames.filter(
+                                  (item) => item !== control.name
+                                )
+                              );
+                              setThirthIds(
+                                thirthIds.filter((item) => item !== control.id)
+                              );
+                            }
+                          }}
+                          className="h-4 w-4 border border-gray-300 rounded-md text-blue-600 focus:ring-blue-500 data-[state=checked]:bg-blue-500 data-[state=checked]:text-blue-500 "
+                        />
+                        <Label
+                          htmlFor={`control-${index}`}
+                          className="text-sm font-medium leading-none"
+                        >
+                          {control.name}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
                 )}
+                {thirthData
+                  ?.filter((item) => thirthIds.includes(item.id))
+                  .map((item, index) => {
+                    console.log(thirthData);
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col justify-start items-start gap-2 mt-4"
+                      >
+                        <p className="font-semibold text-[#636267]">
+                          {item.externalEnvironment?.tecnicalName}
+                        </p>
+                        <Label className="font-semibold text-lg">
+                          E-mail técnico
+                          <span className="text-red-500 ">*</span>
+                        </Label>
+                        <Input
+                          type="text"
+                          value={item.externalEnvironment?.tecnicalEmail}
+                          className="font-normal border-[#D7D7DA] bg-transparent mt-2"
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             )}
           </div>
