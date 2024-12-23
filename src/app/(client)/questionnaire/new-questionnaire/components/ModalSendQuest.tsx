@@ -1,6 +1,7 @@
 "use client";
 
 import Modal from "@/components/default/Modal";
+import { LoadingSpinner } from "@/components/default/Spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCustomerContext } from "@/contexts/CustomerContext";
@@ -15,7 +16,7 @@ import {
 } from "@/types/IQuestionnary";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -54,6 +55,7 @@ const ModalSendQuest = ({
   modelData?: IQuestionnary;
 }) => {
   const [respSize, setRespSize] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [thirthIds, setThirthIds] = useState<number[]>([]);
   const [openThirth, setOpenThirth] = useState(false);
   const [thirthNames, setThirthNames] = useState<string[]>([]);
@@ -72,6 +74,7 @@ const ModalSendQuest = ({
 
   const onSubmit = async (data: DataCompany) => {
     try {
+      setLoading(true);
       const formatQuestion: ICreateQuestion[] = questions.map((question) => {
         return {
           title: question.title,
@@ -125,6 +128,8 @@ const ModalSendQuest = ({
     } catch (err) {
       toast.error("Erro ao enviar questionario");
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -198,10 +203,28 @@ const ModalSendQuest = ({
                   {[...Array(respSize)].map((_, index) => (
                     <div className="flex flex-col gap-4 w-full" key={index}>
                       <div className="text-[#050506] w-full flex flex-col">
-                        <Label className="font-semibold text-lg">
-                          Nome da pessoa{" "}
-                          <span className="text-red-500 ">*</span>
-                        </Label>
+                        <div className="flex justify-between items-center">
+                          <Label className="font-semibold text-lg">
+                            Nome da pessoa{" "}
+                            <span className="text-red-500 ">*</span>
+                          </Label>
+                          <Button
+                            variant={"outline"}
+                            className="text-red-500 font-semibold border-none"
+                            type="button"
+                            onClick={() => {
+                              setRespSize((prev) => prev - 1);
+                              reset((prev) => ({
+                                ...prev,
+                                responds: prev.responds?.filter(
+                                  (_, i) => i !== index
+                                ),
+                              }));
+                            }}
+                          >
+                            <Minus /> Remover
+                          </Button>
+                        </div>
                         <Input
                           type="text"
                           placeholder="Nome da pessoa"
@@ -302,7 +325,6 @@ const ModalSendQuest = ({
                 {thirthData
                   ?.filter((item) => thirthIds.includes(item.id))
                   .map((item, index) => {
-                    console.log(thirthData);
                     return (
                       <div
                         key={index}
@@ -337,10 +359,11 @@ const ModalSendQuest = ({
               Voltar
             </Button>
             <Button
+              disabled={loading}
               className="text-white bg-[#3088EE] font-semibold"
               type="submit"
             >
-              Enviar
+              {loading ? <LoadingSpinner /> : "Enviar"}
             </Button>
           </div>
         </form>

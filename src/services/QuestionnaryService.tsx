@@ -51,6 +51,22 @@ const QuestionnaryService = {
       }
     }
   },
+  GetByIdWithAnswers: async (id: number) => {
+    try {
+      const res = await api.get(`${endpoint}/${id}/WithAnswers`);
+      return res.data as IQuestionnary;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      switch (error.statusCode) {
+        case HttpStatusCode.BadRequest:
+          throw new ValidationError(error.body.erros);
+        case HttpStatusCode.NotFound:
+          throw new NotFoundError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
+  },
   Post: async (company: ICreateQuestionnary) => {
     try {
       const res = await api.post(`${endpoint}`, company);
