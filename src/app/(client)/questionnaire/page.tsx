@@ -35,8 +35,10 @@ export default function QuestionnairePage() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [page]);
+    if (customers) {
+      fetchData();
+    }
+  }, [page, customers]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">

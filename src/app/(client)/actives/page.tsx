@@ -27,7 +27,7 @@ import InfraTable from "./components/InfraTable";
 import WebTable from "./components/WebTable";
 import MobileTable from "./components/MobileTable";
 import DomainTable from "./components/DomainTable";
-import CloudTable from "./components/CloudTable";
+
 import PeopleTable from "./components/PeopleTable";
 import EnvTable from "./components/EnvTable";
 
@@ -37,9 +37,8 @@ const tabs = [
   { value: 3, name: "WEB" },
   { value: 4, name: "Mobile" },
   { value: 5, name: "Domínio" },
-  { value: 6, name: "Nuvem" },
-  { value: 7, name: "Pessoas" },
-  { value: 8, name: "Ambientes" },
+  { value: 6, name: "Pessoas" },
+  { value: 7, name: "Ambientes" },
 ];
 
 const envTabs = [
@@ -412,15 +411,10 @@ export default function ActivesPage() {
       )}
       {currentTab === 6 && (
         <>
-          <CloudTable />
-        </>
-      )}
-      {currentTab === 7 && (
-        <>
           <PeopleTable />
         </>
       )}
-      {currentTab === 8 && (
+      {currentTab === 7 && (
         <>
           <section className="bg-white p-2 rounded-lg flex w-full lg:w-40">
         <div className=" w-full overflow-x-auto flex">
