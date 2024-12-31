@@ -41,7 +41,7 @@ const HorizontalBarChart: React.FC = () => {
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={data}
-          layout="vertical" // Configuração para barras horizontais
+          layout="vertical"
           margin={{
             top: 20,
             right: 30,
@@ -66,10 +66,11 @@ const HorizontalBarChart: React.FC = () => {
             fill={colors.critico}
             name="Crítico"
             barSize={20}
+            style={{ transform: 'translateY(6%)' }}
           />
-          <Bar dataKey="alto" fill={colors.alto} name="Alto" barSize={20} />
-          <Bar dataKey="medio" fill={colors.medio} name="Médio" barSize={20} />
-          <Bar dataKey="geral" fill={colors.geral} name="Geral" barSize={20} />
+          <Bar dataKey="alto"  fill={colors.alto} name="Alto" barSize={20} style={{ transform: 'translateY(2%)' }}/>
+          <Bar dataKey="medio" fill={colors.medio} name="Médio" barSize={20} style={{ transform: 'translateY(-2%)' }}/>
+          <Bar dataKey="geral" fill={colors.geral} name="Geral" barSize={20} style={{ transform: 'translateY(-5%)' }}/>
         </BarChart>
       </ResponsiveContainer>
     </div>

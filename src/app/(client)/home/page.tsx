@@ -204,7 +204,7 @@ const vulnerabilityTable = [
 
 const thirdPartiesTable = [
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -213,7 +213,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -222,7 +222,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -231,7 +231,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -240,7 +240,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -249,7 +249,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -258,7 +258,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -267,7 +267,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -276,7 +276,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
@@ -285,7 +285,7 @@ const thirdPartiesTable = [
     crit: 21,
   },
   {
-    name: "someone@example.com",
+    name: "Terceiros externos",
     risks: 42,
     info: 21,
     low: 21,
