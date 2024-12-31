@@ -4,11 +4,44 @@ import { FaArrowsAltV } from "react-icons/fa";
 import { activeTableData } from "@/app/data/tablesData";
 import CardActive from "./CardActiveTableMobile";
 import SeverityBadge from "../../components/SeverityBadge";
+import { useEffect, useState } from "react";
+import AssetsService from "@/services/AssetsService";
+import { IAssets } from "@/types/IAssets";
+import { useCustomerContext } from "@/contexts/CustomerContext";
+import { SeverityTypeEnum } from "@/enums/SeverityTypeEnum";
 
-const ActiveTable = () => {
+
+
+const ActiveTable = ({domainName, severities}: {domainName: string, severities: SeverityTypeEnum[]}) => {
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [assets, setAssets] = useState<IAssets[]>([]);
+  const { customers } = useCustomerContext();
+  
+  const getAssets = async () =>{
+    const response = await AssetsService.Get(
+      page,
+      10,
+      Number(customers?.userId),
+      domainName,
+      severities[0]
+    );
+    setTotalItems(response.totalItems)
+    setAssets(response.items)
+  }
+
+  useEffect(() => {
+    getAssets();
+  }, [page]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+
 
   return (
-    <div className="w-full md:bg-white rounded-md">
+    <div className="w-full md:bg-white rounded-md"> 
       <h1 className="hidden lg:block m-4 font-semibold">Nome Empresa S.A</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full hidden md:table">
@@ -33,21 +66,21 @@ const ActiveTable = () => {
             </tr>
           </thead>
           <tbody>
-            {activeTableData.map((row, index) => (
+            {assets.map((asset) => (
               <tr
-                key={index}
+                key={asset.id}
                 className={`${
-                  index == 0 ? "" : "border-t border-gray-200"
+                  asset.id == 0 ? "" : "border-t border-gray-200"
                 }  text-[#636267] text-center`}
               >
                 <td className="py-3 px-4 text-sm max-w-[200px]">
-                  <div className="flex">{row.active}</div>
+                  <div className="flex">{asset.domainName}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <div className="flex justify-start">{row.issuesRisks}</div>
+                  <div className="flex justify-start">{asset.issuesOrRisks}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <SeverityBadge severity={row.severity}/>
+                  <SeverityBadge severity={asset.severityType.toString()}/>
                 </td>
               </tr>
             ))}
@@ -67,10 +100,10 @@ const ActiveTable = () => {
         })}
       </div>
       <Pagination
-        pageIndex={1}
+        pageIndex={page}
         perPage={10}
-        handlePage={() => {}}
-        totalCount={10}
+        handlePage={handlePageChange}
+        totalCount={totalItems}
       />
     </div>
   );

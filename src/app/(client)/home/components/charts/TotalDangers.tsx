@@ -43,10 +43,10 @@ const TotalDangers = () => {
             
           />
     
-    <Bar dataKey="Crítico" fill="#FF5C63" barSize={20} activeBar={<Rectangle />} />
-    <Bar dataKey="Alto" fill="#FFDDD8 " barSize={20} activeBar={<Rectangle />} />
-    <Bar dataKey="Médio" fill="#FFBB5C" barSize={20} activeBar={<Rectangle />} />
-    <Bar dataKey="Baixo" fill="#5CA7FF" barSize={20} activeBar={<Rectangle />} />
+    <Bar dataKey="Crítico" fill="#FF5C63" barSize={20} style={{ transform: 'translateX(4.5%)' }} activeBar={<Rectangle /> } />
+    <Bar dataKey="Alto" fill="#FFDDD8 " barSize={20} style={{ transform: 'translateX(1.5%)' }} activeBar={<Rectangle />} />
+    <Bar dataKey="Médio" fill="#FFBB5C" barSize={20} style={{ transform: 'translateX(-1.5%)' }} activeBar={<Rectangle />} />
+    <Bar dataKey="Baixo" fill="#5CA7FF" barSize={20} style={{ transform: 'translateX(-4.5%)' }} activeBar={<Rectangle />} />
     
             </BarChart>
           </div>
