@@ -76,9 +76,9 @@ export default function QuestionnaryIndividualPage() {
       </section>
       <section className=" flex justify-between items-center w-full mb-6">
         <div className=" w-full overflow-x-auto flex gap-4 p-2">
-          <TopCards title="Respondido" value={"50%"} />
-          <TopCards title="Resposta em conformidade" value={50} />
-          <TopCards title="Resposta em não conformidade" value={50} />
+          <TopCards title="Respondido" value={"0%"} />
+          <TopCards title="Resposta em conformidade" value={0} />
+          <TopCards title="Resposta em não conformidade" value={0} />
         </div>
       </section>
       <section className="flex gap-4 w-full">
