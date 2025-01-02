@@ -80,7 +80,7 @@ const QuestionnaireTable = ({
                 </div>
               </td>
               <td className="py-3 px-4 text-sm">
-                <StatusBagde status={"Finalizado"} />
+                <StatusBagde status={row.status} />
               </td>
               <td className="py-3 px-4 text-sm">
                 <div className="flex justify-start">
@@ -115,7 +115,7 @@ const QuestionnaireTable = ({
               key={index}
               createDate={formatDateToDDMMYYYY(x.createdAt)}
               limitDate={formatDateToDDMMYYYY(x.limitDate)}
-              status={<StatusBagde status={"Finalizado"} />}
+              status={<StatusBagde status={x.status} />}
               type={x.type == 1 ? "Interno" : "Terceiros"}
             />
           );
