@@ -1,13 +1,13 @@
 export interface ActiveTable {
   active: string;
   issuesRisks: number;
-  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+  severity: string;
 }
 
 export interface DomainTable {
   active: string;
-  status: string;
-  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+  status: boolean;
+  severity: string;
 }
 
 export interface CloudTable {
@@ -19,18 +19,18 @@ export interface CloudTable {
 export interface PeopleTable {
   active: string;
   email: string;
-  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+  severity: string;
 }
 
 export interface MobileTable {
   active: string;
-  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+  severity: string;
 }
 
 export interface EnvTable {
   active: string;
-  issues: string;
-  severity: "Info" | "Baixo" | "Médio" | "Alto" | "Crítico";
+  issues: number;
+  severity: string;
   ip: string;
   port: number;
 }
@@ -216,43 +216,43 @@ export const mobileTableData: MobileTable[] = [
   },
 ];
 
-export const domainTableData: DomainTable[] = [
-  {
-    active: "Ativo",
-    status: "Ativo",
-    severity: "Crítico",
-  },
-  {
-    active: "Ativo",
-    status: "Inativo",
-    severity: "Alto",
-  },
-  {
-    active: "Ativo",
-    status: "Inativo",
-    severity: "Médio",
-  },
-  {
-    active: "Ativo",
-    status: "Inativo",
-    severity: "Baixo",
-  },
-  {
-    active: "Ativo",
-    status: "Inativo",
-    severity: "Info",
-  },
-  {
-    active: "Ativo",
-    status: "Inativo",
-    severity: "Alto",
-  },
-  {
-    active: "Ativo",
-    status: "Inativo",
-    severity: "Crítico",
-  },
-];
+// export const domainTableData: DomainTable[] = [
+//   {
+//     active: "Ativo",
+//     status: "Ativo",
+//     severity: "Crítico",
+//   },
+//   {
+//     active: "Ativo",
+//     status: "Inativo",
+//     severity: "Alto",
+//   },
+//   {
+//     active: "Ativo",
+//     status: "Inativo",
+//     severity: "Médio",
+//   },
+//   {
+//     active: "Ativo",
+//     status: "Inativo",
+//     severity: "Baixo",
+//   },
+//   {
+//     active: "Ativo",
+//     status: "Inativo",
+//     severity: "Info",
+//   },
+//   {
+//     active: "Ativo",
+//     status: "Inativo",
+//     severity: "Alto",
+//   },
+//   {
+//     active: "Ativo",
+//     status: "Inativo",
+//     severity: "Crítico",
+//   },
+// ];
 
 export const cloudTableData: CloudTable[] = [
   {
@@ -330,54 +330,54 @@ export const peopleTableData: PeopleTable[] = [
   },
 ];
 
-export const envTableData: EnvTable[] = [
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Crítico",
-    ip:"291.789.634",
-    port: 6300
-  },
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Alto",
-    ip:"291.789.634",
-    port: 6300
-  },
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Médio",
-    ip:"291.789.634",
-    port: 6300
-  },
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Baixo",
-    ip:"291.789.634",
-    port: 6300
-  },
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Info",
-    ip:"291.789.634",
-    port: 6300
-  },
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Alto",
-    ip:"291.789.634",
-    port: 6300
-  },
-  {
-    active: "Ativo",
-    issues: "420",
-    severity: "Crítico",
-    ip:"291.789.634",
-    port: 6300
-  },
-];
+// export const envTableData: EnvTable[] = [
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Crítico",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Alto",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Médio",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Baixo",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Info",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Alto",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+//   {
+//     active: "Ativo",
+//     issues: "420",
+//     severity: "Crítico",
+//     ip:"291.789.634",
+//     port: 6300
+//   },
+// ];

@@ -24,6 +24,26 @@ export default function QuestionnaryIndividualPage() {
   const [focusedQuestionIndex, setFocusedQuestionIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
+  async function handleFileDownload(url: string, filename: string) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch the file.");
+      }
+      const blob = await response.blob();
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+      alert("Failed to download the file.");
+    }
+  }
+
   const fetchData = async () => {
     try {
       const res = await QuestionnaryService.GetByIdWithAnswers(Number(id));
@@ -204,19 +224,45 @@ export default function QuestionnaryIndividualPage() {
                   className="bg-[#EEEEF0] text-[#3088EE] p-1"
                 />
                 <p className="text-[#093970] font-medium text-sm">
-                  {0} respostas
+                  {answers?.length} respostas
                 </p>
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-3 w-full rounded-lg bg-[#FFFFFF] p-3 mb-36 md:mb-3">
-            <h4 className="text-[#050506] font-bold text-xl">Respostas (0)</h4>
+            <h4 className="text-[#050506] font-bold text-xl">
+              Respostas {answers?.length}{" "}
+            </h4>
             {answers?.map((x, index) => (
               <div key={index} className="bg-[#F8F7F9] p-3 flex flex-col gap-3">
-                <p className="text-[#050506] font-semibold">{x.value}</p>
+                {(question?.answerType == 1 || question?.answerType == 4) && (
+                  <p className="text-[#050506] font-semibold">{x.value}</p>
+                )}
+                {question?.answerType == 2 && (
+                  <button
+                    className="bg-[#3088EE] text-white p-2 rounded-md w-fit"
+                    onClick={() => {
+                      const filename = x.value.split("/").pop();
+                      handleFileDownload(x.value, filename ?? "file");
+                    }}
+                  >
+                    Baixar arquivo
+                  </button>
+                )}
+                {question?.answerType == 3 && (
+                  <p className="text-[#050506] font-semibold">
+                    {x.value == "1" && "1 - Nada confiante"}
+                    {x.value == "2" && "2 - Pouco confiante"}
+                    {x.value == "3" && "3 - Neutro"}
+                    {x.value == "4" && "4 - Confiante"}
+                    {x.value == "5" && "5 - Muito confiante"}
+                  </p>
+                )}
                 <div className="flex gap-2 items-center">
                   <FaRegUser className="bg-[#0D3C73] text-white p-1" />
-                  <p className="text-[#636267] ">email@example.com</p>
+                  <p className="text-[#636267] ">
+                    {x.questionaryRespondentEmail}{" "}
+                  </p>
                 </div>
               </div>
             ))}
