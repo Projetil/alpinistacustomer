@@ -1,3 +1,5 @@
+import { QuestionaryStatusEnum } from "@/enums/QuestionaryStatusEnum";
+
 export interface IQuestionnary {
   id: number;
   createdAt: string;
@@ -6,6 +8,7 @@ export interface IQuestionnary {
   customerId: number;
   questions: IQuestion[];
   type: number;
+  status: QuestionaryStatusEnum;
   limitDate: string;
 }
 
