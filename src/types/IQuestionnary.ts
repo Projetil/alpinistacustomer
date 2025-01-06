@@ -31,6 +31,8 @@ export interface IQuestion {
 export interface IAnswer {
   id: number;
   questionId: number;
+  questionaryRespondentId: number;
+  questionaryRespondentEmail?: string;
   customerId: number;
   value: string;
 }

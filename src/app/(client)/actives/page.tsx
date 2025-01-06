@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { TbWorld } from "react-icons/tb";
-import { FiSearch } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import ActiveTable from "./components/ActiveTable";
 import { FaFilter } from "react-icons/fa";
@@ -30,7 +29,7 @@ import DomainTable from "./components/DomainTable";
 
 import PeopleTable from "./components/PeopleTable";
 import EnvTable from "./components/EnvTable";
-import { SeverityTypeEnum } from "@/enums/SeverityTypeEnum";
+import { EnvironmentTypeEnum } from "@/enums/EnvironmentTypeEnum";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -51,22 +50,6 @@ const envTabs = [
 export default function ActivesPage() {
   const [currentTab, setCurrentTab] = useState(1);
   const [currentEnvTab, setCurrentEnvTab] = useState(1);
-
-  const [searchText, setSearchText] = useState("");
-  const [selectedSeverities, setSelectedSeverities] = useState<SeverityTypeEnum[]>([]);
-
-  const handleCheckboxChange = (severity: SeverityTypeEnum) => {
-    setSelectedSeverities((prev) =>
-      prev.includes(severity)
-        ? prev.filter((item) => item !== severity)
-        : [...prev, severity]
-    );
-  };
-
-  const clearFilters = () => {
-    setSearchText("");
-    setSelectedSeverities([]);
-  };
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -92,98 +75,7 @@ export default function ActivesPage() {
           ))}
         </div>
       </section>
-      <section className="hidden lg:flex gap-3 w-full my-6 items-center">
-        {/* Input de pesquisa */}
-        <div className="flex flex-col w-2/4 gap-2">
-          <label htmlFor="search">Pesquisar</label>
-          <div className="flex items-center rounded-lg px-3 py-2 shadow-sm w-full border">
-            <FiSearch className="text-gray-400 mr-2" />
-            <input
-              type="text"
-              id="search"
-              placeholder={"Search"}
-              className="bg-transparent w-full outline-none text-gray-70"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)} // Captura o texto digitado
-            />
-          </div>
-        </div>
-
-        {/* Filtros de severidade */}
-        <div className="flex flex-col w-1/4">
-          <label className="text-gray-700 mb-1">
-            Severidade <span className="text-red-500">*</span>
-          </label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="bg-transparent border border-gray-300 rounded-lg px-3 py-2 shadow-sm outline-none text-gray-700 flex items-center justify-between">
-                Selecione uma opção <LuChevronsUpDown size={16} />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent side="bottom" className="rounded-lg">
-              <div className="flex flex-col gap-6">
-                {(Object.values(SeverityTypeEnum) as SeverityTypeEnum[]).map((severity) => (
-                  <div key={severity} className="flex items-center gap-3">
-                    <Checkbox
-                      checked={selectedSeverities.includes(severity)}
-                      onCheckedChange={() => handleCheckboxChange(severity)}
-                      className="flex items-center justify-center data-[state=checked]:bg-[#3088EE] data-[state=checked]:border-[#3088EE]"
-                    />
-                    {/* Converte o valor do enum para string para o htmlFor */}
-                    <label htmlFor={severity.toString()}>{severity}</label>
-                  </div>
-                ))}
-                {/* Botão para limpar filtros */}
-                <button onClick={clearFilters} className="flex items-center gap-3 mt-3">
-                  <IoMdClose color="#D9232B" size={20} />
-                  <span className="text-[#D9232B] font-semibold">Limpar filtros</span>
-                </button>
-              </div>
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        {/* Botão de diálogo */}
-        <div className="flex w-1/4 mt-8">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="w-36 bg-[#3088EE]">Filtrar</Button>
-            </DialogTrigger>
-            <DialogContent className="rounded-lg">
-              <DialogTitle className="hidden" />
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-4">
-                  <h1 className="font-semibold text-lg">Por issues e riscos</h1>
-                  <Input
-                    placeholder="O que deseja encontrar"
-                    className="border-[#D8D9E0] py-6 placeholder:text-[#80828D]"
-                  />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <h1 className="font-semibold text-lg">Por IP</h1>
-                  <Input
-                    placeholder="O que deseja encontrar"
-                    className="border-[#D8D9E0] py-6 placeholder:text-[#80828D]"
-                  />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <h1 className="font-semibold text-lg">Por porta</h1>
-                  <Input
-                    placeholder="O que deseja encontrar"
-                    className="border-[#D8D9E0] py-6 placeholder:text-[#80828D]"
-                  />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <h1 className="font-semibold text-lg">Por classificação</h1>
-                  {/* Aqui você pode mapear outras classificações */}
-                </div>
-                <Button className="w-full py-7 bg-[#3088EE] mt-4">Aplicar filtros</Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-      </section>
+    
       <section className="w-full my-3 flex justify-end lg:hidden">
         <Dialog>
           <DialogTrigger asChild>
@@ -337,7 +229,7 @@ export default function ActivesPage() {
       </section>
       {currentTab === 1 && (
         <>
-          <ActiveTable domainName={searchText} severities={selectedSeverities} />
+          <ActiveTable />
         </>
       )}
       {currentTab === 2 && (
@@ -387,14 +279,14 @@ export default function ActivesPage() {
           {
             currentEnvTab === 1 && (
               <div className="mt-4 w-full">
-                <EnvTable />
+                <EnvTable environmentType={EnvironmentTypeEnum.Intern} />
               </div>
             )
           }
           {
             currentEnvTab === 2 && (
               <div className="mt-4 w-full">
-                <EnvTable />
+                <EnvTable environmentType={EnvironmentTypeEnum.Extern}/>
               </div>
             )
           }

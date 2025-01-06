@@ -43,7 +43,7 @@ const CardDomain: React.FC<DomainTable> = ({
           <div className="flex justify-between">
             <div>
               <p className="text-[#818086] text-sm">Status:</p>
-              <p className="font-semibold ">{status}</p>
+              <p className="font-semibold ">{status ? "Ativo" : "Inativo"}</p>
             </div>
             <div>
               <p className="text-[#818086] text-sm">Severidade:</p>
