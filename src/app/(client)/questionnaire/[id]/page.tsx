@@ -251,11 +251,11 @@ export default function QuestionnaryIndividualPage() {
                 )}
                 {question?.answerType == 3 && (
                   <p className="text-[#050506] font-semibold">
-                    {x.value == "1" && "1 - Nada confiante"}
-                    {x.value == "2" && "2 - Pouco confiante"}
-                    {x.value == "3" && "3 - Neutro"}
-                    {x.value == "4" && "4 - Confiante"}
-                    {x.value == "5" && "5 - Muito confiante"}
+                    {x.value == "1" && "1 - Inicial"}
+                    {x.value == "2" && "2 - Gerenciado"}
+                    {x.value == "3" && "3 - Definido"}
+                    {x.value == "4" && "4 - Mensurado"}
+                    {x.value == "5" && "5 - Otimizado"}
                   </p>
                 )}
                 <div className="flex gap-2 items-center">
