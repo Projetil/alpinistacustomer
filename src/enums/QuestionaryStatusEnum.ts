@@ -1,5 +1,5 @@
 export enum QuestionaryStatusEnum {
-    "Sent" = 1,
-    "InProgress" = 2,
-    "Finished" = 3,
-  }
+  "Enviado" = 1,
+  "Em Progresso" = 2,
+  "Finalizado" = 3,
+}

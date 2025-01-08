@@ -5,9 +5,15 @@ import { useState } from "react";
 import BarChartIRR from "./charts/BarChartIRR";
 import LineChartIRR from "./charts/LineChartIRR";
 import PieChartIRR from "./charts/PieChartIRR";
+import { IIdentifiedAndFixedIRR, IPizzaChartIRR } from "@/types/ICharts";
 
+interface IRRProps {
+  pizzaChartData?: IPizzaChartIRR,
+  barGraphDataIRR?: IIdentifiedAndFixedIRR[],
+  timeLineIRR?: IIdentifiedAndFixedIRR[],
+}
 
-const IRR: React.FC = () => {
+const IRR: React.FC<IRRProps> = ({pizzaChartData, barGraphDataIRR, timeLineIRR}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleCard = () => {
@@ -41,17 +47,17 @@ const IRR: React.FC = () => {
         <div className="flex flex-col space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
           {/* Gráfico de Pizza */}
           <div className="p-4 bg-white rounded-lg">
-            <PieChartIRR />
+            <PieChartIRR pizzaChartData={pizzaChartData}/>
           </div>
 
           {/* Gráfico de Barras */}
           <div className="p-4 bg-white rounded-lg">
-            <BarChartIRR />
+            <BarChartIRR barGraphDataIRR={barGraphDataIRR}/>
           </div>
 
           {/* Gráfico de Linha */}
           <div className="p-4 bg-white rounded-lg">
-            <LineChartIRR />
+            <LineChartIRR timeLineIRR={timeLineIRR}/>
           </div>
         </div>
       )}

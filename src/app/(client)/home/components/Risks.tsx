@@ -5,9 +5,14 @@ import { useState } from "react";
 import { ResponsiveContainer } from "recharts";
 import CardHome from "./CardHome";
 import PieChartHome from "./charts/PieChart";
+import { IHeader } from "@/types/ICharts";
 
-const CardRisks: React.FC = ({
-  
+interface CardRisksProps {
+  headers?: IHeader
+}
+
+const CardRisks: React.FC<CardRisksProps> = ({
+  headers
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -37,16 +42,16 @@ const CardRisks: React.FC = ({
         <section className="flex flex-col md:flex-row gap-3 my-5 w-full">
         <div className="w-full lg:w-1/3">
           <ResponsiveContainer>
-            <PieChartHome />
+            <PieChartHome headers={headers}/>
           </ResponsiveContainer>
         </div>
         <div className="grid grid-rows-2 grid-cols-2 md:grid-rows-3 gap-3 w-full lg:w-2/3">
-          <CardHome title="Pendente" value={50} />
-          <CardHome title="Vazamentos" value={50} />
-          <CardHome title="Aceito" value={50} />
-          <CardHome title="Corrigido" value={50} />
-          <CardHome title="Retest" value={50} />
-          <CardHome title="Rearbeto" value={50} />
+        <CardHome title="Pendente" value={headers ? headers.statusCount.pending : 0} />
+          <CardHome title="Vazamentos" value={headers ? headers.statusCount.leaks : 0} />
+          <CardHome title="Aceito" value={headers ? headers.statusCount.accepted : 0} />
+          <CardHome title="Corrigido" value={headers ? headers.statusCount.fixed : 0} />
+          <CardHome title="Retest" value={headers ? headers.statusCount.retest : 0} />
+          <CardHome title="Rearbeto" value={headers ? headers.statusCount.reopened : 0} />
         </div>
       </section>
       )}

@@ -1,24 +1,38 @@
 "use client";
+import { IIdentifiedAndFixedIRR } from '@/types/ICharts';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-const data = [
-  { name: 'Jan', Identificado: 50, Corrigido: 25 },
-  { name: 'Feb', Identificado: 45, Corrigido: 20 },
-  { name: 'Mar', Identificado: 55, Corrigido: 30 },
-  { name: 'Apr', Identificado: 60, Corrigido: 35 },
-  { name: 'May', Identificado: 65, Corrigido: 40 },
-  { name: 'Jun', Identificado: 60, Corrigido: 35 },
-  { name: 'Jul', Identificado: 55, Corrigido: 30 },
-  { name: 'Aug', Identificado: 60, Corrigido: 35 },
-  { name: 'Sep', Identificado: 50, Corrigido: 25 },
-  { name: 'Oct', Identificado: 55, Corrigido: 30 },
-  { name: 'Nov', Identificado: 60, Corrigido: 35 },
-  { name: 'Dec', Identificado: 65, Corrigido: 40 },
-];
+interface BarChartProps {
+  barGraphDataIRR?: IIdentifiedAndFixedIRR[],
+}
 
-const BarChartIRR: React.FC = () => {
+const months: Record<number, string> = {
+  1: 'Jan',
+  2: 'Feb',
+  3: 'Mar',
+  4: 'Apr',
+  5: 'May',
+  6: 'Jun',
+  7: 'Jul',
+  8: 'Aug',
+  9: 'Sep',
+  10: 'Oct',
+  11: 'Nov',
+  12: 'Dec',
+}
+
+
+const BarChartIRR: React.FC<BarChartProps> = ({barGraphDataIRR}) => {
+
+  const data = barGraphDataIRR ? barGraphDataIRR.map((item) => ({
+    name: months[item.month] || "Unknown",
+    Identificado: item.identified,
+    Corrigido: item.fixed,
+  })) : [];
+  
+
   return (
     <div className="p-4 bg-white rounded-lg w-full max-w-lg mx-auto shadow-none">
       {/* Título e botão de seleção de ano */}

@@ -1,16 +1,8 @@
 "use client";
+import { IIntelligenceTimeLine } from '@/types/ICharts';
 import React from 'react';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-
-const data = [
-  { name: 'Jan', value: 20 },
-  { name: 'Feb', value: 25 },
-  { name: 'Mar', value: 30 },
-  { name: 'Apr', value: 50 },
-  { name: 'May', value: 60 },
-  { name: 'Jun', value: 45 },
-];
 
 // Componente para o ponto oval
 interface CustomDotProps {
@@ -33,7 +25,32 @@ const OvalDot: React.FC<CustomDotProps> = ({ cx, cy, fill }) => {
   );
 };
 
-const LineChartTimeLine: React.FC = () => {
+const months: Record<number, string> = {
+  1: 'Jan',
+  2: 'Feb',
+  3: 'Mar',
+  4: 'Apr',
+  5: 'May',
+  6: 'Jun',
+  7: 'Jul',
+  8: 'Aug',
+  9: 'Sep',
+  10: 'Oct',
+  11: 'Nov',
+  12: 'Dec',
+}
+
+interface TimeLineProps {
+  timeline?: IIntelligenceTimeLine[]
+}
+
+const LineChartTimeLine: React.FC<TimeLineProps> = ({timeline}) => {
+
+  const data = timeline ? timeline.map((item) => ({
+    name: months[item.time] || "Unknown",
+    value: item.quantity
+  })) : [];
+
   return (
     <div className="p-4 bg-white rounded-lg w-full h-[400px] mt-4">
       <div className="flex justify-between items-center mb-4">

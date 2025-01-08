@@ -1,18 +1,9 @@
+import { ThirthTableItems } from "@/types/ICharts";
 import React from "react";
 import { FaArrowsUpDown } from "react-icons/fa6";
 
-interface TableRow {
-  name: string;
-  risks: number;
-  info: number;
-  low: number;
-  medium: number;
-  high: number;
-  crit: number;
-}
-
 interface TableProps {
-  data: TableRow[];
+  data?: ThirthTableItems[];
 }
 
 const ThirdPartiesTable : React.FC<TableProps> = ({ data }) => {
@@ -63,20 +54,20 @@ const ThirdPartiesTable : React.FC<TableProps> = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => {
+          {data ? data.map((row, index) => {
             return (
               <tr key={index}>
                 
                 <td className="px-2 py-4 border-b text-center">{row.name}</td>
-                <td className="px-2 py-4 border-b text-center">{row.risks}</td>
-                <td className="px-2 py-4 border-b text-center">{row.info}</td>
-                <td className="px-2 py-4 border-b text-center">{row.low}</td>
-                <td className="px-2 py-4 border-b text-center">{row.medium}</td>
-                <td className="px-2 py-4 border-b text-center">{row.high}</td>
-                <td className="px-2 py-4 border-b text-center">{row.crit}</td>
+                <td className="px-2 py-4 border-b text-center">{row.totalRisks}</td>
+                <td className="px-2 py-4 border-b text-center">{row.totalInfos}</td>
+                <td className="px-2 py-4 border-b text-center">{row.totalLow}</td>
+                <td className="px-2 py-4 border-b text-center">{row.totalMedium}</td>
+                <td className="px-2 py-4 border-b text-center">{row.totalHigh}</td>
+                <td className="px-2 py-4 border-b text-center">{row.totalCritical}</td>
               </tr>
             );
-          })}
+          }) : (<></>)}
         </tbody>
       </table>
       </div>
