@@ -1,3 +1,4 @@
+import { ITotalDangers } from "@/types/ICharts";
 import React from "react";
 import {
   BarChart,
@@ -10,20 +11,24 @@ import {
   Rectangle,
 } from "recharts";
 
-const data = [
-    { name: "Crítico", Crítico: 75, legend: "" },
-    { name: "Alto", Alto: 120 , legend: ""},
-    { name: "Médio", Médio: 175,legend: "" },
-    { name: "Baixo", Baixo: 80,legend: "" },
-  ];
-  
-  
 
-const TotalDangers = () => {
+  
+  interface TotalDangersProps {
+    totalDangers?: ITotalDangers
+  }
+
+const TotalDangers = ({totalDangers} : TotalDangersProps) => {
+  const data = [
+    { name: "Crítico", Crítico: totalDangers ? totalDangers.totalCritical : 0, legend: "" },
+    { name: "Alto", Alto: totalDangers ? totalDangers.totalHigh : 0 , legend: ""},
+    { name: "Médio", Médio: totalDangers ? totalDangers.totalMedium : 0,legend: "" },
+    { name: "Baixo", Baixo: totalDangers ? totalDangers.totalLow : 0,legend: "" },
+  ];
+
     return (
         <div className="w-full bg-white rounded-lg p-6 mt-4">
           <h2 className="text-2xl font-semibold mb-2 text-black ">Total de ameaças</h2>
-          <p className="text-4xl font-bold text-[#5CA7FF] mb-6 ">175</p>
+          <p className="text-4xl font-bold text-[#5CA7FF] mb-6 ">{totalDangers ? totalDangers.totalIssues : 0}</p>
           <div style={{ width: "100%", overflowX: "auto" }}>
             <BarChart
               width={1000}

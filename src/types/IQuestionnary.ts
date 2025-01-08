@@ -17,6 +17,18 @@ export interface IPagedQuestionnary {
   items: IQuestionnary[];
 }
 
+export interface IPagedQuestionnaryHome {
+  totalItems: number;
+  items: IQuestionnaryHome[];
+}
+
+export interface IQuestionnaryHome {
+  name: string;
+  status: number;
+  filled: number;
+  sent: string;
+}
+
 export interface IQuestion {
   id: number;
   questionaryId: number;

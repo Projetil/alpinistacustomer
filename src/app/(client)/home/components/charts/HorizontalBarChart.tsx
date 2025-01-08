@@ -1,4 +1,5 @@
 "use client";
+import { ITimeCorrection } from "@/types/ICharts";
 import { ChevronDownIcon } from "lucide-react";
 import React from "react";
 import {
@@ -12,12 +13,7 @@ import {
   Legend,
 } from "recharts";
 
-const data = [
-  { name: "Crítico", critico: 60 },
-  { name: "Alto", alto: 45 },
-  { name: "Médio", medio: 30 },
-  { name: "Geral", geral: 80 },
-];
+
 
 const colors = {
   critico: "#ff6868",
@@ -26,7 +22,22 @@ const colors = {
   geral: "#4c9aff",
 };
 
-const HorizontalBarChart: React.FC = () => {
+interface HorizontalBarProps {
+  timeCorrection?: ITimeCorrection[]
+}
+
+const HorizontalBarChart: React.FC<HorizontalBarProps> = ({timeCorrection}) => {
+  const totalDaysToFix = timeCorrection
+    ? timeCorrection.reduce((sum, tc) => sum + (tc.daysToFix || 0), 0)
+    : 0;
+
+  const data = [
+    { name: "Crítico", critico: timeCorrection ? timeCorrection.find((tc) => tc.severity ===  5)?.daysToFix : 0 },
+    { name: "Alto", alto: timeCorrection ? timeCorrection.find((tc) => tc.severity === 4)?.daysToFix : 0 },
+    { name: "Médio", medio: timeCorrection ? timeCorrection.find((tc) => tc.severity ===  3)?.daysToFix : 0  },
+    { name: "Geral", geral: timeCorrection ?  totalDaysToFix : 0},
+  ];
+  console.log(timeCorrection)
   return (
     <div className="p-4 bg-white rounded-lg w-full max-w-2xl lg:max-w-none">
       <div className="flex justify-between items-center mb-4">

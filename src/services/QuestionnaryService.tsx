@@ -4,6 +4,7 @@ import { NotFoundError, UnexpectedError, ValidationError } from "@/errors";
 import {
   ICreateQuestionnary,
   IPagedQuestionnary,
+  IPagedQuestionnaryHome,
   IQuestionnary,
 } from "@/types/IQuestionnary";
 
@@ -23,6 +24,31 @@ const QuestionnaryService = {
         }${customerId ? `&customerId=${customerId}` : ""}`
       );
       return res.data as IPagedQuestionnary;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      switch (error.statusCode) {
+        case HttpStatusCode.BadRequest:
+          throw new ValidationError(error.body.erros);
+        case HttpStatusCode.NotFound:
+          throw new NotFoundError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
+  },
+  GetHomePage: async (
+    pageNumber: number,
+    pageSize: number,
+    customerId?: number,
+    companyId?: number
+  ) => {
+    try {
+      const res = await api.get(
+        `/Conformity/Table?pageNumber=${pageNumber}&pageSize=${pageSize}${
+          companyId ? `&companyId=${companyId}` : ""
+        }${customerId ? `&customerId=${customerId}` : ""}`
+      );
+      return res.data as IPagedQuestionnaryHome;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
