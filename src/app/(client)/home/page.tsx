@@ -898,7 +898,7 @@ export default function HomePage() {
       {currentTab === 7 && (
         <>
           <div className="w-full flex flex-col gap-3 mt-4">
-            <ConformityTable data={conformityTable} />
+            <ConformityTable />
             {conformityTable.map((item, index) => (
               <>
                 <Accordion
