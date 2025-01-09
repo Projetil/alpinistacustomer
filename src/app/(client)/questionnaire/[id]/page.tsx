@@ -246,7 +246,13 @@ export default function QuestionnaryIndividualPage() {
                       handleFileDownload(x.value, filename ?? "file");
                     }}
                   >
-                    Baixar arquivo
+                    Baixar arquivo -{" "}
+                    {x.value
+                      .replace(
+                        "https://description-images.s3.sa-east-1.amazonaws.com/",
+                        ""
+                      )
+                      .substring(0, 10)}
                   </button>
                 )}
                 {question?.answerType == 3 && (
