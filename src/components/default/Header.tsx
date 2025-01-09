@@ -75,13 +75,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/home"
                     className="flex items-center justify-start gap-2"
                   >
                     <GoHomeFill size={22} />
                     <span>Home</span>
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -90,13 +90,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/actives"
                     className="flex items-center justify-start gap-2"
                   >
                     <BsGlobe2 size={22} />
                     <span>Ativos</span>
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -105,13 +105,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/pentest"
                     className="flex items-center justify-start gap-2"
                   >
                     <PiShieldStarFill size={22} />
                     <span>Pentest</span>
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -120,13 +120,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/issues-risks"
                     className="flex items-center justify-start gap-2"
                   >
                     <MdBugReport size={22} />
                     <span>Issues e Riscos</span>
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -150,13 +150,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/environment"
                     className="flex items-center justify-start gap-2"
                   >
                     <PiBuildingsBold size={22} />
                     <span>Ambientes</span>
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -165,13 +165,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/configuracoes"
                     className="flex items-center justify-start gap-2"
                   >
                     <IoMdSettings size={22} />
                     <span>Configurações</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
