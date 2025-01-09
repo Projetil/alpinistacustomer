@@ -11,6 +11,12 @@ const Tab6Service = {
       if (request.companyId) {
         url += `&companyId=${request.companyId}`;
       }
+      if (request.orderByColumn) {
+        url += `&orderByColumn=${request.orderByColumn}`;
+      }
+
+      url += `&ascending=${request.ascending}`;
+
       const res = await api.get(url);
       return res.data as GetThirthDataResponse;
     } catch (error: any) {

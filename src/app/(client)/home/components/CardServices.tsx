@@ -5,7 +5,7 @@ interface CardServicesProps {
 
 export default function CardServices({ title, value }: CardServicesProps) {
     return (
-        <div className="w-full h-full flex flex-col items-center bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="w-full h-full flex flex-col items-center bg-white rounded-lg overflow-hidden">
             {/* Título */}
             <div className="w-full bg-[#EEEEF0] py-2 text-center">
                 <h1 className="text-sm text-[#818086] font-semibold">{title}</h1>

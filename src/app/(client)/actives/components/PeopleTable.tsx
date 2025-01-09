@@ -90,7 +90,7 @@ const PeopleTable = () => {
                     <div className="flex justify-start">{row.email}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <SeverityBadge severity={row.severityType.toString()} />
+                    <SeverityBadge severity={row.severityType} />
                   </td>
                 </tr>
               ))}

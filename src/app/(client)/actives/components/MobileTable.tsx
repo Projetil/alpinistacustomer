@@ -83,7 +83,7 @@ const MobileTable = () => {
                     <div className="flex">{row.hostName}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <SeverityBadge severity={row.severityType.toString()} />
+                    <SeverityBadge severity={row.severityType} />
                   </td>
                 </tr>
               ))}

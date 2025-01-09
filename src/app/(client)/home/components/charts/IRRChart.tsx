@@ -1,3 +1,5 @@
+import { IIrrHome } from "@/types/ITab4And5";
+import { formatMonthName } from "@/utils/formatString";
 import React from "react";
 import {
   AreaChart,
@@ -11,35 +13,29 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Jan", Identificadas: 200, Corrigidas: 100 },
-  { name: "Feb", Identificadas: 250, Corrigidas: 150 },
-  { name: "Mar", Identificadas: 300, Corrigidas: 180 },
-  { name: "Apr", Identificadas: 280, Corrigidas: 160 },
-  { name: "May", Identificadas: 260, Corrigidas: 140 },
-  { name: "Jun", Identificadas: 240, Corrigidas: 130 },
-  { name: "Jul", Identificadas: 250, Corrigidas: 120 },
-  { name: "Aug", Identificadas: 300, Corrigidas: 150 },
-  { name: "Sep", Identificadas: 300, Corrigidas: 160 },
-  { name: "Oct", Identificadas: 300, Corrigidas: 155 },
-  { name: "Nov", Identificadas: 350, Corrigidas: 170 },
-  { name: "Dec", Identificadas: 420, Corrigidas: 200 },
-];
+const formatData = (data: IIrrHome) => {
+  return data.irrChart.map((item) => ({
+    ...item,
+    month: formatMonthName(item.month),
+  }));
+};
 
-const IRRChart = () => {
+const IRRChart = ({ irrData }: { irrData?: IIrrHome }) => {
+  const formattedData = irrData ? formatData(irrData) : [];
+
   return (
     <div className="w-full h-[400px]">
       <h2 className="text-center font-bold text-lg mb-4">IRR</h2>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
-          data={data}
+          data={formattedData}
           margin={{ top: 0, right: 20, left: 0, bottom: 20 }}
         >
           {/* Grid */}
           <CartesianGrid strokeDasharray="3 3" />
 
           {/* Eixo X */}
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
 
           {/* Eixo Y */}
           <YAxis />
@@ -48,39 +44,44 @@ const IRRChart = () => {
           <Tooltip />
 
           {/* Legenda */}
-          <Legend verticalAlign="top" align="right" iconSize={8} iconType="circle"/>
+          <Legend
+            verticalAlign="top"
+            align="right"
+            iconSize={8}
+            iconType="circle"
+          />
 
           <Area
             type="monotone"
-            dataKey="Identificadas"
-            fill="none" 
+            dataKey="identified"
+            fill="none"
             stroke="#EE8B82"
-            dot={{ r: 4}}
+            dot={{ r: 4 }}
             activeDot={{ r: 6 }}
           />
 
           <Area
             type="monotone"
-            dataKey="Corrigidas"
+            dataKey="fixed"
             fill="#EAFAFE"
             stroke="#5CA7FF"
             strokeWidth={2}
-            dot={{ r: 4}}
+            dot={{ r: 4 }}
             activeDot={{ r: 6 }}
           />
 
           <Line
             type="monotone"
-            dataKey="Identificadas"
+            dataKey="identified"
             stroke="#EE8B82"
             strokeWidth={2}
             dot={{ r: 4, fill: "#EE8B82" }}
             activeDot={{ r: 6 }}
           />
 
-            <Line
+          <Line
             type="monotone"
-            dataKey="Corrigidas"
+            dataKey="fixed"
             stroke="#5CA7FF"
             strokeWidth={2}
             dot={{ r: 4, fill: "#5CA7FF" }}

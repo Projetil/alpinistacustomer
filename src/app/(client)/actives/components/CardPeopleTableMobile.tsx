@@ -47,7 +47,7 @@ const CardPeople: React.FC<PeopleTable> = ({
             </div>
             <div>
               <p className="text-[#818086] text-sm">Severidade:</p>
-              <SeverityBadge severity={severity}/>
+              <SeverityBadge severity={parseFloat(severity)}/>
             </div>
           </div>
         </div>

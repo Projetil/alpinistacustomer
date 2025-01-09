@@ -39,14 +39,18 @@ const QuestionnaryService = {
   GetHomePage: async (
     pageNumber: number,
     pageSize: number,
+    ascending: boolean,
     customerId?: number,
-    companyId?: number
+    companyId?: number,
+    orderByColumn?: string
   ) => {
     try {
       const res = await api.get(
         `/Conformity/Table?pageNumber=${pageNumber}&pageSize=${pageSize}${
           companyId ? `&companyId=${companyId}` : ""
-        }${customerId ? `&customerId=${customerId}` : ""}`
+        }${customerId ? `&customerId=${customerId}` : ""}${
+          orderByColumn ? `&orderByColumn=${orderByColumn}` : ""
+        }&ascending=${ascending}`
       );
       return res.data as IPagedQuestionnaryHome;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

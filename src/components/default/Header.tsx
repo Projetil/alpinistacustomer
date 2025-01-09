@@ -14,6 +14,7 @@ import { GoHomeFill } from "react-icons/go";
 import { BsGlobe2 } from "react-icons/bs";
 import { MdBugReport, MdOutlineBallot } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
+import Link from "next/link";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -134,13 +135,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <a
+                  <Link
                     href="/questionnaire"
                     className="flex items-center justify-start gap-2"
                   >
                     <MdOutlineBallot size={22} />
                     <span>Questionários</span>
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${

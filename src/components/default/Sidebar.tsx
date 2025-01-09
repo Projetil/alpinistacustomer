@@ -9,6 +9,7 @@ import { BsGlobe2 } from "react-icons/bs";
 import { PiBuildingsBold, PiShieldStarFill } from "react-icons/pi";
 import { MdBugReport, MdOutlineBallot } from "react-icons/md";
 import { IoMdSettings, IoMdArrowBack, IoMdArrowForward } from "react-icons/io";
+import Link from "next/link";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
@@ -23,7 +24,7 @@ const Sidebar: React.FC = () => {
       {/* Sidebar */}
       <div
         className={`transition-all duration-300 ${
-          isOpen ? "w-[300px]" : "w-[80px]"
+          isOpen ? "w-[272px]" : "w-[80px]"
         } bg-white h-full md:flex flex-col justify-between items-start overflow-y-auto rounded-3xl px-3 py-6`}
       >
         <div className="flex items-center justify-between w-full mb-6">
@@ -104,13 +105,13 @@ const Sidebar: React.FC = () => {
                 : "text-[#8C8B91]"
             }`}
           >
-            <a
+            <Link
               href="/questionnaire"
               className="flex items-center justify-start gap-2"
             >
               <MdOutlineBallot size={22} />
               {isOpen && <span>Questionários</span>}
-            </a>
+            </Link>
           </li>
           <li
             className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -158,7 +159,7 @@ const Sidebar: React.FC = () => {
         </button>
         <Button
           variant={"ghost"}
-          className={`flex items-center w-full h-full p-4 text-[#63636E] ${
+          className={`flex items-center w-full mt-20 p-4 text-[#B3001E] ${
             isOpen ? "justify-start" : "justify-center"
           }`}
         >

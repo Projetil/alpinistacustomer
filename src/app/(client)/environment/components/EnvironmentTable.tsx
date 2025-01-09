@@ -7,7 +7,6 @@ import SeverityBadge from "../../components/SeverityBadge";
 import PopoverEnvironment from "./PopoverEnvironment";
 import { Dispatch, SetStateAction } from "react";
 import { IPagedEnvironment } from "@/types/IEnvironment";
-import { SeverityEnv } from "@/enums/ServerityEnv";
 import EnvironmentService from "@/services/EnvironmentsService";
 import { toast } from "react-toastify";
 
@@ -63,7 +62,8 @@ const EnvironmentTable = ({
           </tr>
         </thead>
         <tbody>
-          {interns?.items.map((row, index) => (
+          {interns?.items.map((row, index) => { 
+            return(
             <tr
               key={index}
               className={`${
@@ -82,7 +82,7 @@ const EnvironmentTable = ({
                 <div className="flex justify-start">00</div>
               </td>
               <td className="py-3 px-4 text-sm">
-                <SeverityBadge severity={SeverityEnv[row.severity]} />
+                <SeverityBadge severity={row.severity} />
               </td>
               <td className="py-3 px-4 flex items-center justify-center">
                 <PopoverEnvironment
@@ -91,7 +91,7 @@ const EnvironmentTable = ({
                 />
               </td>
             </tr>
-          ))}
+          )})}
         </tbody>
       </table>
       <div className="flex flex-col gap-4 md:hidden p-4">

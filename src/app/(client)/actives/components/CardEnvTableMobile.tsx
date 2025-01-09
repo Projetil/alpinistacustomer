@@ -49,7 +49,7 @@ const CardEnv: React.FC<EnvTable> = ({
             </div>
             <div>
               <p className="text-[#818086] text-sm">Severidade:</p>
-              <SeverityBadge severity={severity}/>
+              <SeverityBadge severity={parseFloat(severity)}/>
             </div>
           </div>
           <div className="flex justify-between">
