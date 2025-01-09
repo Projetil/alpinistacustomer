@@ -1,21 +1,35 @@
 trigger:
-- main
- 
+  branches:
+    include:
+      - main
+      - develop
+
 pool:
-  vmImage: ubuntu-latest
- 
-variables:
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
- 
-steps:
-- task: vercel-deployment-task@1
-  name: 'Deploy'
-  inputs:
-    vercelProjectId: prj_rQtWrbrm7dP9dOEUApuLnIr5guHG
-    vercelOrgId: 'NvtsBqIJ8SnjeBRgPWHKRmlU' 
-    vercelToken: $(VERCEL_TOKEN)
-    production: true
-- task: vercel-azdo-pr-comment-task@1
-  inputs:
-    azureToken: $(AZURE_TOKEN)
-    deploymentTaskMessage: $(Deploy.deploymentTaskMessage)
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: SyncBranches
+    displayName: "Sync Branches from Azure DevOps to GitHub"
+    jobs:
+      - job: SyncJob
+        displayName: "Sync Job"
+        steps:
+          # Fazer o checkout do repositório
+          - checkout: self
+            persistCredentials: false
+            fetchDepth: 0
+            displayName: "Checkout do Repositório"
+
+          # Adicionar o GitHub como remote
+          - script: |
+              git fetch
+            displayName: "Adicionar Remote do GitHub"
+
+          # Sincronizar com o GitHub
+          - script: |
+              git config --global user.email "projetil.tech@outlook.com"
+              git config --global user.name "Projetil Devops"
+              git add .
+              git commit -m "teste"
+              git push $(Build.SourceBranchName)
+            displayName: "Sincronizar com o GitHub"

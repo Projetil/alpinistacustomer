@@ -1,28 +1,19 @@
 // components/CompanyCard.tsx
 "use client";
 
+import { QuestionnaireTable } from "@/app/data/tablesData";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
+import StatusBagde from "./StatusBagde";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
-const CardQuestionnaire = ({
+const CardQuestionnaire: React.FC<QuestionnaireTable> = ({
   createDate,
   limitDate,
-  name,
-  id,
   status,
   type,
-}: {
-  createDate: string;
-  limitDate: string;
-  name: string;
-  id: number;
-  status: string | JSX.Element;
-  type: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigation = useRouter();
 
   const toggleCard = () => {
     setIsOpen(!isOpen);
@@ -35,7 +26,7 @@ const CardQuestionnaire = ({
         className="flex justify-between items-center w-full text-left"
       >
         <div className="flex flex-col gap-2">
-          <span className="text-lg font-medium">{name}</span>
+          <span className="text-lg font-medium">Nome do Questionário</span>
           <span className="text-sm font-base">Ativo</span>
         </div>
         <ChevronDownIcon
@@ -55,7 +46,7 @@ const CardQuestionnaire = ({
             </div>
             <div>
               <p className="text-[#818086] text-sm">Status:</p>
-              {status}
+              <StatusBagde status={status} />
             </div>
           </div>
           <div className="flex justify-between pt-2">
@@ -70,14 +61,7 @@ const CardQuestionnaire = ({
           </div>
 
           <div className="flex justify-center pt-4">
-            <Button
-              onClick={() => {
-                navigation.push(`/questionnaire/${id}`);
-              }}
-              className="bg-[#3088EE]"
-            >
-              Visualizar
-            </Button>
+            <Button className="bg-transparent text-[#1A69C4] font-semibold text-lg">Visualizar</Button>
           </div>
         </div>
       )}
