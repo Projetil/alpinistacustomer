@@ -1,8 +1,13 @@
 import { Pagination } from "@/components/default/Pagination";
 import { FaArrowsAltV } from "react-icons/fa";
 import CardAtivosMobile from "./CardAtivosMobile";
-import { IPagedRisk } from "@/types/IRisk";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  IPagedRisk,
+  riskSeverity,
+  riskStatus,
+} from "@/types/IRisk";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import CustomerService from "@/services/CustomerService";
 
 const AtivosTable = ({
   openModal,
@@ -10,13 +15,18 @@ const AtivosTable = ({
   currentPage,
   setCurrentPage,
   setRiskId,
+  columnName,
+  columnType,
 }: {
   openModal: () => void;
   risks?: IPagedRisk;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   setRiskId: (x: number) => void;
+  columnName?: string;
+  columnType?: string;
 }) => {
+  const [respNames, setRespNames] = useState<{ [key: number]: string }>({});
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "asc" | "desc";
@@ -53,9 +63,28 @@ const AtivosTable = ({
     });
   };
 
+  useEffect(() => {
+    const fetchResponsibleNames = async () => {
+      if (risks?.items) {
+        const names: { [key: number]: string } = {};
+        for (const risk of risks.items) {
+          if (risk.responsibleCustomerId) {
+            const customer = await CustomerService.GetById(
+              risk.responsibleCustomerId
+            );
+            names[risk.responsibleCustomerId] = customer.name;
+          }
+        }
+        setRespNames(names);
+      }
+    };
+
+    fetchResponsibleNames();
+  }, [risks]);
+
   return (
     <section className="w-full overflow-x-auto md:bg-white rounded-md">
-      <table className="min-w-full hidden md:table w-full">
+      <table className="min-w-full hidden md:table">
         <thead className="border-none">
           <tr className="text-[#636267] text-center">
             <th className="py-3 px-4 text-sm font-semibold items-center">
@@ -63,7 +92,7 @@ const AtivosTable = ({
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={() => handleSort("name")}
               >
-                NOME <FaArrowsAltV />
+                {columnName} <FaArrowsAltV />
               </div>
             </th>
             <th className="py-3 px-4 text-sm font-semibold items-center">
@@ -105,7 +134,24 @@ const AtivosTable = ({
               } text-[#636267] text-center`}
             >
               <td className="py-3 px-4 text-sm max-w-[200px]">
-                <div className="flex">{row.active}</div>
+                <div className="flex">
+                  {columnType === "riskSeverity"
+                    ? riskSeverity[
+                        row[
+                          columnType as keyof typeof row
+                        ] as keyof typeof riskSeverity
+                      ]
+                    : columnType == "status"
+                    ? riskStatus[
+                        row[
+                          columnType as keyof typeof row
+                        ] as keyof typeof riskStatus
+                      ]
+                    : columnType == "origin"
+                    
+                    ? respNames[row.responsibleCustomerId ?? 0]
+                    : row[columnType as keyof typeof row]}
+                </div>
               </td>
               <td className="py-3 px-4 text-sm">
                 <div className="flex">00</div>

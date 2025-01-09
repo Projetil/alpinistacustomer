@@ -1,25 +1,24 @@
-"use client";
+// components/CardAccountMobile.tsx
 
+"use client";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
-
-export interface ITableAccount {
-  id: number;
-  name: string;
-  openModalDetails: () => void;
-  active: string;
-  state: string;
-  severidade: string;
-}
 
 const CardAccountMobile = ({
   id,
   name,
-  openModalDetails,
   active,
+  openModalDetails,
   state,
   severidade,
-}: ITableAccount) => {
+}: {
+  id: number;
+  name: string;
+  active: string;
+  state: string;
+  openModalDetails: () => void;
+  severidade: string;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleCard = () => {

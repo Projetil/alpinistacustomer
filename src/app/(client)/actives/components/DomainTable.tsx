@@ -91,7 +91,7 @@ const DomainTable = () => {
                     <div className="flex justify-start">{row.status ? "Ativo" : "Inativo"}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <SeverityBadge severity={row.severityType.toString()} />
+                    <SeverityBadge severity={row.severityType} />
                   </td>
                 </tr>
               ))}

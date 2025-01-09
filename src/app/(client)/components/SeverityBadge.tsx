@@ -1,8 +1,7 @@
-// components/SeverityBadge.tsx
 import { SeverityTypeEnum } from '@/enums/SeverityTypeEnum';
 
 interface SeverityBadgeProps {
-  severity: string;
+  severity: number;
 }
 
 const severityTextMap: Record<SeverityTypeEnum, string> = {

@@ -43,13 +43,19 @@ import {
   ITotalDangers,
   IRiskCards,
   IIntelligenceTimeLine,
-  GetThirthDataResponse,
 } from "@/types/ICharts";
 import Tab1Service from "@/services/Tab1HomeService";
 import Tab2Service from "@/services/Tab2HomeService";
 import { useCustomerContext } from "@/contexts/CustomerContext";
 import Tab3Service from "@/services/Tab3HomeService";
-import Tab6Service from "@/services/Tab6HomeService";
+import {
+  ICriticityHome,
+  IIrrHome,
+  IStatusHome,
+  ITab4And5HomeTable,
+  ITimeLineHome,
+} from "@/types/ITab4And5";
+import Tab4And5HomeService from "@/services/Tab4And5HomeService";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -61,235 +67,9 @@ const tabs = [
   { value: 7, name: "Conformidade" },
 ];
 
-const critData = {
-  total: 100,
-  crit: 3,
-  high: 7,
-  medium: 15,
-  low: 25,
-  info: 50,
-};
-
-const statusData = {
-  total: 109,
-  pendent: 50,
-  reopen: 25,
-  fixed: 15,
-  accepted: 7,
-  retest: 3,
-  treatment: 3,
-  notExist: 3,
-  notExecuted: 3,
-};
-
-const environmentTableData = [
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-];
-
-const ageTableData = [
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    envName: "AMBIENTE NAME",
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-];
-
-const activeTable = [
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-];
-
-const vulnerabilityTable = [
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-  {
-    name: "Lorem Ipsum",
-    number: 77,
-  },
-];
-
-const conformityTable = [
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-  {
-    name: "Questionário ABC2404",
-    status: "Em andamento",
-    filled: 77,
-    shipping: "01/01/2024",
-  },
-];
-
 export default function HomePage() {
   const [currentTab, setCurrentTab] = useState(1);
-  const {customers} = useCustomerContext()
+  const { customers } = useCustomerContext();
   //tab 1
   const [headers, setHeaders] = useState<IHeader>();
   const [criticity, setCriticity] = useState<ICriticity[]>();
@@ -304,18 +84,54 @@ export default function HomePage() {
   const [tableSeverity, setTableSeverity] = useState<ITableSeverity[]>([]);
 
   //tab 2
-  const [tab2Assets, setTab2Assets] = useState<AttackSurfaceAssetsResponse>()
-  const [tab2Risk, setTab2Risk] = useState<IAttackSurfaceRisks>()
+  const [tab2Assets, setTab2Assets] = useState<AttackSurfaceAssetsResponse>();
+  const [tab2Risk, setTab2Risk] = useState<IAttackSurfaceRisks>();
 
   //tab 3
-  const [tab3TotalRisks, setTab3TotalRisks] = useState<ITotalDangers>()
-  const [tab3Cards, setTab3Cards] = useState<IRiskCards>()
-  const [tab3TimeLine, setTab3TimeLine] = useState<IIntelligenceTimeLine[]>([])
+  const [tab3TotalRisks, setTab3TotalRisks] = useState<ITotalDangers>();
+  const [tab3Cards, setTab3Cards] = useState<IRiskCards>();
+  const [tab3TimeLine, setTab3TimeLine] = useState<IIntelligenceTimeLine[]>([]);
 
   //tab 6
-  const [tab6Data, setTab6Data] = useState<GetThirthDataResponse>()
 
   const [error, setError] = useState<string | null>(null);
+
+  //tab 4
+  const [vulnerabityCriticity, setVulnerabityCriticity] =
+    useState<ICriticityHome>();
+  const [vulnerabityStatus, setVulnerabityStatus] = useState<IStatusHome>();
+  const [vulnerabityEnvironment, setVulnerabityEnvironment] = useState<
+    ITab4And5HomeTable[]
+  >([]);
+  const [vulnerabityAge, setVulnerabityAge] = useState<ITab4And5HomeTable[]>(
+    []
+  );
+  const [vulnerabityAssets, setVulnerabityAssets] = useState<
+    ITab4And5HomeTable[]
+  >([]);
+  const [vulnerabitySeverity, setVulnerabitySeverity] = useState<
+    ITab4And5HomeTable[]
+  >([]);
+  const [vulnerabityTimeLine, setVulnerabityTimeLine] = useState<
+    ITimeLineHome[]
+  >([]);
+  const [vulnerabityIrr, setVulnerabityIrr] = useState<IIrrHome>();
+
+  //tab 5
+  const [intrusionCriticity, setIntrusionCriticity] =
+    useState<ICriticityHome>();
+  const [intrusionStatus, setIntrusionStatus] = useState<IStatusHome>();
+  const [intrusionEnvironment, setIntrusionEnvironment] = useState<
+    ITab4And5HomeTable[]
+  >([]);
+  const [intrusionAge, setIntrusionAge] = useState<ITab4And5HomeTable[]>([]);
+  const [intrusionAssets, setIntrusionAssets] = useState<ITab4And5HomeTable[]>(
+    []
+  );
+  const [intrusionTimeLine, setIntrusionTimeLine] = useState<ITimeLineHome[]>(
+    []
+  );
+  const [intrusionIrr, setIntrusionIrr] = useState<IIrrHome>();
 
   interface TabConfig {
     endpoints: {
@@ -325,18 +141,34 @@ export default function HomePage() {
       [key: string]: (data: any) => void;
     };
   }
+
   const tabsConfig: Record<number, TabConfig> = {
     1: {
       endpoints: {
-        headers: () => Tab1Service.GetHeader(customers ? customers.companyId : 0),
-        criticity: () => Tab1Service.GetCriticity(customers ? customers.companyId : 0),
-        riskCount: () => Tab1Service.GetRiskCount(customers ? customers.companyId : 0),
-        services: () => Tab1Service.GetService(customers ? customers.companyId : 0),
-        timeCorrection: ()=> Tab1Service.GetTimeCorrection(customers ? customers.companyId : 0),
-        pizzaGraphData: () => Tab1Service.GetPizzaChartIRR(customers ? customers.companyId : 0, 1),
-        barGraphDataIRR: () => Tab1Service.GetIdentifiedAndFixedIRR(customers ? customers.companyId : 0, 2024),
-        timeLineIRR: () => Tab1Service.GetIdentifiedAndFixedIRR(customers ? customers.companyId : 0, 2024),
-        tableSeverity: () => Tab1Service.GetTableSeverity(customers ? customers.companyId : 0)
+        headers: () =>
+          Tab1Service.GetHeader(customers ? customers.companyId : 0),
+        criticity: () =>
+          Tab1Service.GetCriticity(customers ? customers.companyId : 0),
+        riskCount: () =>
+          Tab1Service.GetRiskCount(customers ? customers.companyId : 0),
+        services: () =>
+          Tab1Service.GetService(customers ? customers.companyId : 0),
+        timeCorrection: () =>
+          Tab1Service.GetTimeCorrection(customers ? customers.companyId : 0),
+        pizzaGraphData: () =>
+          Tab1Service.GetPizzaChartIRR(customers ? customers.companyId : 0, 1),
+        barGraphDataIRR: () =>
+          Tab1Service.GetIdentifiedAndFixedIRR(
+            customers ? customers.companyId : 0,
+            2024
+          ),
+        timeLineIRR: () =>
+          Tab1Service.GetIdentifiedAndFixedIRR(
+            customers ? customers.companyId : 0,
+            2024
+          ),
+        tableSeverity: () =>
+          Tab1Service.GetTableSeverity(customers ? customers.companyId : 0),
       },
       setters: {
         headers: setHeaders,
@@ -347,46 +179,90 @@ export default function HomePage() {
         pizzaGraphData: setPizzaGraphData,
         barGraphDataIRR: setBarGraphDataIRR,
         timeLineIRR: setTimeLineIRR,
-        tableSeverity: setTableSeverity
+        tableSeverity: setTableSeverity,
       },
     },
     2: {
       endpoints: {
-        tab2Assets: () => Tab2Service.GetAssets(customers ? customers.companyId : 0),
-        tab2Risk: () => Tab2Service.GetRisks(customers ? customers.companyId : 0)
+        tab2Assets: () =>
+          Tab2Service.GetAssets(customers ? customers.companyId : 0),
+        tab2Risk: () =>
+          Tab2Service.GetRisks(customers ? customers.companyId : 0),
       },
       setters: {
         tab2Assets: setTab2Assets,
-        tab2Risk: setTab2Risk
+        tab2Risk: setTab2Risk,
       },
     },
     3: {
       endpoints: {
-        tab3TotalRisks: () => Tab3Service.GetTotalDangers(customers ? customers.companyId : 0),
-        tab3TimeLine: () => Tab3Service.GetTimeLine(customers ? customers.companyId : 0, 2024),
-        tab3Cards: () => Tab3Service.GetCards(customers ? customers.companyId : 0)
+        tab3TotalRisks: () =>
+          Tab3Service.GetTotalDangers(customers ? customers.companyId : 0),
+        tab3TimeLine: () =>
+          Tab3Service.GetTimeLine(customers ? customers.companyId : 0, 2024),
+        tab3Cards: () =>
+          Tab3Service.GetCards(customers ? customers.companyId : 0),
       },
       setters: {
         tab3TotalRisks: setTab3TotalRisks,
         tab3TimeLine: setTab3TimeLine,
-        tab3Cards: setTab3Cards
+        tab3Cards: setTab3Cards,
       },
     },
     4: {
-      endpoints: {},
-      setters: {},
-    },
-    5: {
-      endpoints: {},
-      setters: {},
-    },
-    6: {
       endpoints: {
-        tab6Data: () => Tab6Service.GetThirthData({pageSize:10, pageNumber: 1})
+        vulnerabityCriticity: () =>
+          Tab4And5HomeService.GetCriticity("Vulnerability", 6),
+        vulnerabityStatus: () =>
+          Tab4And5HomeService.GetStatus("Vulnerability", 6),
+        vulnerabityEnvironment: () =>
+          Tab4And5HomeService.GetEnvironment("Vulnerability", 6),
+        vulnerabityAge: () => Tab4And5HomeService.GetAge("Vulnerability", 6),
+        vulnerabityAssets: () =>
+          Tab4And5HomeService.GetAssets("Vulnerability", 6),
+        vulnerabitySeverity: () =>
+          Tab4And5HomeService.GetSeverity("Vulnerability", 6),
+        vulnerabityTimeLine: () =>
+          Tab4And5HomeService.GetTimeLine("Vulnerability", 6, 1),
+        vulnerabityIrr: () => Tab4And5HomeService.GetIrr("Vulnerability", 6),
       },
       setters: {
-        tab6Data: setTab6Data
+        vulnerabityCriticity: setVulnerabityCriticity,
+        vulnerabityStatus: setVulnerabityStatus,
+        vulnerabityEnvironment: setVulnerabityEnvironment,
+        vulnerabityAge: setVulnerabityAge,
+        vulnerabityAssets: setVulnerabityAssets,
+        vulnerabitySeverity: setVulnerabitySeverity,
+        vulnerabityTimeLine: setVulnerabityTimeLine,
+        vulnerabityIrr: setVulnerabityIrr,
       },
+    },
+    5: {
+      endpoints: {
+        intrusionCriticity: () =>
+          Tab4And5HomeService.GetCriticity("Intrusion", 6),
+        intrusionStatus: () => Tab4And5HomeService.GetStatus("Intrusion", 6),
+        intrusionEnvironment: () =>
+          Tab4And5HomeService.GetEnvironment("Intrusion", 6),
+        intrusionAge: () => Tab4And5HomeService.GetAge("Intrusion", 6),
+        intrusionAssets: () => Tab4And5HomeService.GetAssets("Intrusion", 6),
+        intrusionTimeLine: () =>
+          Tab4And5HomeService.GetTimeLine("Intrusion", 6, 1),
+        intrusionIrr: () => Tab4And5HomeService.GetIrr("Intrusion", 6),
+      },
+      setters: {
+        intrusionCriticity: setIntrusionCriticity,
+        intrusionStatus: setIntrusionStatus,
+        intrusionEnvironment: setIntrusionEnvironment,
+        intrusionAge: setIntrusionAge,
+        intrusionAssets: setIntrusionAssets,
+        intrusionTimeLine: setIntrusionTimeLine,
+        intrusionIrr: setIntrusionIrr,
+      },
+    },
+    6: {
+      endpoints: {},
+      setters: {},
     },
     7: {
       endpoints: {},
@@ -409,7 +285,7 @@ export default function HomePage() {
       });
     } catch (err: any) {
       setError(err.message || "Erro ao carregar os dados.");
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -421,7 +297,9 @@ export default function HomePage() {
     5: "Crítico",
   };
 
-  const firstTabTableTop5 = [...tableSeverity].sort((a, b) => b.quantity - a.quantity).slice(0, 5);
+  const firstTabTableTop5 = [...tableSeverity]
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, 5);
 
   useEffect(() => {
     fetchCharts(currentTab);
@@ -494,7 +372,7 @@ export default function HomePage() {
                   {firstTabTableTop5.map((item, index) => (
                     <tr key={index}>
                       <td className="px-4 py-5 text-sm text-center text-gray-800 whitespace-nowrap">
-                      {severityNames[item.severity] || "Desconhecido"}
+                        {severityNames[item.severity] || "Desconhecido"}
                       </td>
                       <td className="px-4 py-5 text-sm text-center text-gray-800 whitespace-nowrap">
                         {item.riskName}
@@ -509,7 +387,11 @@ export default function HomePage() {
             </div>
           </section>
           <section className="my-3 w-full">
-            <IRR pizzaChartData={pizzaGraphData} barGraphDataIRR={barGraphDataIRR} timeLineIRR={timeLineIRR} />
+            <IRR
+              pizzaChartData={pizzaGraphData}
+              barGraphDataIRR={barGraphDataIRR}
+              timeLineIRR={timeLineIRR}
+            />
           </section>
         </>
       )}
@@ -529,10 +411,22 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                    <CardContainerAttackSurface title="Endereços IP" data={tab2Assets ? tab2Assets.ipAddress : 0}/>
-                    <CardContainerAttackSurface title="Subdomínios" data={tab2Assets ? tab2Assets.subdomain : 0}/>
-                    <CardContainerAttackSurface title="Aplicações WEB" data={tab2Assets ? tab2Assets.webApplication : 0}/>
-                    <CardContainerAttackSurface title="Contas e-mail" data={tab2Assets ? tab2Assets.emailAccount : 0}/>
+                    <CardContainerAttackSurface
+                      title="Endereços IP"
+                      data={tab2Assets ? tab2Assets.ipAddress : 0}
+                    />
+                    <CardContainerAttackSurface
+                      title="Subdomínios"
+                      data={tab2Assets ? tab2Assets.subdomain : 0}
+                    />
+                    <CardContainerAttackSurface
+                      title="Aplicações WEB"
+                      data={tab2Assets ? tab2Assets.webApplication : 0}
+                    />
+                    <CardContainerAttackSurface
+                      title="Contas e-mail"
+                      data={tab2Assets ? tab2Assets.emailAccount : 0}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -552,10 +446,22 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                    <CardContainerAttackSurface title="Aplicações WEB" data={tab2Risk ? tab2Risk.webApplication : 0}/>
-                    <CardContainerAttackSurface title="Redes" data={tab2Risk ? tab2Risk.network : 0}/>
-                    <CardContainerAttackSurface title="Marca" data={tab2Risk ? tab2Risk.brand : 0}/>
-                    <CardContainerAttackSurface title="Vazamentos de dados" data={tab2Risk ? tab2Risk.dataLeak : 0}/>
+                    <CardContainerAttackSurface
+                      title="Aplicações WEB"
+                      data={tab2Risk ? tab2Risk.webApplication : 0}
+                    />
+                    <CardContainerAttackSurface
+                      title="Redes"
+                      data={tab2Risk ? tab2Risk.network : 0}
+                    />
+                    <CardContainerAttackSurface
+                      title="Marca"
+                      data={tab2Risk ? tab2Risk.brand : 0}
+                    />
+                    <CardContainerAttackSurface
+                      title="Vazamentos de dados"
+                      data={tab2Risk ? tab2Risk.dataLeak : 0}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -563,7 +469,6 @@ export default function HomePage() {
           </div>
         </>
       )}
-
       {currentTab === 3 && (
         <>
           <div className="w-full mb-4 mt-6">
@@ -581,7 +486,7 @@ export default function HomePage() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  <TotalDangers totalDangers={tab3TotalRisks}/>
+                  <TotalDangers totalDangers={tab3TotalRisks} />
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-6 md:grid-rows-2 gap-3">
                     <CardContainer
                       title="Credencias"
@@ -628,14 +533,13 @@ export default function HomePage() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  <LineChartTimeLine timeline={tab3TimeLine}/>
+                  <LineChartTimeLine timeline={tab3TimeLine} />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
         </>
       )}
-
       {currentTab === 4 && (
         <>
           <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
@@ -655,16 +559,18 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                    <DonutCardCriticity conversionIndex={critData} />
-                    <DonutCardStatus conversionIndex={statusData} />
+                    <DonutCardCriticity
+                      conversionIndex={vulnerabityCriticity}
+                    />
+                    <DonutCardStatus conversionIndex={vulnerabityStatus} />
 
                     <DynamicTableManagment
                       title="Por ambiente"
-                      data={environmentTableData}
+                      data={vulnerabityEnvironment}
                     />
                     <DynamicTableManagment
                       title="Por idade"
-                      data={ageTableData}
+                      data={vulnerabityAge}
                     />
                   </div>
                 </AccordionContent>
@@ -690,11 +596,11 @@ export default function HomePage() {
                   <div className="mt-6 grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1 gap-3">
                     <DynamicTableManagmentTop
                       title="Ativos"
-                      data={activeTable}
+                      data={vulnerabityAssets}
                     />
                     <DynamicTableManagmentTop
                       title="Vulnerabilidade"
-                      data={vulnerabilityTable}
+                      data={vulnerabitySeverity}
                     />
                   </div>
                 </AccordionContent>
@@ -717,7 +623,9 @@ export default function HomePage() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  <LineChartTimeLineManagment />
+                  <LineChartTimeLineManagment
+                    conversionIndex={vulnerabityTimeLine}
+                  />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -743,17 +651,17 @@ export default function HomePage() {
                       <div className="flex gap-4 justify-center items-center w-full">
                         <span className="text-sm">Diferença no último mês</span>
                         <div className="w-16 py-2 text-[#028B53] bg-[#C3E7CF] flex justify-center items-center rounded-lg">
-                          +13,6%
+                          +{vulnerabityIrr?.percentageIRR}%
                         </div>
                       </div>
                       <div className="text-3xl font-bold text-black">
-                        14,744
+                        {vulnerabityIrr?.totalIRR}
                       </div>
                     </div>
-                    <DiffIRRChart />
+                    <DiffIRRChart irrData={vulnerabityIrr} />
                   </div>
                   <div className="p-6 w-full bg-white mt-4 rounded-lg">
-                    <IRRChart />
+                    <IRRChart irrData={vulnerabityIrr} />
                     <h1 className="mt-8 text-center">Month</h1>
                   </div>
                 </AccordionContent>
@@ -762,7 +670,6 @@ export default function HomePage() {
           </div>
         </>
       )}
-
       {currentTab === 5 && (
         <>
           <h1 className="my-3 text-xl font-bold text-black">Inventário</h1>
@@ -782,16 +689,16 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-3">
-                    <DonutCardCriticity conversionIndex={critData} />
-                    <DonutCardStatus conversionIndex={statusData} />
+                    <DonutCardCriticity conversionIndex={intrusionCriticity} />
+                    <DonutCardStatus conversionIndex={intrusionStatus} />
 
                     <DynamicTableManagment
                       title="Por ambiente"
-                      data={environmentTableData}
+                      data={intrusionEnvironment}
                     />
                     <DynamicTableManagment
                       title="Por idade"
-                      data={ageTableData}
+                      data={intrusionAge}
                     />
                   </div>
                 </AccordionContent>
@@ -815,7 +722,10 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <div className="mt-6 grid grid-cols-1 gap-3">
-                    <ActiveTableIntrusion title="Ativos" data={activeTable} />
+                    <ActiveTableIntrusion
+                      title="Ativos"
+                      data={intrusionAssets}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -837,7 +747,9 @@ export default function HomePage() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
-                  <LineChartTimeLineManagment />
+                  <LineChartTimeLineManagment
+                    conversionIndex={intrusionTimeLine}
+                  />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -863,17 +775,17 @@ export default function HomePage() {
                       <div className="flex gap-4 justify-center items-center w-full">
                         <span className="text-sm">Diferença no último mês</span>
                         <div className="w-16 py-2 text-[#028B53] bg-[#C3E7CF] flex justify-center items-center rounded-lg">
-                          +13,6%
+                          +{intrusionIrr?.percentageIRR}%
                         </div>
                       </div>
                       <div className="text-3xl font-bold text-black">
-                        14,744
+                        {intrusionIrr?.totalIRR}
                       </div>
                     </div>
-                    <DiffIRRChart />
+                    <DiffIRRChart irrData={intrusionIrr} />
                   </div>
                   <div className="p-6 w-full bg-white flex flex-col mt-4 rounded-lg">
-                    <IRRChart />
+                    <IRRChart irrData={intrusionIrr} />
                     <h1 className="mt-8 text-center">Month</h1>
                   </div>
                 </AccordionContent>
@@ -882,65 +794,11 @@ export default function HomePage() {
           </div>
         </>
       )}
-
-      {currentTab === 6 && (
-        <>
-          <div className="max-w-[400px] w-full my-4">
-            <CardContainer title="Terceiros ativos" data={tab6Data ? tab6Data.totalItems : 0} />
-          </div>
-
-          <div className="w-full">
-            <ThirdPartiesTable data={tab6Data?.items} />
-          </div>
-        </>
-      )}
-
+      {currentTab === 6 && <ThirdPartiesTable />}
       {currentTab === 7 && (
         <>
           <div className="w-full flex flex-col gap-3 mt-4">
             <ConformityTable />
-            {conformityTable.map((item, index) => (
-              <>
-                <Accordion
-                  key={index}
-                  type="single"
-                  collapsible
-                  className="w-full lg:hidden"
-                >
-                  <AccordionItem
-                    value={index.toString()}
-                    className="border-none"
-                  >
-                    <AccordionTrigger className="text-lg bg-white px-3 ">
-                      {item.name}
-                    </AccordionTrigger>
-                    <AccordionContent className="border-none bg-[#F8F7F9] ">
-                      <div className="mt-2 bg-white rounded-lg p-4">
-                        <div className="flex flex-col mb-5">
-                          <p>Status:</p>
-                          <span className="font-semibold">{item.status}</span>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <div className="flex flex-col">
-                            <p>Preenchido:</p>
-                            <span className="font-semibold">
-                              {item.filled}%
-                            </span>
-                          </div>
-                          <div className="flex flex-col">
-                            <p>Data de envio:</p>
-                            <span className="font-semibold">
-                              {item.shipping}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </>
-            ))}
           </div>
         </>
       )}

@@ -90,7 +90,7 @@ const ActiveTable = () => {
                     <div className="flex justify-start">{asset.issuesOrRisks}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <SeverityBadge severity={asset.severityType.toString()} />
+                    <SeverityBadge severity={asset.severityType} />
                   </td>
                 </tr>
               ))}

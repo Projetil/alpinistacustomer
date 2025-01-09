@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbWorld } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
 import ActiveTable from "./components/ActiveTable";
@@ -28,8 +28,9 @@ import MobileTable from "./components/MobileTable";
 import DomainTable from "./components/DomainTable";
 
 import PeopleTable from "./components/PeopleTable";
-import EnvTable from "./components/EnvTable";
-import { EnvironmentTypeEnum } from "@/enums/EnvironmentTypeEnum";
+import EnvironmentTable from "../environment/components/EnvironmentTable";
+import { IPagedEnvironment } from "@/types/IEnvironment";
+import EnvironmentService from "@/services/EnvironmentsService";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -50,6 +51,37 @@ const envTabs = [
 export default function ActivesPage() {
   const [currentTab, setCurrentTab] = useState(1);
   const [currentEnvTab, setCurrentEnvTab] = useState(1);
+  const [pageInter, setPageInter] = useState(1);
+  const [pageExternal, setPageExternal] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [interEnv, setInterEnv] = useState<IPagedEnvironment>();
+  const [externalEnv, setExternalEnv] = useState<IPagedEnvironment>();
+
+  const fetchEnvsIntern = async () => {
+    try {
+      const res = await EnvironmentService.GetAll(pageInter, 10, 1);
+      setInterEnv(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchEnvsExternal = async () => {
+    try {
+      const res = await EnvironmentService.GetAll(pageInter, 10, 2);
+      setExternalEnv(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+      fetchEnvsIntern();
+    }, [pageInter, loading]);
+  
+    useEffect(() => {
+      fetchEnvsExternal();
+    }, [pageExternal, loading]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -279,14 +311,24 @@ export default function ActivesPage() {
           {
             currentEnvTab === 1 && (
               <div className="mt-4 w-full">
-                <EnvTable environmentType={EnvironmentTypeEnum.Intern} />
+                <EnvironmentTable
+          updateTable={() => setLoading(!loading)}
+          pageInter={pageInter}
+          setPageInter={setPageInter}
+          interns={interEnv}
+        />
               </div>
             )
           }
           {
             currentEnvTab === 2 && (
               <div className="mt-4 w-full">
-                <EnvTable environmentType={EnvironmentTypeEnum.Extern}/>
+                <EnvironmentTable
+          updateTable={() => setLoading(!loading)}
+          pageInter={pageExternal}
+          setPageInter={setPageExternal}
+          interns={externalEnv}
+        />
               </div>
             )
           }

@@ -102,7 +102,7 @@ const EnvTable = ({environmentType} : {environmentType : EnvironmentTypeEnum}) =
                     <div className="flex justify-start">{row.issuesOrRisks}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <SeverityBadge severity={row.severityType.toString()} />
+                    <SeverityBadge severity={row.severityType} />
                   </td>
                   <td className="py-3 px-4 text-sm">
                     <div className="flex justify-start">{row.ip}</div>

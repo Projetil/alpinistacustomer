@@ -1,3 +1,5 @@
+// components/CardAccountMobile.tsx
+
 "use client";
 
 import { ChevronDownIcon } from "lucide-react";

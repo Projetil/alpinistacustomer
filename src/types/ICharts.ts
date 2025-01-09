@@ -93,23 +93,25 @@ export interface IRiskCards {
 }
 
 export interface IIntelligenceTimeLine {
-    quantity: number,
-    time: number
+  quantity: number;
+  time: number;
 }
 
 export interface GetThirthDataRequest {
-    pageNumber: number,
-    pageSize: number,
-    companyId?: number
+  pageNumber: number;
+  pageSize: number;
+  companyId?: number;
+  orderByColumn?: string;
+  ascending?: boolean;
 }
 
 export interface GetThirthDataResponse {
-    totalItems: number,
-    items: ThirthTableItems[]
+  totalItems: number;
+  items: ThirthTableItems[];
 }
 
 export interface ThirthTableItems {
-    name: string;
+  name: string;
   totalRisks: number;
   totalInfos: number;
   totalLow: number;

@@ -42,7 +42,7 @@ const CardMobile: React.FC<MobileTable> = ({
           <div className="flex justify-start">
             <div>
               <p className="text-[#818086] text-sm">Severidade:</p>
-              <SeverityBadge severity={severity}/>
+              <SeverityBadge severity={parseFloat(severity)}/>
             </div>
           </div>
         </div>

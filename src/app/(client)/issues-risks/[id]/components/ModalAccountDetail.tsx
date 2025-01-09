@@ -1,5 +1,6 @@
 "use client";
 
+import Modal from "@/components/default/Modal";
 import { MdBugReport } from "react-icons/md";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -7,16 +8,16 @@ import { X } from "lucide-react";
 import Tab1Modal from "./Tab1Modal";
 import Tab2Modal from "./Tab2Modal";
 import Tab3Modal from "./Tab3Modal";
-import Modal from "@/components/default/Modal";
 import { IRisk } from "@/types/IRisk";
-import { IPagedRisksHistorical } from "@/types/IRisksHistorical";
-import { IPagedRisksComment } from "@/types/IRisksComment";
-import { IPagedRiskFile } from "@/types/IRiskFile";
 import RisksService from "@/services/RisksService";
+import { formatDateToDDMMYYYY } from "@/utils/formatString";
 import RisksCommentService from "@/services/RisksCommentService";
 import RisksHistoricalService from "@/services/RisksHistoricalService";
+import { IPagedRisksHistorical } from "@/types/IRisksHistorical";
+import { IPagedRisksComment } from "@/types/IRisksComment";
 import RisksFileService from "@/services/RisksFilesService";
-import { formatDateToDDMMYYYY } from "@/utils/formatString";
+import { IPagedRiskFile } from "@/types/IRiskFile";
+import CustomerService from "@/services/CustomerService";
 
 const ModalAccountDetail = ({
   open,
@@ -26,11 +27,13 @@ const ModalAccountDetail = ({
   open: boolean;
   setOpen: () => void;
   riskId?: number;
+  setRiskId?: (x: number) => void;
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tabs, setTabs] = useState(1);
   const [hideComment, setHideComment] = useState(true);
   const [risk, setRisk] = useState<IRisk>();
+  const [responsibleName, setResponsibleName] = useState("");
   const [historicalData, setHistoricalData] = useState<IPagedRisksHistorical>();
   const [commentsData, setCommentsData] = useState<IPagedRisksComment>();
   const [filesData, setFilesData] = useState<IPagedRiskFile>();
@@ -39,6 +42,12 @@ const ModalAccountDetail = ({
     try {
       const res = await RisksService.GetById(riskId ?? 0);
       setRisk(res);
+      if (res.responsibleCustomerId) {
+        const resNameClient = (
+          await CustomerService.GetById(res.responsibleCustomerId)
+        ).name;
+        setResponsibleName(resNameClient);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +91,7 @@ const ModalAccountDetail = ({
 
   return (
     <Modal isOpen={open} onClose={setOpen}>
-      <div className="bg-white py-6 px-3 md:px-10 rounded-lg flex flex-col gap-10 max-h-screen h-full md:h-auto md:w-auto w-full md:min-w-[800px]">
+      <div className="bg-white py-6 px-3 md:px-10 rounded-lg flex flex-col gap-10 max-h-screen h-full w-full md:min-w-screen">
         <div
           onClick={setOpen}
           className="flex w-full justify-between md:justify-end"
@@ -103,23 +112,15 @@ const ModalAccountDetail = ({
               </p>
             </div>
           </div>
-          {/* <div className="flex gap-4">
-             <Button
+          <div className="flex gap-4">
+            {/*  <Button
               onClick={exportToPDF}
               className="border-none text-white bg-[#1A69C4]"
             >
               Exportar
-            </Button>
-            <Button
-              onClick={() => {
-                setOpen();
-              }}
-              variant={"outline"}
-              className="text-[#1A69C4] border-[#1A69C4]"
-            >
-              Editar
-            </Button>
-          </div> */}
+            </Button> */}
+            
+          </div>
         </div>
         <div className="flex flex-row w-full ">
           <div className="w-full flex overflow-x-auto">
@@ -157,7 +158,7 @@ const ModalAccountDetail = ({
                   : "font-normal text-[#636267]"
               } text-sm w-fit h-full`}
             >
-              Historico
+              Histórico
             </Button>
             <Button
               onClick={() => setHideComment(false)}
@@ -173,7 +174,9 @@ const ModalAccountDetail = ({
           </div>
         </div>
 
-        {tabs == 1 && <Tab1Modal currentRisk={risk} />}
+        {tabs == 1 && (
+          <Tab1Modal currentRisk={risk} nameResponsible={responsibleName} />
+        )}
         {tabs == 2 && <Tab2Modal currentRisk={risk} filesData={filesData} />}
         {tabs == 3 && (
           <Tab3Modal
@@ -182,6 +185,7 @@ const ModalAccountDetail = ({
             commentsData={commentsData}
             historicalData={historicalData}
             handleComment={() => setHideComment(!hideComment)}
+            updateComment={() => fetchComments(riskId ?? 0)}
           />
         )}
       </div>

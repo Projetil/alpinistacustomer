@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { IPagedEnvironment } from "@/types/IEnvironment";
 import EnvironmentService from "@/services/EnvironmentsService";
+import { useCustomerContext } from "@/contexts/CustomerContext";
 
 const tabs = ["Internos", "Terceiros"];
 
@@ -17,10 +18,16 @@ export default function EnvironmentPage() {
   const [loading, setLoading] = useState(false);
   const [interEnv, setInterEnv] = useState<IPagedEnvironment>();
   const [externalEnv, setExternalEnv] = useState<IPagedEnvironment>();
+  const { customers } = useCustomerContext();
 
   const fetchEnvsIntern = async () => {
     try {
-      const res = await EnvironmentService.GetAll(pageInter, 10, 1);
+      const res = await EnvironmentService.GetAll(
+        pageInter,
+        10,
+        1,
+        customers?.companyId
+      );
       setInterEnv(res);
     } catch (error) {
       console.log(error);
@@ -29,7 +36,12 @@ export default function EnvironmentPage() {
 
   const fetchEnvsExternal = async () => {
     try {
-      const res = await EnvironmentService.GetAll(pageInter, 10, 2);
+      const res = await EnvironmentService.GetAll(
+        pageInter,
+        10,
+        2,
+        customers?.companyId
+      );
       setExternalEnv(res);
     } catch (error) {
       console.log(error);
@@ -37,12 +49,12 @@ export default function EnvironmentPage() {
   };
 
   useEffect(() => {
-    fetchEnvsIntern();
-  }, [pageInter, loading]);
+    if (customers) fetchEnvsIntern();
+  }, [pageInter, loading, customers]);
 
   useEffect(() => {
-    fetchEnvsExternal();
-  }, [pageExternal, loading]);
+    if (customers) fetchEnvsExternal();
+  }, [pageExternal, loading, customers]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">

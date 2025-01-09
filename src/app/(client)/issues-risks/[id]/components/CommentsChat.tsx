@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import RisksCommentService from "@/services/RisksCommentService";
 import { IPagedRisksComment } from "@/types/IRisksComment";
-import { formatDateToDDMMYYYY } from "@/utils/formatString";
+import { formatDateAndHours } from "@/utils/formatString";
 import { useSession } from "next-auth/react";
 import { useMemo, useState } from "react";
 import { IoMdSend } from "react-icons/io";
@@ -21,9 +21,11 @@ interface Message {
 const CommentsChat = ({
   comments,
   riskId,
+  updateComment,
 }: {
   comments?: IPagedRisksComment;
   riskId?: number;
+  updateComment?: () => void;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -50,6 +52,7 @@ const CommentsChat = ({
       };
       setMessages([...messages, newMessage]);
       setInput("");
+      if (updateComment) updateComment();
     } catch (error) {
       console.log(error);
       toast.error("Erro ao enviar mensagem");
@@ -61,9 +64,9 @@ const CommentsChat = ({
       const newMessages = comments.items.map((comment) => ({
         id: comment.id,
         sender: comment.customerName,
-        timestamp: formatDateToDDMMYYYY(comment.createdAt),
+        timestamp: formatDateAndHours(comment.createdAt),
         content: comment.text,
-        isUser: false,
+        isUser: comment.userId === Number(session?.user?.id) ? true : false,
       }));
       setMessages(newMessages);
     }

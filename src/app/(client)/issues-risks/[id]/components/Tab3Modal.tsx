@@ -8,18 +8,21 @@ import {
   IRiskHistorical,
 } from "@/types/IRisksHistorical";
 import { IPagedRisksComment } from "@/types/IRisksComment";
+import { formatDateString } from "@/utils/formatString";
 
 const Tab3Modal = ({
   hideComment,
   currentRisk,
   commentsData,
   historicalData,
+  updateComment,
 }: {
   hideComment: boolean;
   handleComment: () => void;
   currentRisk?: IRisk;
   commentsData?: IPagedRisksComment;
   historicalData?: IPagedRisksHistorical;
+  updateComment?: () => void;
 }) => {
   return (
     <div className="flex justify-between gap-2">
@@ -38,7 +41,11 @@ const Tab3Modal = ({
           }  flex-col gap-4 h-[250px] overflow-y-auto`}
         >
           {historicalData?.items.map((item: IRiskHistorical, index: number) => (
-            <HistoricalCard text={item.text} key={index} />
+            <HistoricalCard
+              text={item.text}
+              time={item.createdAt}
+              key={index}
+            />
           ))}
         </div>
       </div>
@@ -51,7 +58,11 @@ const Tab3Modal = ({
           <h4 className="font-semibold text-[#050506]">Comentário</h4>
           <BsChatLeftText color="#1A69C4" size={24} />
         </div>
-        <CommentsChat comments={commentsData} riskId={currentRisk?.id} />
+        <CommentsChat
+          updateComment={updateComment}
+          comments={commentsData}
+          riskId={currentRisk?.id}
+        />
       </div>
     </div>
   );
@@ -59,7 +70,13 @@ const Tab3Modal = ({
 
 export default Tab3Modal;
 
-export const HistoricalCard = ({ text }: { text: string }) => {
+export const HistoricalCard = ({
+  text,
+  time,
+}: {
+  text: string;
+  time: string;
+}) => {
   return (
     <div className="flex flex-col gap-4 bg-[#FFFFFF] p-2">
       <div className="flex gap-4">
@@ -70,7 +87,7 @@ export const HistoricalCard = ({ text }: { text: string }) => {
         <p className="text-[#050506] text-sm break-all">{text}</p>
       </div>
       <p className="text-xs text-[#8C8B91] w-full justify-end text-end">
-        01 de Janeiro de 2024 - 13:24
+        {formatDateString(time)}
       </p>
     </div>
   );
