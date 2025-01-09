@@ -1,40 +1,26 @@
-import { SeverityTypeEnum } from '@/enums/SeverityTypeEnum';
+// components/SeverityBadge.tsx
+import { FC } from 'react';
 
 interface SeverityBadgeProps {
-  severity: number;
+  severity: string;
 }
 
-const severityTextMap: Record<SeverityTypeEnum, string> = {
-  [SeverityTypeEnum.Critic]: "Crítico",
-  [SeverityTypeEnum.High]: "Alto",
-  [SeverityTypeEnum.Low]: "Baixo",
-  [SeverityTypeEnum.Medium]: "Médio",
-  [SeverityTypeEnum.Info]: "Info",
+const severityStyles: Record<string, string> = {
+  'Crítico': 'bg-[#FF5C63] text-[#FBFBFB]',
+  'Alto': 'bg-[#FFDDD8] text-[#661616]',
+  'Médio': 'bg-[#FFBB5C] text-[#F8F7F9]',
+  'Baixo': 'bg-[#5CA7FF] text-[#FBFBFB]',
+  'Info': 'bg-[#A8D3FF] text-[#0D3C73]',
 };
 
-const severityStyles: Record<SeverityTypeEnum, string> = {
-  [SeverityTypeEnum.Critic]: "bg-[#FF5C63] text-[#FBFBFB]",
-  [SeverityTypeEnum.High]: "bg-[#FFDDD8] text-[#661616]",
-  [SeverityTypeEnum.Medium]: "bg-[#FFBB5C] text-[#F8F7F9]",
-  [SeverityTypeEnum.Low]: "bg-[#5CA7FF] text-[#FBFBFB]",
-  [SeverityTypeEnum.Info]: "bg-[#A8D3FF] text-[#0D3C73]",
-};
-
-const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity }) => {
-  const severityEnumValue = Object.values(SeverityTypeEnum).includes(Number(severity))
-    ? (Number(severity) as SeverityTypeEnum)
-    : null;
-
+const SeverityBadge: FC<SeverityBadgeProps> = ({ severity }) => {
   return (
     <div
-      className={`px-3 py-1 rounded-full w-24 lg:w-32 text-sm text-center font-semibold ${
-        severityEnumValue ? severityStyles[severityEnumValue] : "bg-gray-100 text-gray-700"
-      }`}
+      className={`px-3 py-1 rounded-full w-24 lg:w-32 text-sm text-center font-semibold ${severityStyles[severity] || 'bg-gray-100 text-gray-700'}`}
     >
-      {severityEnumValue ? severityTextMap[severityEnumValue] : "Desconhecido"}
+      {severity}
     </div>
   );
 };
-
 
 export default SeverityBadge;

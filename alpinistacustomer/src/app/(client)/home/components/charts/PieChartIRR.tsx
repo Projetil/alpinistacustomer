@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-import { IPizzaChartIRR } from '@/types/ICharts';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
@@ -10,28 +9,7 @@ const data = [
     { name: 'Corrigidos', value: 50, color: '#4c9aff' }, // cor azul médio
 ];
 
-interface PieChartProps {
-  pizzaChartData?: IPizzaChartIRR,
-}
-
-const PieChartIRR: React.FC<PieChartProps> = ({pizzaChartData}) => {
-  const totalIdentified = pizzaChartData?.identified || 0;
-  const totalFixed = pizzaChartData?.fixed || 0;
-
-  const total = totalIdentified + totalFixed;
-
-  const data = [
-    {
-      name: 'Identificados',
-      value: pizzaChartData ? pizzaChartData.identified : 0,
-      color: '#ff6868', // cor vermelha
-    },
-    {
-      name: 'Corrigidos',
-      value: pizzaChartData ? pizzaChartData.fixed : 0,
-      color: '#4c9aff', // cor azul médio
-    },
-  ];
+const PieChartIRR: React.FC = () => {
   return (
     <div className="flex flex-col items-center p-4 bg-white rounded-lg w-full max-w-sm mx-auto">
       {/* Botão de seleção */}
@@ -65,10 +43,7 @@ const PieChartIRR: React.FC<PieChartProps> = ({pizzaChartData}) => {
 
       {/* Legenda */}
       <div className="flex flex-col space-y-2 mt-4 w-full px-12">
-        {data.map((entry, index) => {
-          const percentage = total > 0 ? Math.round((entry.value / total) * 100) : 0;
-          return(
-          
+        {data.map((entry, index) => (
           <div key={`legend-${index}`} className="flex justify-between items-center text-sm text-gray-700">
             <div className="flex items-center">
               <span
@@ -77,9 +52,9 @@ const PieChartIRR: React.FC<PieChartProps> = ({pizzaChartData}) => {
               ></span>
               <span>{entry.name}</span>
             </div>
-            <span className="font-semibold">{percentage}%</span>
+            <span className="font-semibold">{entry.value}%</span>
           </div>
-        )})}
+        ))}
       </div>
     </div>
   );
