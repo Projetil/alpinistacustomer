@@ -5,48 +5,26 @@ import { Label } from "@/components/ui/label";
 import { useCustomerContext } from "@/contexts/CustomerContext";
 import CustomerService from "@/services/CustomerService";
 import UserService from "@/services/UserService";
-import { formatPhone } from "@/utils/formatString";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-const schemaUser = z
-  .object({
-    name: z.string().optional(),
-    email: z.string().optional(),
-    cargo: z.string().optional(),
-    phone: z.string().optional(),
-    currentPassword: z.string().optional(),
-    newPassword: z
-      .string()
-      .optional()
-      .refine(
-        (value) =>
-          !value || /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$/.test(value),
-        {
-          message:
-            "Senha deve ter pelo menos 1 letra maiúscula, 1 caractere especial e 1 número",
-        }
-      ),
-    repeatPassword: z.string().optional(),
-  })
-  .refine((data) => !data.newPassword || data.repeatPassword, {
-    message: "Repetir nova senha é obrigatório",
-    path: ["repeatPassword"],
-  })
-  .refine((data) => data.newPassword === data.repeatPassword, {
-    message: "Nova senha e Repetir nova senha devem ser iguais",
-    path: ["repeatPassword"],
-  });
+const schemaUser = z.object({
+  name: z.string().optional(),
+  email: z.string().optional(),
+  cargo: z.string().optional(),
+  phone: z.string().optional(),
+  currentPassword: z.string().optional(),
+  newPassword: z.string().optional(),
+  repeatPassword: z.string().optional(),
+});
 
 type FormDataUser = z.infer<typeof schemaUser>;
 
 const UserForm = () => {
   const { customers } = useCustomerContext();
-  const navigator = useRouter();
   const {
     register,
     reset,
@@ -57,10 +35,10 @@ const UserForm = () => {
   });
 
   const onSubmit = async (data: FormDataUser) => {
+    await onSubmitCustomer(data);
     if (data.newPassword && data.currentPassword && data.repeatPassword) {
       await onSubmitPassword(data);
     }
-    await onSubmitCustomer(data);
     toast.success("Usuário atualizado com sucesso");
   };
 
@@ -70,7 +48,6 @@ const UserForm = () => {
         {
           ...customers,
           name: data.name,
-          number: Number(data.phone?.replace(/\D/g, "")),
           position: data.cargo,
         },
         customers?.id ?? 0
@@ -88,7 +65,6 @@ const UserForm = () => {
         oldPassword: data.currentPassword ?? "",
         newPassword: data.newPassword ?? "",
       });
-      navigator.push("/signin");
     } catch (erro) {
       console.log(erro);
       toast.error("Erro ao atualizar senha");
@@ -100,7 +76,7 @@ const UserForm = () => {
       name: customers?.name,
       email: customers?.email,
       cargo: customers?.position,
-      phone: formatPhone(customers?.number.toString() || ""),
+      phone: customers?.number.toString(),
     });
   }, [customers]);
 
@@ -161,15 +137,11 @@ const UserForm = () => {
               Telefone
             </Label>
             <Input
+              disabled
               placeholder="Telefone"
               className="border-[#D8D9E0] border-[2px]"
               type="phone"
               {...register("phone")}
-              onChange={(e) => {
-                const formattedValue = formatPhone(e.target.value);
-                e.target.value = formattedValue;
-                register("phone").onChange(e);
-              }}
             />
             {errors.phone && (
               <p className="text-red-500 text-sm">{errors.phone.message}</p>

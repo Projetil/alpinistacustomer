@@ -14,7 +14,6 @@ import { GoHomeFill } from "react-icons/go";
 import { BsGlobe2 } from "react-icons/bs";
 import { MdBugReport, MdOutlineBallot } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
-import Link from "next/link";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,13 +74,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/home"
                     className="flex items-center justify-start gap-2"
                   >
                     <GoHomeFill size={22} />
                     <span>Home</span>
-                  </Link>
+                  </a>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -90,13 +89,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/actives"
                     className="flex items-center justify-start gap-2"
                   >
                     <BsGlobe2 size={22} />
                     <span>Ativos</span>
-                  </Link>
+                  </a>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -105,13 +104,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/pentest"
                     className="flex items-center justify-start gap-2"
                   >
                     <PiShieldStarFill size={22} />
                     <span>Pentest</span>
-                  </Link>
+                  </a>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -120,13 +119,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/issues-risks"
                     className="flex items-center justify-start gap-2"
                   >
                     <MdBugReport size={22} />
                     <span>Issues e Riscos</span>
-                  </Link>
+                  </a>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -135,13 +134,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/questionnaire"
                     className="flex items-center justify-start gap-2"
                   >
                     <MdOutlineBallot size={22} />
                     <span>Questionários</span>
-                  </Link>
+                  </a>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -150,13 +149,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/environment"
                     className="flex items-center justify-start gap-2"
                   >
                     <PiBuildingsBold size={22} />
                     <span>Ambientes</span>
-                  </Link>
+                  </a>
                 </li>
                 <li
                   className={`md:hover:bg-[#F0F8FF] font-semibold ${
@@ -165,13 +164,13 @@ const Header = () => {
                       : "text-[#8C8B91]"
                   }`}
                 >
-                  <Link
+                  <a
                     href="/configuracoes"
                     className="flex items-center justify-start gap-2"
                   >
                     <IoMdSettings size={22} />
                     <span>Configurações</span>
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </nav>

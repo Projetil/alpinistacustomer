@@ -1,10 +1,22 @@
 "use client";
-import { IIdentifiedAndFixedIRR } from '@/types/ICharts';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-
+const data = [
+  { name: 'Jan', Identificados: 20, Corrigidos: 10 },
+  { name: 'Feb', Identificados: 25, Corrigidos: 15 },
+  { name: 'Mar', Identificados: 30, Corrigidos: 20 },
+  { name: 'Apr', Identificados: 40, Corrigidos: 25 },
+  { name: 'May', Identificados: 50, Corrigidos: 30 },
+  { name: 'Jun', Identificados: 55, Corrigidos: 35 },
+  { name: 'Jul', Identificados: 60, Corrigidos: 40 },
+  { name: 'Aug', Identificados: 65, Corrigidos: 45 },
+  { name: 'Sep', Identificados: 60, Corrigidos: 40 },
+  { name: 'Oct', Identificados: 55, Corrigidos: 35 },
+  { name: 'Nov', Identificados: 50, Corrigidos: 30 },
+  { name: 'Dec', Identificados: 45, Corrigidos: 25 },
+];
 
 // Componente para o ponto personalizado
 interface CustomDotProps {
@@ -26,34 +38,7 @@ const OvalDot: React.FC<CustomDotProps> = ({ cx, cy, fill }) => {
   );
 };
 
-interface LineChartProps {
-  timeLineIRR?: IIdentifiedAndFixedIRR[],
-}
-
-const months: Record<number, string> = {
-  1: 'Jan',
-  2: 'Feb',
-  3: 'Mar',
-  4: 'Apr',
-  5: 'May',
-  6: 'Jun',
-  7: 'Jul',
-  8: 'Aug',
-  9: 'Sep',
-  10: 'Oct',
-  11: 'Nov',
-  12: 'Dec',
-}
-
-const LineChartIRR: React.FC<LineChartProps> = ({timeLineIRR}) => {
-
-  const data = timeLineIRR ? timeLineIRR.map((item) => ({
-    name: months[item.month] || "Unknown",
-    Identificado: item.identified,
-    Corrigido: item.fixed,
-  })) : [];
-
-
+const LineChartIRR: React.FC = () => {
   return (
     <div className="p-4 bg-white rounded-lg w-full max-w-lg mx-auto">
       <div className="flex justify-between items-center mb-4">
