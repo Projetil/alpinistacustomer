@@ -96,12 +96,17 @@ const Tab4And5HomeService = {
       }
     }
   },
-  GetTimeLine: async (tab: string, companyId: number, month: number) => {
+  GetTimeLine: async (
+    tab: string,
+    companyId: number,
+    month: number,
+    year: number
+  ) => {
     try {
       const res = await api.get(
         `/${tab}/TimeLine${companyId ? `?companyId=${companyId}` : ""}${
           month ? `&month=${month}` : ""
-        }`
+        }${year ? `&year=${year}` : ""}`
       );
       return res.data as ITimeLineHome[];
     } catch (error: any) {

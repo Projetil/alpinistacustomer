@@ -59,9 +59,6 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
     register,
     watch,
     reset,
-    setError,
-    clearErrors,
-    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>({
@@ -244,7 +241,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
             >
               04
             </p>
-            <p>Responsável Interno</p>
+            <p>Responsável financeiro </p>
           </div>
         </div>
         <div className="flex md:hidden gap-2 w-full mb-6">
@@ -345,10 +342,6 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         )}
         {tabs == 2 && (
           <div className="flex flex-col gap-4">
-            <p>
-              Por favor, insira as informações do ponto de contato técnico do
-              terceiro.
-            </p>
             <div className="flex flex-col md:flex-row gap-4 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
@@ -367,7 +360,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
-                  Telefone<span className="text-red-500">*</span>
+                  Teléfone<span className="text-red-500">*</span>
                 </Label>
                 <Input
                   placeholder="Insira o telefone"
@@ -422,10 +415,6 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         )}
         {tabs == 3 && (
           <div className="flex flex-col gap-4">
-            <p>
-              Por favor, insira as informações do ponto de contato comercial do
-              terceiro.
-            </p>
             <div className="flex flex-col md:flex-row gap-4 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
@@ -444,7 +433,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
-                  Telefone<span className="text-red-500">*</span>
+                  Teléfone<span className="text-red-500">*</span>
                 </Label>
                 <Input
                   placeholder="Insira o telefone"
@@ -499,10 +488,6 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         )}
         {tabs == 4 && (
           <div className="flex flex-col gap-4">
-            <p>
-              Por favor, insira as informações da pessoa responsável pelo
-              terceiro dentro de sua empresa
-            </p>
             <div className="flex flex-col md:flex-row gap-4 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
@@ -521,7 +506,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Label className="text-[#050506] font-semibold text-sm">
-                  Telefone<span className="text-red-500">*</span>
+                  Teléfone<span className="text-red-500">*</span>
                 </Label>
                 <Input
                   placeholder="Insira o telefone"
@@ -647,23 +632,10 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           <button
             disabled={loading}
             onClick={(e) => {
-              if (
-                getValues("name").length > 0 &&
-                getValues("domain").length > 0
-              ) {
-                setLoading(true);
-                e.preventDefault();
-                clearErrors();
-                setTabs(tabs + 1);
-                setLoading(false);
-              } else {
-                setError("name", {
-                  message: "Nome é obrigatório",
-                });
-                setError("domain", {
-                  message: "Dominío é obrigatório",
-                });
-              }
+              setLoading(true);
+              e.preventDefault();
+              setTabs(tabs + 1);
+              setLoading(false);
             }}
             type="button"
             className="p-2 bg-blue-500 text-white font-semibold rounded-lg px-16 mt-6"
@@ -689,58 +661,10 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           <button
             disabled={loading}
             onClick={(e) => {
-              if (tabs == 2) {
-                if (
-                  getValues("tecnicalName").length == 0 ||
-                  getValues("tecnicalPhone").length == 0 ||
-                  getValues("tecnicalEmail").length == 0 ||
-                  getValues("tecnicalPosition").length == 0
-                ) {
-                  setError("tecnicalName", {
-                    message: "Nome é obrigatório",
-                  });
-                  setError("tecnicalPhone", {
-                    message: "Telefone é obrigatório",
-                  });
-                  setError("tecnicalEmail", {
-                    message: "Email é obrigatório",
-                  });
-                  setError("tecnicalPosition", {
-                    message: "Cargo é obrigatório",
-                  });
-                } else {
-                  setLoading(true);
-                  e.preventDefault();
-                  setTabs(tabs + 1);
-                  setLoading(false);
-                }
-              }
-              if (tabs == 3) {
-                if (
-                  getValues("comercialName").length == 0 ||
-                  getValues("comercialPhone").length == 0 ||
-                  getValues("comercialEmail").length == 0 ||
-                  getValues("comercialPosition").length == 0
-                ) {
-                  setError("comercialName", {
-                    message: "Nome é obrigatório",
-                  });
-                  setError("comercialPhone", {
-                    message: "Telefone é obrigatório",
-                  });
-                  setError("comercialEmail", {
-                    message: "Email é obrigatório",
-                  });
-                  setError("comercialPosition", {
-                    message: "Cargo é obrigatório",
-                  });
-                } else {
-                  setLoading(true);
-                  e.preventDefault();
-                  setTabs(tabs + 1);
-                  setLoading(false);
-                }
-              }
+              setLoading(true);
+              e.preventDefault();
+              setTabs(tabs + 1);
+              setLoading(false);
             }}
             type="button"
             className="p-2 bg-blue-500 text-white font-semibold rounded-lg px-16 mt-6"

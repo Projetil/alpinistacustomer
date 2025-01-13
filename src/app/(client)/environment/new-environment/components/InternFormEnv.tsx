@@ -2,6 +2,7 @@
 import { LoadingSpinner } from "@/components/default/Spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCustomerContext } from "@/contexts/CustomerContext";
 import EnvironmentService from "@/services/EnvironmentsService";
 import { IEnvironment } from "@/types/IEnvironment";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +31,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
   const navigation = useRouter();
   const [selectedCount, setSelectedCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { customers } = useCustomerContext();
   const [loadingButtons, setLoadingButtons] = useState(false);
   const {
     register,
@@ -52,10 +54,12 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
     if (dataEnv) {
       try {
         setLoading(true);
+        if (!customers) return;
         await EnvironmentService.Put(
           {
             name: data.name,
             severity: Number(data.severity),
+            companyId: customers.companyId,
             status: Number(data.status),
             type: 1,
           },
@@ -73,10 +77,12 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
     } else {
       try {
         setLoading(true);
+        if (!customers) return;
         await EnvironmentService.Post({
           name: data.name,
           severity: Number(data.severity),
           status: Number(data.status),
+          companyId: customers.companyId,
           type: 1,
         });
         toast.success("Ambiente criado com sucesso");
@@ -207,7 +213,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           type="submit"
           className="p-2 bg-blue-500 text-white rounded-lg px-16 mt-6"
         >
-          {loading ? <LoadingSpinner /> : "Criar"}
+          {loading ? <LoadingSpinner /> : "Salvar"}
         </button>
       </div>
     </form>

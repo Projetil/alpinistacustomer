@@ -19,6 +19,7 @@ export interface IExternalEnvironment {
 export interface IEnvironment {
   id: number;
   name: string;
+  companyId: number;
   type: number;
   severity: number;
   status: number;
@@ -33,6 +34,7 @@ export interface IPagedEnvironment {
 export interface ICreateEnvironment {
   name: string;
   type: number;
+  companyId: number;
   severity: number;
   status: number;
   externalEnvironment?: {
@@ -72,6 +74,7 @@ export interface IUpdateEnvironment {
   name: string;
   type: number;
   severity: number;
+  companyId: number;
   status: number;
   externalEnvironment?: {
     id: number;

@@ -14,6 +14,7 @@ const severityStyles: Record<string, string> = {
 };
 
 const SeverityBadge: FC<SeverityBadgeProps> = ({ severity }) => {
+  console.log("teste pipe")
   return (
     <div
       className={`px-3 py-1 rounded-full w-24 lg:w-32 text-sm text-center font-semibold ${severityStyles[severity] || 'bg-gray-100 text-gray-700'}`}

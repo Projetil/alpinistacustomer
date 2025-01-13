@@ -9,15 +9,17 @@ import { useCustomerContext } from "@/contexts/CustomerContext";
 import { IDomainAssets } from "@/types/IDomainAssets";
 import AssetsService from "@/services/AssetsService";
 import Filter from "./Filter";
+import { usePermissionContext } from "@/contexts/PermissionContext";
 
 const DomainTable = () => {
-
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [domainAssets, setDomainAssets] = useState<IDomainAssets[]>([]);
   const { customers } = useCustomerContext();
   const [searchText, setSearchText] = useState("");
-  const [selectedSeverity, setSelectedSeverity] = useState<SeverityTypeEnum | null>(null);
+  const [selectedSeverity, setSelectedSeverity] =
+    useState<SeverityTypeEnum | null>(null);
+  const { currentPage } = usePermissionContext();
 
   const getDomainAssets = async () => {
     const response = await AssetsService.GetDomains(
@@ -27,9 +29,9 @@ const DomainTable = () => {
       searchText,
       selectedSeverity ?? undefined
     );
-    setTotalItems(response.totalItems)
-    setDomainAssets(response.items)
-  }
+    setTotalItems(response.totalItems);
+    setDomainAssets(response.items);
+  };
 
   useEffect(() => {
     getDomainAssets();
@@ -43,16 +45,23 @@ const DomainTable = () => {
     setSearchText(text);
   };
 
-  const handleSeverityChange = (severity: SeverityTypeEnum | null) => setSelectedSeverity(severity);
+  const handleSeverityChange = (severity: SeverityTypeEnum | null) =>
+    setSelectedSeverity(severity);
 
-  const handleApplyFilters = (newFilters: { severity: SeverityTypeEnum | null }) => {
+  const handleApplyFilters = (newFilters: {
+    severity: SeverityTypeEnum | null;
+  }) => {
     setSelectedSeverity(newFilters.severity);
   };
 
-
   return (
     <div className="w-full rounded-md">
-      <Filter onSearch={handleSearch} onSeverityChange={handleSeverityChange} onApplyFilters={handleApplyFilters} />
+      <Filter
+        permissionPage={currentPage}
+        onSearch={handleSearch}
+        onSeverityChange={handleSeverityChange}
+        onApplyFilters={handleApplyFilters}
+      />
       <div className="w-full md:bg-white rounded-md">
         <h1 className="hidden lg:block m-4 font-semibold">Nome Empresa S.A</h1>
         <div className="overflow-x-auto">
@@ -74,21 +83,23 @@ const DomainTable = () => {
                     SEVERIDADE <FaArrowsAltV />
                   </div>
                 </th>
-
               </tr>
             </thead>
             <tbody>
               {domainAssets.map((row, index) => (
                 <tr
                   key={index}
-                  className={`${index == 0 ? "" : "border-t border-gray-200"
-                    }  text-[#636267] text-center`}
+                  className={`${
+                    index == 0 ? "" : "border-t border-gray-200"
+                  }  text-[#636267] text-center`}
                 >
                   <td className="py-3 px-4 text-sm max-w-[200px]">
                     <div className="flex">{row.hostName}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <div className="flex justify-start">{row.status ? "Ativo" : "Inativo"}</div>
+                    <div className="flex justify-start">
+                      {row.status ? "Ativo" : "Inativo"}
+                    </div>
                   </td>
                   <td className="py-3 px-4 text-sm">
                     <SeverityBadge severity={row.severityType} />
@@ -118,7 +129,6 @@ const DomainTable = () => {
         />
       </div>
     </div>
-
   );
 };
 

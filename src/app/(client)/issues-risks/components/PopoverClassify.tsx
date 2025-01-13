@@ -4,8 +4,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { IPermissionPage } from "@/types/IPermission";
 import { Check } from "lucide-react";
+import { useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const classiNames = [
   "Padrão",
@@ -20,12 +23,30 @@ const classiNames = [
 const PopoverClassify = ({
   selected,
   setSelected,
+  pagePerms,
 }: {
   selected: string;
   setSelected: (x: string) => void;
+  pagePerms: IPermissionPage | undefined;
 }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover
+      onOpenChange={(open) => {
+        if (pagePerms) {
+          if (
+            pagePerms.funcs.find((x) => x.name === "Classificar")?.hasAcess ==
+            false
+          ) {
+            toast.warning("Você não tem permissão para acessar essa função");
+          } else {
+            setOpen(open);
+          }
+        }
+      }}
+      open={open}
+    >
       <PopoverTrigger asChild className="w-full md:w-auto">
         <Button
           variant={"outline"}

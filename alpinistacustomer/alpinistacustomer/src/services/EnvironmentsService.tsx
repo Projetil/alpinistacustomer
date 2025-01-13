@@ -11,17 +11,12 @@ import {
 const endpoint = "/Environments";
 
 const EnvironmentService = {
-  GetAll: async (
-    pageNumber: number,
-    pageSize: number,
-    typeId?: number,
-    companyId?: number
-  ) => {
+  GetAll: async (pageNumber: number, pageSize: number, typeId?: number) => {
     try {
       const res = await api.get(
         `${endpoint}?pageNumber=${pageNumber}&pageSize=${pageSize}${
           typeId ? `&typeId=${typeId}` : ""
-        }${companyId ? `&companyId=${companyId}` : ""}`
+        }`
       );
       return res.data as IPagedEnvironment;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

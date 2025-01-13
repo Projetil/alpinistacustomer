@@ -47,7 +47,7 @@ const CardEnvironment: React.FC<ActiveTable> = ({
             </div>
             <div>
               <p className="text-[#818086] text-sm">Severidade:</p>
-              <SeverityBadge severity={parseFloat(severity)}/>
+              <SeverityBadge severity={severity}/>
             </div>
           </div>
           <div className="flex justify-between">

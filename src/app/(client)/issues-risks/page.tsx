@@ -1,35 +1,40 @@
 "use client";
-
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
-import { Plus } from "lucide-react";
-import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { GoChecklist } from "react-icons/go";
-import { MdBugReport } from "react-icons/md";
+import html2canvas from "html2canvas";
 import { useRouter } from "next/navigation";
+import { FaRegArrowAltCircleLeft } from "react-icons/fa";
+import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { IPagedRisk } from "@/types/IRisk";
+import RisksService from "@/services/RisksService";
+import CompanyService from "@/services/CompanyService";
+import { MdBugReport } from "react-icons/md";
+import { useCustomerContext } from "@/contexts/CustomerContext";
 import PopoverClassify from "./components/PopoverClassify";
 import AccountTable from "./components/AccountTable";
 import AtivosTable from "./components/AtivosTable";
 import ModalAccountDetail from "./components/ModalAccountDetail";
-import { IPagedRisk } from "@/types/IRisk";
-import { useCustomerContext } from "@/contexts/CustomerContext";
-import CompanyService from "@/services/CompanyService";
-import RisksService from "@/services/RisksService";
+import { usePermissionContext } from "@/contexts/PermissionContext";
+import { toast } from "react-toastify";
 
-export default function IssuesRisksPage() {
+export default function CompanyIndPage() {
+  const { customers } = useCustomerContext();
   const navigate = useRouter();
+  const navigation = useRouter();
   const [openModal, setOpenModal] = useState(false);
-  const [selected, setSelected] = useState("Padrão");
-  const [openModalDetails, setOpenModalDetails] = useState(false);
   const [page, setPage] = useState(1);
   const [risks, setRisks] = useState<IPagedRisk>();
   const [companyName, setCompanyName] = useState<string>();
+  const [selected, setSelected] = useState("Padrão");
+  const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openedRiskId, setOpenedRiskId] = useState<number>();
   const ativosRef = useRef<HTMLDivElement>(null);
-  const { customers } = useCustomerContext();
+  const [orderColumn, setOrderColumn] = useState("Id");
+  const [orderDirection, setOrderDirection] = useState(true);
+  const { permission, getPermissions, currentPage } = usePermissionContext();
 
   const fetchRisks = async () => {
     try {
@@ -37,7 +42,9 @@ export default function IssuesRisksPage() {
         page,
         10,
         undefined,
-        Number(customers?.companyId)
+        customers?.id,
+        orderColumn,
+        orderDirection ? "asc" : "desc"
       );
       setRisks(res);
     } catch (error) {
@@ -48,7 +55,7 @@ export default function IssuesRisksPage() {
   const fetchCompany = async () => {
     try {
       const { name } = await CompanyService.GetById(
-        Number(customers?.companyId)
+        customers ? customers.companyId : 0
       );
       setCompanyName(name);
     } catch (error) {
@@ -69,79 +76,176 @@ export default function IssuesRisksPage() {
     pdf.save("ativos_table.pdf");
   };
 
-  useMemo(() => {
-    if (customers) fetchRisks();
-  }, [page, openModal, customers]);
+  useEffect(() => {
+    fetchRisks();
+  }, [page, openModal, orderColumn, orderDirection]);
 
   useEffect(() => {
-    if (customers) fetchCompany();
-  }, [customers]);
+    fetchCompany();
+  }, []);
+
+  useEffect(() => {
+    if (permission) {
+      getPermissions("Issues");
+    }
+  }, [permission]);
+
+  useEffect(() => {
+    if (currentPage) {
+      console.log(currentPage);
+      if (currentPage.hasAcess === false) {
+        toast.warning("Você não tem permissão para acessar essa página");
+        navigation.push("/home");
+      }
+    }
+  }, [currentPage]);
 
   return (
-    <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
-      <section className="hidden md:flex flex-col md:flex-row justify-between w-full p-6 md:gap-10 items-start md:mb-3">
-        <div className="flex gap-4 items-center text-[#050506]">
-          <MdBugReport color="#3088EE" size={24} />
-          <h2 className="font-semibold md:text-3xl">Issues e riscos</h2>
+    <main className="text-[#FCFCFD] w-full p-2 md:p-6 flex flex-col gap-10 mt-6">
+      <section className=" hidden md:flex md:gap-10 items-start md:mb-5 justify-between w-full">
+        <div className="flex gap-2 items-center text-[#050506]">
+          <MdBugReport color="#3088EE" size={33} />
+          <h2 className="font-semibold md:text-3xl">Issues e Riscos</h2>
         </div>
-        <div className="hidden md:flex gap-4 w-full md:w-auto">
-          {selected == "Ativos" && (
-            <Button
-              onClick={exportToPDF}
-              className="text-white bg-[#3088EE] border-none items-center"
-            >
-              <GoChecklist /> Exportar
-            </Button>
-          )}
-          <PopoverClassify selected={selected} setSelected={setSelected} />
+        <div className="flex gap-4 w-full md:w-auto">
+          <Button
+            onClick={() => {
+              if (currentPage) {
+                if (
+                  currentPage.funcs.find((x) => x.name === "Exportar")
+                    ?.hasAcess == false
+                ) {
+                  toast.warning(
+                    "Você não tem permissão para acessar essa função"
+                  );
+                } else {
+                  exportToPDF();
+                }
+              }
+            }}
+            className="text-white bg-[#3088EE] border-none items-center"
+          >
+            <GoChecklist /> Exportar
+          </Button>
+
+          <PopoverClassify
+            pagePerms={currentPage}
+            selected={selected}
+            setSelected={setSelected}
+          />
         </div>
       </section>
-      <section className="flex flex-col mb-5 w-full">
+      <section>
         <button
           className="flex items-center justify-start gap-4"
-          onClick={() => navigate.push(`/home`)}
+          onClick={() => navigate.push(`/issues-risks`)}
         >
           <FaRegArrowAltCircleLeft size={28} color="#C9001C" />
-          <p className="font-semibold text-[#8C8B91]">Home / {companyName}</p>
+          <p className="font-semibold text-[#8C8B91]">
+            Issues e Riscos / {companyName}
+          </p>
         </button>
-        <div className="block md:hidden mt-6 w-full">
-          <PopoverClassify selected={selected} setSelected={setSelected} />
+        <div className="block md:hidden mt-6">
+          <PopoverClassify
+            pagePerms={currentPage}
+            selected={selected}
+            setSelected={setSelected}
+          />
         </div>
       </section>
-      {selected == "Padrão" && (
-        <AccountTable
-          openModal={() => setOpenModalDetails(!openModalDetails)}
-          risks={risks}
-          currentPage={page}
-          setCurrentPage={setPage}
-          setRiskId={(x: number) => setOpenedRiskId(x)}
-        />
-      )}
-      {selected == "Ativos" && (
-        <div ref={ativosRef} className="w-full">
+      <div ref={ativosRef}>
+        {selected == "Padrão" && (
+          <AccountTable
+            openModal={() => setOpenModalDetails(!openModalDetails)}
+            risks={risks}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setRiskId={(x: number) => setOpenedRiskId(x)}
+            setNameColumn={(x: string) => setOrderColumn(x)}
+            setDirectionColumn={() => setOrderDirection(!orderDirection)}
+          />
+        )}
+        {selected == "Ativos" && (
           <AtivosTable
             risks={risks}
             openModal={() => setOpenModalDetails(!openModalDetails)}
             currentPage={page}
             setCurrentPage={setPage}
             setRiskId={(x: number) => setOpenedRiskId(x)}
+            columnName={"NOME DO ATIVO"}
+            columnType={"active"}
           />
-        </div>
-      )}
-      {selected == "Padrão" && (
-        <>
-          <button
-            onClick={() => setOpenModal(!open)}
-            className="fixed bottom-10 right-10 md:hidden bg-[#3088EE] w-12 h-12 rounded-xl flex items-center justify-center"
-          >
-            <Plus color="#F8F8F8" size={30} />
-          </button>
-        </>
-      )}
+        )}
+        {selected == "Ambiente" && (
+          <AtivosTable
+            risks={risks}
+            openModal={() => setOpenModalDetails(!openModalDetails)}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setRiskId={(x: number) => setOpenedRiskId(x)}
+            columnName={"NOME DO AMBIENTE"}
+            columnType={"environment"}
+          />
+        )}
+        {selected == "Severidade" && (
+          <AtivosTable
+            risks={risks}
+            openModal={() => setOpenModalDetails(!openModalDetails)}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setRiskId={(x: number) => setOpenedRiskId(x)}
+            columnName={"SEVERIDADE"}
+            columnType={"riskSeverity"}
+          />
+        )}
+        {selected == "Responsável" && (
+          <AtivosTable
+            risks={risks}
+            openModal={() => setOpenModalDetails(!openModalDetails)}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setRiskId={(x: number) => setOpenedRiskId(x)}
+            columnName={"RESPONSAVEL"}
+            columnType={"responsibleCustomerId"}
+          />
+        )}
+        {selected == "Origem" && (
+          <AtivosTable
+            risks={risks}
+            openModal={() => setOpenModalDetails(!openModalDetails)}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setRiskId={(x: number) => setOpenedRiskId(x)}
+            columnName={"ORIGEM"}
+            columnType={"origin"}
+          />
+        )}
+        {selected == "Estado" && (
+          <AtivosTable
+            risks={risks}
+            openModal={() => setOpenModalDetails(!openModalDetails)}
+            currentPage={page}
+            setCurrentPage={setPage}
+            setRiskId={(x: number) => setOpenedRiskId(x)}
+            columnName={"STATUS"}
+            columnType={"status"}
+          />
+        )}
+      </div>
+
+      <>
+        <button
+          onClick={() => setOpenModal(!openModal)}
+          className="fixed bottom-10 right-10 md:hidden bg-[#3088EE] w-12 h-12 rounded-xl flex items-center justify-center"
+        >
+          <Plus color="#F8F8F8" size={30} />
+        </button>
+      </>
+
       <ModalAccountDetail
+        riskId={openedRiskId}
         open={openModalDetails}
         setOpen={() => setOpenModalDetails(!openModalDetails)}
-        riskId={openedRiskId}
       />
     </main>
   );
