@@ -2,6 +2,7 @@
 import { LoadingSpinner } from "@/components/default/Spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCustomerContext } from "@/contexts/CustomerContext";
 import EnvironmentService from "@/services/EnvironmentsService";
 import { ICreateExternalEnv, IEnvironment } from "@/types/IEnvironment";
 import { formatPhone } from "@/utils/formatString";
@@ -55,6 +56,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
   const [selectedCount, setSelectedCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingButtons, setLoadingButtons] = useState(false);
+  const { customers } = useCustomerContext();
   const {
     register,
     watch,
@@ -141,6 +143,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           severity: Number(data.severity),
           type: 2,
           externalEnvironment: externalEnv,
+          companyId: customers ? Number(customers.companyId) : 0,
         });
         toast.success("Ambiente criado com sucesso");
         navigation.push("/environment");

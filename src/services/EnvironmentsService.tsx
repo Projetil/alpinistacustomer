@@ -15,13 +15,17 @@ const EnvironmentService = {
     pageNumber: number,
     pageSize: number,
     typeId?: number,
-    companyId?: number
+    companyId?: number,
+    orderByColumn?: string,
+    orderByDirection?: string
   ) => {
     try {
       const res = await api.get(
         `${endpoint}?pageNumber=${pageNumber}&pageSize=${pageSize}${
           typeId ? `&typeId=${typeId}` : ""
-        }${companyId ? `&companyId=${companyId}` : ""}`
+        }${companyId ? `&companyId=${companyId}` : ""}${
+          orderByColumn ? `&orderByColumn=${orderByColumn}` : ""
+        }${orderByDirection ? `&orderByDirection=${orderByDirection}` : ""}`
       );
       return res.data as IPagedEnvironment;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

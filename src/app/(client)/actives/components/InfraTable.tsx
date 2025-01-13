@@ -9,6 +9,7 @@ import { NmapTypeEnum } from "@/enums/NmapTypeEnum";
 import { IInfraAssets } from "@/types/IInfraAssets";
 import Filter from "./Filter";
 import { SeverityTypeEnum } from "@/enums/SeverityTypeEnum";
+import { usePermissionContext } from "@/contexts/PermissionContext";
 
 const InfraTable = () => {
   const [page, setPage] = useState(1);
@@ -16,7 +17,9 @@ const InfraTable = () => {
   const [infraAssets, setInfraAssets] = useState<IInfraAssets[]>([]);
   const { customers } = useCustomerContext();
   const [searchText, setSearchText] = useState("");
-  const [selectedSeverity, setSelectedSeverity] = useState<SeverityTypeEnum | null>(null);
+  const [selectedSeverity, setSelectedSeverity] =
+    useState<SeverityTypeEnum | null>(null);
+  const { currentPage } = usePermissionContext();
 
   const getInfraAssets = async () => {
     const response = await AssetsService.GetInfras(
@@ -25,33 +28,41 @@ const InfraTable = () => {
       Number(customers?.userId),
       NmapTypeEnum.Infra,
       searchText,
-      selectedSeverity ?? undefined 
+      selectedSeverity ?? undefined
     );
-    setTotalItems(response.totalItems)
-    setInfraAssets(response.items)
-  }
+    setTotalItems(response.totalItems);
+    setInfraAssets(response.items);
+  };
 
   useEffect(() => {
     getInfraAssets();
-  }, [page, searchText, selectedSeverity]);  
+  }, [page, searchText, selectedSeverity]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
 
-    const handleSearch = (text: string) => {
-      setSearchText(text);
-    };
-  
-    const handleSeverityChange = (severity: SeverityTypeEnum | null) => setSelectedSeverity(severity);
-  
-    const handleApplyFilters = (newFilters: { severity: SeverityTypeEnum | null }) => {
-      setSelectedSeverity(newFilters.severity);
-    };
+  const handleSearch = (text: string) => {
+    setSearchText(text);
+  };
+
+  const handleSeverityChange = (severity: SeverityTypeEnum | null) =>
+    setSelectedSeverity(severity);
+
+  const handleApplyFilters = (newFilters: {
+    severity: SeverityTypeEnum | null;
+  }) => {
+    setSelectedSeverity(newFilters.severity);
+  };
 
   return (
     <div className="w-full rounded-md">
-      <Filter onSearch={handleSearch} onSeverityChange={handleSeverityChange} onApplyFilters={handleApplyFilters} />
+      <Filter
+        permissionPage={currentPage}
+        onSearch={handleSearch}
+        onSeverityChange={handleSeverityChange}
+        onApplyFilters={handleApplyFilters}
+      />
 
       <div className="w-full md:bg-white rounded-md">
         <h1 className="hidden lg:block m-4 font-semibold">Nome Empresa S.A</h1>
@@ -74,21 +85,23 @@ const InfraTable = () => {
                     IP <FaArrowsAltV />
                   </div>
                 </th>
-
               </tr>
             </thead>
             <tbody>
               {infraAssets.map((row, index) => (
                 <tr
                   key={index}
-                  className={`${index == 0 ? "" : "border-t border-gray-200"
-                    }  text-[#636267] text-center`}
+                  className={`${
+                    index == 0 ? "" : "border-t border-gray-200"
+                  }  text-[#636267] text-center`}
                 >
                   <td className="py-3 px-4 text-sm max-w-[200px]">
                     <div className="flex">{row.hostName}</div>
                   </td>
                   <td className="py-3 px-4 text-sm">
-                    <div className="flex justify-start">{row.issuesOrRisks}</div>
+                    <div className="flex justify-start">
+                      {row.issuesOrRisks}
+                    </div>
                   </td>
                   <td className="py-3 px-4 text-sm">
                     <div className="flex justify-start">{row.ip}</div>
@@ -118,7 +131,6 @@ const InfraTable = () => {
         />
       </div>
     </div>
-
   );
 };
 

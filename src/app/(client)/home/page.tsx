@@ -53,7 +53,6 @@ import {
   IIrrHome,
   IStatusHome,
   ITab4And5HomeTable,
-  ITimeLineHome,
 } from "@/types/ITab4And5";
 import Tab4And5HomeService from "@/services/Tab4And5HomeService";
 
@@ -112,9 +111,6 @@ export default function HomePage() {
   const [vulnerabitySeverity, setVulnerabitySeverity] = useState<
     ITab4And5HomeTable[]
   >([]);
-  const [vulnerabityTimeLine, setVulnerabityTimeLine] = useState<
-    ITimeLineHome[]
-  >([]);
   const [vulnerabityIrr, setVulnerabityIrr] = useState<IIrrHome>();
 
   //tab 5
@@ -126,9 +122,6 @@ export default function HomePage() {
   >([]);
   const [intrusionAge, setIntrusionAge] = useState<ITab4And5HomeTable[]>([]);
   const [intrusionAssets, setIntrusionAssets] = useState<ITab4And5HomeTable[]>(
-    []
-  );
-  const [intrusionTimeLine, setIntrusionTimeLine] = useState<ITimeLineHome[]>(
     []
   );
   const [intrusionIrr, setIntrusionIrr] = useState<IIrrHome>();
@@ -212,19 +205,40 @@ export default function HomePage() {
     4: {
       endpoints: {
         vulnerabityCriticity: () =>
-          Tab4And5HomeService.GetCriticity("Vulnerability", 6),
+          Tab4And5HomeService.GetCriticity(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
         vulnerabityStatus: () =>
-          Tab4And5HomeService.GetStatus("Vulnerability", 6),
+          Tab4And5HomeService.GetStatus(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
         vulnerabityEnvironment: () =>
-          Tab4And5HomeService.GetEnvironment("Vulnerability", 6),
-        vulnerabityAge: () => Tab4And5HomeService.GetAge("Vulnerability", 6),
+          Tab4And5HomeService.GetEnvironment(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
+        vulnerabityAge: () =>
+          Tab4And5HomeService.GetAge(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
         vulnerabityAssets: () =>
-          Tab4And5HomeService.GetAssets("Vulnerability", 6),
+          Tab4And5HomeService.GetAssets(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
         vulnerabitySeverity: () =>
-          Tab4And5HomeService.GetSeverity("Vulnerability", 6),
-        vulnerabityTimeLine: () =>
-          Tab4And5HomeService.GetTimeLine("Vulnerability", 6, 1),
-        vulnerabityIrr: () => Tab4And5HomeService.GetIrr("Vulnerability", 6),
+          Tab4And5HomeService.GetSeverity(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
+        vulnerabityIrr: () =>
+          Tab4And5HomeService.GetIrr(
+            "Vulnerability",
+            customers ? customers.companyId : 0
+          ),
       },
       setters: {
         vulnerabityCriticity: setVulnerabityCriticity,
@@ -233,22 +247,41 @@ export default function HomePage() {
         vulnerabityAge: setVulnerabityAge,
         vulnerabityAssets: setVulnerabityAssets,
         vulnerabitySeverity: setVulnerabitySeverity,
-        vulnerabityTimeLine: setVulnerabityTimeLine,
         vulnerabityIrr: setVulnerabityIrr,
       },
     },
     5: {
       endpoints: {
         intrusionCriticity: () =>
-          Tab4And5HomeService.GetCriticity("Intrusion", 6),
-        intrusionStatus: () => Tab4And5HomeService.GetStatus("Intrusion", 6),
+          Tab4And5HomeService.GetCriticity(
+            "Intrusion",
+            customers ? customers.companyId : 0
+          ),
+        intrusionStatus: () =>
+          Tab4And5HomeService.GetStatus(
+            "Intrusion",
+            customers ? customers.companyId : 0
+          ),
         intrusionEnvironment: () =>
-          Tab4And5HomeService.GetEnvironment("Intrusion", 6),
-        intrusionAge: () => Tab4And5HomeService.GetAge("Intrusion", 6),
-        intrusionAssets: () => Tab4And5HomeService.GetAssets("Intrusion", 6),
-        intrusionTimeLine: () =>
-          Tab4And5HomeService.GetTimeLine("Intrusion", 6, 1),
-        intrusionIrr: () => Tab4And5HomeService.GetIrr("Intrusion", 6),
+          Tab4And5HomeService.GetEnvironment(
+            "Intrusion",
+            customers ? customers.companyId : 0
+          ),
+        intrusionAge: () =>
+          Tab4And5HomeService.GetAge(
+            "Intrusion",
+            customers ? customers.companyId : 0
+          ),
+        intrusionAssets: () =>
+          Tab4And5HomeService.GetAssets(
+            "Intrusion",
+            customers ? customers.companyId : 0
+          ),
+        intrusionIrr: () =>
+          Tab4And5HomeService.GetIrr(
+            "Intrusion",
+            customers ? customers.companyId : 0
+          ),
       },
       setters: {
         intrusionCriticity: setIntrusionCriticity,
@@ -256,7 +289,6 @@ export default function HomePage() {
         intrusionEnvironment: setIntrusionEnvironment,
         intrusionAge: setIntrusionAge,
         intrusionAssets: setIntrusionAssets,
-        intrusionTimeLine: setIntrusionTimeLine,
         intrusionIrr: setIntrusionIrr,
       },
     },
@@ -624,7 +656,8 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <LineChartTimeLineManagment
-                    conversionIndex={vulnerabityTimeLine}
+                    isVulne={true}
+                    companyId={customers ? customers.companyId : 0}
                   />
                 </AccordionContent>
               </AccordionItem>
@@ -748,7 +781,8 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="border-none bg-[#F8F7F9] ">
                   <LineChartTimeLineManagment
-                    conversionIndex={intrusionTimeLine}
+                    isVulne={false}
+                    companyId={customers ? customers.companyId : 0}
                   />
                 </AccordionContent>
               </AccordionItem>

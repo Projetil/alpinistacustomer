@@ -23,6 +23,7 @@ export default function QuestionnaryIndividualPage() {
   const navigator = useRouter();
   const [focusedQuestionIndex, setFocusedQuestionIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const s3Url = process.env.S3_URL;
 
   async function handleFileDownload(url: string, filename: string) {
     try {
@@ -246,13 +247,13 @@ export default function QuestionnaryIndividualPage() {
                       handleFileDownload(x.value, filename ?? "file");
                     }}
                   >
-                    Baixar arquivo -{" "}
+                    Baixar arquivo{" "}
                     {x.value
-                      .replace(
-                        "https://description-images.s3.sa-east-1.amazonaws.com/",
-                        ""
-                      )
-                      .substring(0, 10)}
+                      .replace(s3Url?.toString() || "", "")
+                      .split("-")
+                      .slice(1)
+                      .join("- ")
+                      .replace(question.id.toString(), "")}
                   </button>
                 )}
                 {question?.answerType == 3 && (

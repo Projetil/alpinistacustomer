@@ -39,7 +39,7 @@ const AssetsService = {
 
       const res = await api.get(`${endpoint}/All?${params.toString()}`);
       return res.data as IPagedAllAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
@@ -57,14 +57,14 @@ const AssetsService = {
     userId: number,
     type: NmapTypeEnum,
     domainName?: string,
-    severityType?: SeverityTypeEnum,
+    severityType?: SeverityTypeEnum
   ) => {
     try {
       const params = new URLSearchParams({
         pageNumber: pageNumber.toString(),
         pageSize: pageSize.toString(),
         userId: userId.toString(),
-        type: type.toString()
+        type: type.toString(),
       });
 
       if (domainName) {
@@ -77,7 +77,7 @@ const AssetsService = {
 
       const res = await api.get(`${endpoint}/Infra?${params.toString()}`);
       return res.data as IPagedInfraAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
@@ -102,7 +102,7 @@ const AssetsService = {
         pageNumber: pageNumber.toString(),
         pageSize: pageSize.toString(),
         userId: userId.toString(),
-        type: type.toString()
+        type: type.toString(),
       });
 
       if (domainName) {
@@ -115,7 +115,7 @@ const AssetsService = {
 
       const res = await api.get(`${endpoint}/Web?${params.toString()}`);
       return res.data as IPagedWebAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
@@ -128,30 +128,36 @@ const AssetsService = {
     }
   },
   GetMobiles: async (
+    companyId: number,
     pageNumber: number,
     pageSize: number,
-    userId: number,
-    domainName?: string,
-    severityType?: SeverityTypeEnum
+    appName?: string,
+    sortColumn?: "Id" | "AppName" | "Store",
+    sortDirection?: "ASC" | "DESC"
   ) => {
     try {
-      const params = new URLSearchParams({
-        pageNumber: pageNumber.toString(),
-        pageSize: pageSize.toString(),
-        userId: userId.toString(),
-      });
+      const params = new URLSearchParams();
+      params.append("CompanyId", companyId.toString());
+      params.append("PageNumber", pageNumber.toString());
+      params.append("PageSize", pageSize.toString());
 
-      if (domainName) {
-        params.append("domainName", domainName);
+      if (appName) {
+        params.append("AppName", appName);
       }
 
-      if (severityType) {
-        params.append("severityType", severityType.toString());
+      if (sortColumn) {
+        params.append("SortColumn", sortColumn);
       }
 
-      const res = await api.get(`${endpoint}/Mobile?${params.toString()}`);
+      if (sortDirection) {
+        params.append("SortDirection", sortDirection);
+      }
+
+      const res = await api.get(
+        `/CompanyMobileAppAssets/company/?${params.toString()}`
+      );
       return res.data as IPagedMobileAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
@@ -187,7 +193,7 @@ const AssetsService = {
 
       const res = await api.get(`${endpoint}/Domain?${params.toString()}`);
       return res.data as IPagedDomainAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
@@ -223,7 +229,7 @@ const AssetsService = {
 
       const res = await api.get(`${endpoint}/People?${params.toString()}`);
       return res.data as IPagedPeopleAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
@@ -261,7 +267,7 @@ const AssetsService = {
 
       const res = await api.get(`${endpoint}/Environment?${params.toString()}`);
       return res.data as IPagedEnvironmentAssets;
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:

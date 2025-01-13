@@ -13,12 +13,17 @@ import { useEffect, useState } from "react";
 import QuestionnaryService from "@/services/QuestionnaryService";
 import { useCustomerContext } from "@/contexts/CustomerContext";
 import { useRouter } from "next/navigation";
+import { usePermissionContext } from "@/contexts/PermissionContext";
+import { toast } from "react-toastify";
 
 export default function QuestionnairePage() {
   const [questionary, setQuestionary] = useState<IPagedQuestionnary>();
   const [page, setPage] = useState(1);
   const navigation = useRouter();
   const { customers } = useCustomerContext();
+  const { permission, getPermissions, currentPage } = usePermissionContext();
+  const [orderBy, setOrderBy] = useState("title");
+  const [ascending, setAscending] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -26,7 +31,9 @@ export default function QuestionnairePage() {
         page,
         10,
         undefined,
-        customers?.companyId
+        customers?.companyId,
+        orderBy,
+        ascending ? "asc" : "desc"
       );
       setQuestionary(res);
     } catch (e) {
@@ -38,7 +45,22 @@ export default function QuestionnairePage() {
     if (customers) {
       fetchData();
     }
-  }, [page, customers]);
+  }, [page, customers, orderBy, ascending]);
+
+  useEffect(() => {
+    if (permission) {
+      getPermissions("Questionários");
+    }
+  }, [permission]);
+
+  useEffect(() => {
+    if (currentPage) {
+      if (currentPage.hasAcess === false) {
+        toast.warning("Você não tem permissão para acessar essa página");
+        navigation.push("/home");
+      }
+    }
+  }, [currentPage]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -65,7 +87,23 @@ export default function QuestionnairePage() {
         <h1 className="text-black text-xl font-bold">Crie um novo</h1>
         <div className="flex w-full gap-4 overflow-x-auto m-4 p-2">
           <div className="hidden md:block w-full">
-            <Link href="/questionnaire/new-questionnaire">
+            <Link
+              href={
+                currentPage?.funcs.find((x) => x.name === "Criar")?.hasAcess ==
+                false
+                  ? "#"
+                  : "/questionnaire/new-questionnaire"
+              }
+              onClick={(e) => {
+                if (
+                  currentPage?.funcs.find((x) => x.name === "Criar")
+                    ?.hasAcess == false
+                ) {
+                  toast.warn("Você não tem permissão para acessar essa função");
+                  e.preventDefault();
+                }
+              }}
+            >
               <MiddleCard
                 icon={<AiOutlinePlus color="#3088EE" size={18} />}
                 title="Novo Questionário"
@@ -95,6 +133,8 @@ export default function QuestionnairePage() {
           pageTable={page}
           setPageTable={setPage}
           questionaryData={questionary}
+          setOrderBy={setOrderBy}
+          setAscending={() => setAscending(!ascending)}
         />
       </div>
       <section className="fixed bottom-12 right-8 lg:hidden">

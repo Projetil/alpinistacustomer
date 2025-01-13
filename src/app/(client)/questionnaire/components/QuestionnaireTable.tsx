@@ -13,10 +13,14 @@ const QuestionnaireTable = ({
   pageTable,
   setPageTable,
   questionaryData,
+  setOrderBy,
+  setAscending,
 }: {
   pageTable: number;
   setPageTable: Dispatch<SetStateAction<number>>;
   questionaryData?: IPagedQuestionnary;
+  setOrderBy: Dispatch<SetStateAction<string>>;
+  setAscending: () => void;
 }) => {
   const navigation = useRouter();
 
@@ -26,32 +30,68 @@ const QuestionnaireTable = ({
         <thead className="border-none bg-[#FBFBFB]">
           <tr className="text-[#636267] text-center">
             <th className="py-3 px-4  text-sm font-semibold  items-center">
-              <div className="flex items-center gap-2">
+              <div
+                onClick={() => {
+                  setAscending();
+                  setOrderBy("title");
+                }}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 QUESTIONÁRIO <FaArrowsAltV />
               </div>
             </th>
             <th className="py-3 px-4  text-sm font-semibold  items-center">
-              <div className="flex items-center gap-2">
+              <div
+                onClick={() => {
+                  setAscending();
+                  setOrderBy("customerId");
+                }}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 RESPONDENTE <FaArrowsAltV />
               </div>
             </th>
             <th className="py-3 px-4 text-sm font-semibold  items-center">
-              <div className="flex items-center justify-start gap-2">
+              <div
+                onClick={() => {
+                  setAscending();
+                  setOrderBy("type");
+                }}
+                className="flex items-center justify-start gap-2"
+              >
                 TIPO <FaArrowsAltV />
               </div>
             </th>
             <th className="py-3 px-4  text-sm font-semibold items-center">
-              <div className="flex items-center gap-2">
+              <div
+                onClick={() => {
+                  setAscending();
+                  setOrderBy("status");
+                }}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 STATUS <FaArrowsAltV />
               </div>
             </th>
             <th className="py-3 px-4  text-sm font-semibold items-center">
-              <div className="flex items-center gap-2">
+              <div
+                onClick={() => {
+                  setAscending();
+                  setOrderBy("createdAt");
+                }}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 CRIADO <FaArrowsAltV />
               </div>
             </th>
             <th className="py-3 px-4  text-sm font-semibold items-center">
-              <div className="flex items-center gap-2">
+              <div
+                onClick={() => {
+                  setAscending();
+                  setOrderBy("limitDate");
+                }}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 LIMITE <FaArrowsAltV />
               </div>
             </th>

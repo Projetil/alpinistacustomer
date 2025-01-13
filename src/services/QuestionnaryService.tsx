@@ -15,13 +15,17 @@ const QuestionnaryService = {
     pageNumber: number,
     pageSize: number,
     customerId?: number,
-    companyId?: number
+    companyId?: number,
+    orderByColumn?: string,
+    orderByDirection?: string
   ) => {
     try {
       const res = await api.get(
         `${endpoint}?pageNumber=${pageNumber}&pageSize=${pageSize}${
           companyId ? `&companyId=${companyId}` : ""
-        }${customerId ? `&customerId=${customerId}` : ""}`
+        }${customerId ? `&customerId=${customerId}` : ""}${
+          orderByColumn ? `&orderByColumn=${orderByColumn}` : ""
+        }${orderByDirection ? `&orderByDirection=${orderByDirection}` : ""}`
       );
       return res.data as IPagedQuestionnary;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

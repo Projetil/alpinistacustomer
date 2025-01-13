@@ -7,6 +7,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { CustomerProvider } from "@/contexts/CustomerContext";
 import { CompanyProvider } from "@/contexts/CompanyContext";
+import { PermissionProvider } from "@/contexts/PermissionContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -28,14 +29,16 @@ export default function RootLayout({
       >
         <SessionProvider>
           <CustomerProvider>
-            <CompanyProvider>
-              <ToastContainer
-                autoClose={3000}
-                hideProgressBar={true}
-                closeOnClick
-              ></ToastContainer>
-              {children}
-            </CompanyProvider>
+            <PermissionProvider>
+              <CompanyProvider>
+                <ToastContainer
+                  autoClose={3000}
+                  hideProgressBar={true}
+                  closeOnClick
+                ></ToastContainer>
+                {children}
+              </CompanyProvider>
+            </PermissionProvider>
           </CustomerProvider>
         </SessionProvider>
       </body>

@@ -16,13 +16,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { IPermissionPage } from "@/types/IPermission";
+import Link from "next/link";
+import { toast } from "react-toastify";
 
 const PopoverEnvironment = ({
   environmentId,
   handleDelete,
+  pagePermission,
 }: {
   environmentId: number;
   handleDelete: (id: number) => void;
+  pagePermission?: IPermissionPage;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -41,15 +46,45 @@ const PopoverEnvironment = ({
         />
       </PopoverTrigger>
       <PopoverContent className="w-52 right-4 top-3 relative flex flex-col gap-2 justifty-start items-start">
-        <a
+        <Link
           className="p-2 hover:bg-[#E0F3FF] hover:text-[#1A69C4] hover:font-semibold text-[#1E1F24] flex gap-2 items-center rounded-lg w-full"
-          href={`/environment/new-environment?id=${environmentId}`}
+          href={
+            pagePermission?.funcs.find((x) => x.name === "Editar")?.hasAcess ==
+            false
+              ? "#"
+              : `/environment/new-environment?id=${environmentId}`
+          }
+          onClick={(e) => {
+            if (
+              pagePermission?.funcs.find((x) => x.name === "Editar")
+                ?.hasAcess == false
+            ) {
+              toast.warn("Você não tem permissão para acessar essa função");
+              e.preventDefault();
+            }
+          }}
         >
           {" "}
           <HiOutlinePencil size={25} /> Editar
-        </a>
-        <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild onClick={() => setDialogOpen(true)}>
+        </Link>
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={(open) => {
+            if (pagePermission) {
+              if (
+                pagePermission.funcs.find((x) => x.name === "Excluir")
+                  ?.hasAcess == false
+              ) {
+                toast.warning(
+                  "Você não tem permissão para acessar essa função"
+                );
+              } else {
+                setDialogOpen(open);
+              }
+            }
+          }}
+        >
+          <DialogTrigger asChild>
             <div className="p-2 hover:bg-[#E0F3FF] hover:text-[#1A69C4] hover:font-semibold text-[#1E1F24] flex gap-2 items-center rounded-lg w-full">
               <FaRegTrashAlt size={25} /> Excluir
             </div>

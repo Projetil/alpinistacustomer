@@ -21,7 +21,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { IoArrowBack } from "react-icons/io5";
-import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import InfraTable from "./components/InfraTable";
 import WebTable from "./components/WebTable";
 import MobileTable from "./components/MobileTable";
@@ -31,6 +36,9 @@ import PeopleTable from "./components/PeopleTable";
 import EnvironmentTable from "../environment/components/EnvironmentTable";
 import { IPagedEnvironment } from "@/types/IEnvironment";
 import EnvironmentService from "@/services/EnvironmentsService";
+import { usePermissionContext } from "@/contexts/PermissionContext";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -45,17 +53,19 @@ const tabs = [
 const envTabs = [
   { value: 1, name: "Interno" },
   { value: 2, name: "Terceiro" },
-
 ];
 
 export default function ActivesPage() {
   const [currentTab, setCurrentTab] = useState(1);
   const [currentEnvTab, setCurrentEnvTab] = useState(1);
+  const navigation = useRouter();
   const [pageInter, setPageInter] = useState(1);
   const [pageExternal, setPageExternal] = useState(1);
   const [loading, setLoading] = useState(false);
   const [interEnv, setInterEnv] = useState<IPagedEnvironment>();
   const [externalEnv, setExternalEnv] = useState<IPagedEnvironment>();
+  const { permission, getPermissions, currentPage } = usePermissionContext();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const fetchEnvsIntern = async () => {
     try {
@@ -76,12 +86,27 @@ export default function ActivesPage() {
   };
 
   useEffect(() => {
-      fetchEnvsIntern();
-    }, [pageInter, loading]);
-  
-    useEffect(() => {
-      fetchEnvsExternal();
-    }, [pageExternal, loading]);
+    fetchEnvsIntern();
+  }, [pageInter, loading]);
+
+  useEffect(() => {
+    fetchEnvsExternal();
+  }, [pageExternal, loading]);
+
+  useEffect(() => {
+    if (permission) {
+      getPermissions("Ativos");
+    }
+  }, [permission]);
+
+  useEffect(() => {
+    if (currentPage) {
+      if (currentPage.hasAcess === false) {
+        toast.warning("Você não tem permissão para acessar essa página");
+        navigation.push("/home");
+      }
+    }
+  }, [currentPage]);
 
   return (
     <main className="text-[#636267] w-full flex flex-col gap-1 items-start px-3">
@@ -97,20 +122,37 @@ export default function ActivesPage() {
             <button
               key={index}
               onClick={() => setCurrentTab(tab.value)}
-              className={`${currentTab == tab.value
-                ? "bg-[#F0F8FF] text-sm text-[#1A69C4]"
-                : ""
-                } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
+              className={`${
+                currentTab == tab.value
+                  ? "bg-[#F0F8FF] text-sm text-[#1A69C4]"
+                  : ""
+              } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
             >
               {tab.name}
             </button>
           ))}
         </div>
       </section>
-    
+
       <section className="w-full my-3 flex justify-end lg:hidden">
-        <Dialog>
-          <DialogTrigger asChild>
+        <Dialog
+          onOpenChange={(open) => {
+            if (currentPage) {
+              if (
+                currentPage.funcs.find((x) => x.name === "Filtrar")?.hasAcess ==
+                false
+              ) {
+                toast.warning(
+                  "Você não tem permissão para acessar essa função"
+                );
+              } else {
+                setOpenDialog(open);
+              }
+            }
+          }}
+          open={openDialog}
+        >
+          <DialogTrigger>
             <FaFilter className="cursor-pointer" size={20} color="#818086" />
           </DialogTrigger>
           <DialogContent className="min-w-full min-h-screen h-[550px]  overflow-y-auto">
@@ -297,10 +339,11 @@ export default function ActivesPage() {
                 <button
                   key={index}
                   onClick={() => setCurrentEnvTab(tab.value)}
-                  className={`${currentEnvTab == tab.value
-                    ? "bg-[#F0F8FF] text-sm text-[#1A69C4]"
-                    : ""
-                    } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
+                  className={`${
+                    currentEnvTab == tab.value
+                      ? "bg-[#F0F8FF] text-sm text-[#1A69C4]"
+                      : ""
+                  } p-2 font-semibold whitespace-nowrap rounded-lg text-sm w-full`}
                 >
                   {tab.name}
                 </button>
@@ -308,30 +351,38 @@ export default function ActivesPage() {
             </div>
           </section>
 
-          {
-            currentEnvTab === 1 && (
-              <div className="mt-4 w-full">
-                <EnvironmentTable
-          updateTable={() => setLoading(!loading)}
-          pageInter={pageInter}
-          setPageInter={setPageInter}
-          interns={interEnv}
-        />
-              </div>
-            )
-          }
-          {
-            currentEnvTab === 2 && (
-              <div className="mt-4 w-full">
-                <EnvironmentTable
-          updateTable={() => setLoading(!loading)}
-          pageInter={pageExternal}
-          setPageInter={setPageExternal}
-          interns={externalEnv}
-        />
-              </div>
-            )
-          }
+          {currentEnvTab === 1 && (
+            <div className="mt-4 w-full">
+              <EnvironmentTable
+                updateTable={() => setLoading(!loading)}
+                pageInter={pageInter}
+                setPageInter={setPageInter}
+                interns={interEnv}
+                setOrderBy={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                setAscending={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            </div>
+          )}
+          {currentEnvTab === 2 && (
+            <div className="mt-4 w-full">
+              <EnvironmentTable
+                updateTable={() => setLoading(!loading)}
+                pageInter={pageExternal}
+                setPageInter={setPageExternal}
+                interns={externalEnv}
+                setOrderBy={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                setAscending={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            </div>
+          )}
         </>
       )}
     </main>
