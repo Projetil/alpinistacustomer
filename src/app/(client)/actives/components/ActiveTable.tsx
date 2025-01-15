@@ -10,60 +10,92 @@ import { useCustomerContext } from "@/contexts/CustomerContext";
 import { SeverityTypeEnum } from "@/enums/SeverityTypeEnum";
 import Filter from "./Filter";
 import { usePermissionContext } from "@/contexts/PermissionContext";
+import { LuPencil } from "react-icons/lu";
+import CreteActiveDialog from "./CreateActiveDialog";
+import { toast } from "react-toastify";
 
-const ActiveTable = () => {
+const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [assets, setAssets] = useState<IAllAssets[]>([]);
   const { customers } = useCustomerContext();
-  const [searchText, setSearchText] = useState("");
-  const [selectedSeverity, setSelectedSeverity] =
-    useState<SeverityTypeEnum | null>(null);
+  const [searchDomain, setSearchDomain] = useState<string | undefined>();
+  const [searchIp, setSearchIp] = useState<string | undefined>();
+  const [searchIssues, setSearchIssues] = useState<string | undefined>();
+  const [searchPort, setSearchPort] = useState<string | undefined>();
+  const [selectedSeverity, setSelectedSeverity] = useState<
+    SeverityTypeEnum | undefined
+  >();
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const { currentPage } = usePermissionContext();
+  const [newActiveOpen, setNewActiveOpen] = useState(false);
+  const [editFocus, setEditFocus] = useState(0);
+
+  const handleApplyFilters = (newFilters: {
+    severity: SeverityTypeEnum | undefined;
+    issues: string | undefined;
+    ip: string | undefined;
+    port: string | undefined;
+  }) => {
+    setSelectedSeverity(newFilters.severity);
+    setSearchIssues(newFilters.issues);
+    setSearchIp(newFilters.ip);
+    setSearchPort(newFilters.port);
+  };
+
+  const handleRowClick = (id: number) => {
+    setExpandedRows((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   const getAssets = async () => {
+    if (!customers) return;
     const response = await AssetsService.GetAll(
       page,
       10,
-      Number(customers?.userId),
-      searchText,
-      selectedSeverity ?? undefined
+      Number(customers?.companyId),
+      searchIp,
+      searchIssues,
+      searchPort,
+      assetsType == 1 ? undefined : assetsType,
+      searchDomain,
+      selectedSeverity
     );
     setTotalItems(response.totalItems);
     setAssets(response.items);
   };
 
   useEffect(() => {
-    getAssets();
-  }, [page, searchText, selectedSeverity]);
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleSearch = (text: string) => {
-    setSearchText(text);
-  };
-
-  const handleSeverityChange = (severity: SeverityTypeEnum | null) =>
-    setSelectedSeverity(severity);
-
-  const handleApplyFilters = (newFilters: {
-    severity: SeverityTypeEnum | null;
-  }) => {
-    setSelectedSeverity(newFilters.severity);
-  };
+    if (customers) getAssets();
+  }, [
+    page,
+    searchDomain,
+    selectedSeverity,
+    searchIp,
+    searchIssues,
+    searchPort,
+    customers,
+    newActiveOpen,
+  ]);
 
   return (
     <div className="w-full rounded-md">
       <Filter
         permissionPage={currentPage}
-        onSearch={handleSearch}
-        onSeverityChange={handleSeverityChange}
+        onSearch={(text: string) => setSearchDomain(text)}
+        onSeverityChange={(severity: SeverityTypeEnum | undefined) =>
+          setSelectedSeverity(severity)
+        }
         onApplyFilters={handleApplyFilters}
       />
       <div className="w-full md:bg-white rounded-md">
-        <h1 className="hidden lg:block m-4 font-semibold">Nome Empresa S.A</h1>
         <div className="overflow-x-auto">
           <table className="min-w-full hidden md:table">
             <thead className="border-none">
@@ -87,24 +119,85 @@ const ActiveTable = () => {
             </thead>
             <tbody>
               {assets.map((asset) => (
-                <tr
-                  key={asset.id}
-                  className={`${
-                    asset.id == 0 ? "" : "border-t border-gray-200"
-                  }  text-[#636267] text-center`}
-                >
-                  <td className="py-3 px-4 text-sm max-w-[200px]">
-                    <div className="flex">{asset.domainName}</div>
-                  </td>
-                  <td className="py-3 px-4 text-sm">
-                    <div className="flex justify-start">
-                      {asset.issuesOrRisks}
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-sm">
-                    <SeverityBadge severity={asset.severityType} />
-                  </td>
-                </tr>
+                <>
+                  <tr
+                    key={asset.asset?.id}
+                    className={`${
+                      asset.asset?.id == 0 ? "" : "border-t border-gray-200"
+                    }  text-[#636267] text-center cursor-pointer`}
+                    onClick={() => handleRowClick(asset.asset?.id)}
+                  >
+                    <td className="py-3 px-4 text-sm max-w-[200px]">
+                      <div className="flex">{asset.asset?.hostname}</div>
+                    </td>
+                    <td className="py-3 px-4 text-sm">
+                      <div className="flex justify-start">
+                        {asset.asset?.issuesOrRisks}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-sm">
+                      <SeverityBadge severity={asset.asset?.severityType} />
+                    </td>
+                  </tr>
+                  {expandedRows.has(asset.asset?.id) && (
+                    <>
+                      <tr className="border-t border-[#EEEEF0]">
+                        <td className="py-3 px-4 text-sm">
+                          <div className="flex flex-col gap-4">
+                            <p className="font-semibold text-sm text-[#818086]">
+                              CRIADO POR
+                            </p>
+                            <p className="text-sm text-[#050506]">
+                              {asset.asset?.createdByName}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-sm ">
+                          <div className="flex flex-col gap-4">
+                            <p className="font-semibold text-sm text-[#818086]">
+                              MODIFICADO POR
+                            </p>
+                            <p className="text-sm text-[#050506]">
+                              {asset.asset?.modifiedByName == "N/A"
+                                ? ""
+                                : asset.asset?.modifiedByName}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-sm">
+                          <button
+                            onClick={() => {
+                              if (currentPage) {
+                                if (
+                                  currentPage.funcs.find(
+                                    (x) => x.name === "Editar"
+                                  )?.hasAcess == false
+                                ) {
+                                  toast.warning(
+                                    "Você não tem permissão para acessar essa função"
+                                  );
+                                } else {
+                                  setEditFocus(asset.asset?.id);
+                                  setNewActiveOpen(true);
+                                }
+                              }
+                            }}
+                          >
+                            <LuPencil size={24} color="#1A69C4" />
+                          </button>
+                        </td>
+                      </tr>
+                      <div className="flex flex-col gap-4 py-3 px-4 text-sm ">
+                        <p className="font-semibold text-sm text-[#818086]">
+                          DESCRIÇÃO
+                        </p>
+                        <p className="text-sm text-[#050506]">
+                          {asset.asset?.description}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </>
               ))}
             </tbody>
           </table>
@@ -114,9 +207,11 @@ const ActiveTable = () => {
             return (
               <CardActive
                 key={index}
-                active={x.domainName}
-                issuesRisks={x.issuesOrRisks}
-                severity={x.severityType.toString()}
+                active={x.asset?.hostname}
+                issuesRisks={x.asset?.issuesOrRisks}
+                severity={
+                  x.asset?.severityType ? x.asset?.severityType.toString() : ""
+                }
               />
             );
           })}
@@ -124,10 +219,16 @@ const ActiveTable = () => {
         <Pagination
           pageIndex={page}
           perPage={10}
-          handlePage={handlePageChange}
+          handlePage={(pageIndex: number) => setPage(pageIndex)}
           totalCount={totalItems}
         />
       </div>
+      <CreteActiveDialog
+        newActiveOpen={newActiveOpen}
+        setNewActiveOpen={() => setNewActiveOpen(!newActiveOpen)}
+        companyId={customers?.companyId ? customers?.companyId : 0}
+        editFocus={editFocus}
+      />
     </div>
   );
 };

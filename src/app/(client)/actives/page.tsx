@@ -27,12 +27,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import InfraTable from "./components/InfraTable";
-import WebTable from "./components/WebTable";
 import MobileTable from "./components/MobileTable";
-import DomainTable from "./components/DomainTable";
 
-import PeopleTable from "./components/PeopleTable";
 import EnvironmentTable from "../environment/components/EnvironmentTable";
 import { IPagedEnvironment } from "@/types/IEnvironment";
 import EnvironmentService from "@/services/EnvironmentsService";
@@ -303,17 +299,17 @@ export default function ActivesPage() {
       </section>
       {currentTab === 1 && (
         <>
-          <ActiveTable />
+          <ActiveTable assetsType={1} />
         </>
       )}
       {currentTab === 2 && (
         <>
-          <InfraTable />
+          <ActiveTable assetsType={2} />
         </>
       )}
       {currentTab === 3 && (
         <>
-          <WebTable />
+          <ActiveTable assetsType={3} />
         </>
       )}
       {currentTab === 4 && (
@@ -323,12 +319,12 @@ export default function ActivesPage() {
       )}
       {currentTab === 5 && (
         <>
-          <DomainTable />
+          <ActiveTable assetsType={5} />
         </>
       )}
       {currentTab === 6 && (
         <>
-          <PeopleTable />
+          <ActiveTable assetsType={6} />
         </>
       )}
       {currentTab === 7 && (

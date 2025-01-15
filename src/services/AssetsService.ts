@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NotFoundError, UnexpectedError, ValidationError } from "@/errors";
 import { HttpStatusCode } from "axios";
 import { api } from "./api";
@@ -11,6 +12,9 @@ import { IPagedDomainAssets } from "@/types/IDomainAssets";
 import { IPagedPeopleAssets } from "@/types/IPeopleAssets";
 import { IPagedEnvironmentAssets } from "@/types/IEnvironmentAssets";
 import { EnvironmentTypeEnum } from "@/enums/EnvironmentTypeEnum";
+import { ActiveTypeEnum } from "@/enums/ActiveTypeEnum";
+import { IAssetsAdm, IUpdateAssetsAdm } from "@/types/IAdmAssets";
+import { ICompanyAssets } from "@/types/ICompanyAssets";
 
 const endpoint = "/Assets";
 
@@ -18,7 +22,11 @@ const AssetsService = {
   GetAll: async (
     pageNumber: number,
     pageSize: number,
-    userId: number,
+    companyId: number,
+    ip?: string,
+    IssuesOrRisk?: string,
+    Port?: string,
+    activeType?: ActiveTypeEnum,
     domainName?: string,
     severityType?: SeverityTypeEnum
   ) => {
@@ -26,7 +34,7 @@ const AssetsService = {
       const params = new URLSearchParams({
         pageNumber: pageNumber.toString(),
         pageSize: pageSize.toString(),
-        userId: userId.toString(),
+        companyId: companyId.toString(),
       });
 
       if (domainName) {
@@ -37,7 +45,25 @@ const AssetsService = {
         params.append("severityType", severityType.toString());
       }
 
-      const res = await api.get(`${endpoint}/All?${params.toString()}`);
+      if (ip) {
+        params.append("ip", ip);
+      }
+
+      if (IssuesOrRisk) {
+        params.append("IssuesOrRisk", IssuesOrRisk);
+      }
+
+      if (Port) {
+        params.append("Port", Port);
+      }
+
+      if (activeType) {
+        params.append("activeType", activeType.toString());
+      }
+
+      const res = await api.get(
+        `${endpoint}/Customer/All?${params.toString()}`
+      );
       return res.data as IPagedAllAssets;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -268,6 +294,51 @@ const AssetsService = {
       const res = await api.get(`${endpoint}/Environment?${params.toString()}`);
       return res.data as IPagedEnvironmentAssets;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      switch (error.statusCode) {
+        case HttpStatusCode.BadRequest:
+          throw new ValidationError(error.body.erros);
+        case HttpStatusCode.NotFound:
+          throw new NotFoundError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
+  },
+  Put: async (data: IUpdateAssetsAdm, id: number) => {
+    try {
+      const res = await api.put(`${endpoint}/Adm/${id}`, data);
+      return res.data;
+    } catch (error: any) {
+      switch (error.statusCode) {
+        case HttpStatusCode.BadRequest:
+          throw new ValidationError(error.body.erros);
+        case HttpStatusCode.NotFound:
+          throw new NotFoundError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
+  },
+  Get: async (id: number) => {
+    try {
+      const res = await api.get(`${endpoint}/Adm/${id}`);
+      return res.data as IAssetsAdm;
+    } catch (error: any) {
+      switch (error.statusCode) {
+        case HttpStatusCode.BadRequest:
+          throw new ValidationError(error.body.erros);
+        case HttpStatusCode.NotFound:
+          throw new NotFoundError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
+  },
+  GetByCompanyId: async (companyId: number) => {
+    try {
+      const res = await api.get(`${endpoint}/Company/${companyId}`);
+      return res.data as ICompanyAssets[];
     } catch (error: any) {
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:

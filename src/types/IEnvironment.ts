@@ -35,6 +35,7 @@ export interface ICreateEnvironment {
   name: string;
   type: number;
   companyId: number;
+  ativos: string[];
   severity: number;
   status: number;
   externalEnvironment?: {

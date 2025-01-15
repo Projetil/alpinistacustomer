@@ -13,13 +13,18 @@ import { usePermissionContext } from "@/contexts/PermissionContext";
 const MobileTable = () => {
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const [mobileAssets, setMobileAssets] = useState<ICompanyMobileAppAssets[]>([]);
+  const [mobileAssets, setMobileAssets] = useState<ICompanyMobileAppAssets[]>(
+    []
+  );
   const { customers } = useCustomerContext();
   const [searchText, setSearchText] = useState("");
-  const [selectedSeverity, setSelectedSeverity] =
-    useState<SeverityTypeEnum | null>(null);
+  const [selectedSeverity, setSelectedSeverity] = useState<
+    SeverityTypeEnum | undefined
+  >();
   const { currentPage } = usePermissionContext();
-  const [sortColumn, setSortColumn] = useState<"Id" | "AppName" | "Store">("Id");
+  const [sortColumn, setSortColumn] = useState<"Id" | "AppName" | "Store">(
+    "Id"
+  );
   const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
 
   const getInfraAssets = async () => {
@@ -43,11 +48,11 @@ const MobileTable = () => {
     setSearchText(text);
   };
 
-  const handleSeverityChange = (severity: SeverityTypeEnum | null) =>
+  const handleSeverityChange = (severity: SeverityTypeEnum | undefined) =>
     setSelectedSeverity(severity);
 
   const handleApplyFilters = (newFilters: {
-    severity: SeverityTypeEnum | null;
+    severity: SeverityTypeEnum | undefined;
   }) => {
     setSelectedSeverity(newFilters.severity);
   };
@@ -72,7 +77,16 @@ const MobileTable = () => {
               <tr className="text-[#636267] text-center">
                 <th className="py-3 px-4  text-sm font-semibold  items-center">
                   <div className="flex items-center gap-2">
-                    ATIVOS <FaArrowsAltV className="cursor-pointer" onClick={() => {setSortColumn("AppName"); setSortDirection(sortDirection === "DESC" ? "ASC" : "DESC")}}/>
+                    ATIVOS{" "}
+                    <FaArrowsAltV
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setSortColumn("AppName");
+                        setSortDirection(
+                          sortDirection === "DESC" ? "ASC" : "DESC"
+                        );
+                      }}
+                    />
                   </div>
                 </th>
 
@@ -104,13 +118,7 @@ const MobileTable = () => {
         </div>
         <div className="flex flex-col gap-4 md:hidden p-4">
           {mobileAssets.map((x, index) => {
-            return (
-              <CardMobile
-                key={index}
-                active={x.appName}
-                severity={"1"}
-              />
-            );
+            return <CardMobile key={index} active={x.appName} severity={"1"} />;
           })}
         </div>
         <Pagination

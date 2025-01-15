@@ -58,7 +58,7 @@ export const questionnaireTableData: QuestionnaireTable[] = [
     type: "Interno",
     status: "Finalizado",
     createDate: "01/01/2024",
-    limitDate: "01/01/2024"
+    limitDate: "01/01/2024",
   },
   {
     questionnaire: "Enterprise S.A",
@@ -66,7 +66,7 @@ export const questionnaireTableData: QuestionnaireTable[] = [
     type: "Interno",
     status: "Finalizado",
     createDate: "01/01/2024",
-    limitDate: "01/01/2024"
+    limitDate: "01/01/2024",
   },
   {
     questionnaire: "Enterprise S.A",
@@ -74,7 +74,7 @@ export const questionnaireTableData: QuestionnaireTable[] = [
     type: "Interno",
     status: "Finalizado",
     createDate: "01/01/2024",
-    limitDate: "01/01/2024"
+    limitDate: "01/01/2024",
   },
   {
     questionnaire: "Enterprise S.A",
@@ -82,7 +82,7 @@ export const questionnaireTableData: QuestionnaireTable[] = [
     type: "Interno",
     status: "Finalizado",
     createDate: "01/01/2024",
-    limitDate: "01/01/2024"
+    limitDate: "01/01/2024",
   },
   {
     questionnaire: "Enterprise S.A",
@@ -90,7 +90,7 @@ export const questionnaireTableData: QuestionnaireTable[] = [
     type: "Interno",
     status: "Finalizado",
     createDate: "01/01/2024",
-    limitDate: "01/01/2024"
+    limitDate: "01/01/2024",
   },
   {
     questionnaire: "Enterprise S.A",
@@ -98,7 +98,7 @@ export const questionnaireTableData: QuestionnaireTable[] = [
     type: "Interno",
     status: "Finalizado",
     createDate: "01/01/2024",
-    limitDate: "01/01/2024"
+    limitDate: "01/01/2024",
   },
 ];
 
@@ -329,8 +329,6 @@ export const peopleTableData: PeopleTable[] = [
     severity: "Crítico",
   },
 ];
-
-// export const envTableData: EnvTable[] = [
 //   {
 //     active: "Ativo",
 //     issues: "420",

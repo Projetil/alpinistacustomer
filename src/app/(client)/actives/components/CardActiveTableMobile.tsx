@@ -6,8 +6,6 @@ import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import SeverityBadge from "../../components/SeverityBadge";
 
-
-
 const CardActive: React.FC<ActiveTable> = ({
   active,
   severity,
@@ -25,7 +23,7 @@ const CardActive: React.FC<ActiveTable> = ({
         onClick={toggleCard}
         className="flex justify-between items-center w-full text-left"
       >
-        <span className="text-lg font-medium">Nome Empresa S.A</span>
+        <span className="text-lg font-medium">{active}</span>
         <ChevronDownIcon
           size={20}
           color="#093970"
@@ -47,7 +45,7 @@ const CardActive: React.FC<ActiveTable> = ({
             </div>
             <div>
               <p className="text-[#818086] text-sm">Severidade:</p>
-              <SeverityBadge severity={parseFloat(severity)}/>
+              <SeverityBadge severity={parseFloat(severity)} />
             </div>
           </div>
         </div>

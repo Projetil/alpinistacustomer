@@ -15,7 +15,6 @@ const ThirdPartiesTable = () => {
 
   const fetchData = async () => {
     try {
-      console.log(order);
       const res = await Tab6Service.GetThirthData({
         pageSize: 10,
         pageNumber: page,

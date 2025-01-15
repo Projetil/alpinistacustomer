@@ -1,7 +1,7 @@
 export enum SeverityTypeEnum {
-    "Critic" = 1,
-    "High" = 2,
-    "Low" = 3,
-    "Medium" = 4,
-    "Info" = 5
-  }
+  "Info" = 1,
+  "Low" = 2,
+  "Medium" = 3,
+  "High" = 4,
+  "Critic" = 5,
+}

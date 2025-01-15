@@ -24,8 +24,9 @@ const EnvTable = ({
   >([]);
   const { customers } = useCustomerContext();
   const [searchText, setSearchText] = useState("");
-  const [selectedSeverity, setSelectedSeverity] =
-    useState<SeverityTypeEnum | null>(null);
+  const [selectedSeverity, setSelectedSeverity] = useState<
+    SeverityTypeEnum | undefined
+  >();
   const { currentPage } = usePermissionContext();
 
   const getInfraAssets = async () => {
@@ -53,11 +54,11 @@ const EnvTable = ({
     setSearchText(text);
   };
 
-  const handleSeverityChange = (severity: SeverityTypeEnum | null) =>
+  const handleSeverityChange = (severity: SeverityTypeEnum | undefined) =>
     setSelectedSeverity(severity);
 
   const handleApplyFilters = (newFilters: {
-    severity: SeverityTypeEnum | null;
+    severity: SeverityTypeEnum | undefined;
   }) => {
     setSelectedSeverity(newFilters.severity);
   };
@@ -71,7 +72,6 @@ const EnvTable = ({
         permissionPage={currentPage}
       />
       <div className="w-full md:bg-white rounded-md">
-        <h1 className="hidden lg:block m-4 font-semibold">Nome Empresa S.A</h1>
         <div className="overflow-x-auto">
           <table className="min-w-full hidden md:table">
             <thead className="border-none">

@@ -5,19 +5,19 @@ interface SeverityBadgeProps {
 }
 
 const severityTextMap: Record<SeverityTypeEnum, string> = {
-  [SeverityTypeEnum.Critic]: "Crítico",
-  [SeverityTypeEnum.High]: "Alto",
+  [SeverityTypeEnum.Info]: "Info",
   [SeverityTypeEnum.Low]: "Baixo",
   [SeverityTypeEnum.Medium]: "Médio",
-  [SeverityTypeEnum.Info]: "Info",
+  [SeverityTypeEnum.High]: "Alto",
+  [SeverityTypeEnum.Critic]: "Crítico",
 };
 
 const severityStyles: Record<SeverityTypeEnum, string> = {
-  [SeverityTypeEnum.Critic]: "bg-[#FF5C63] text-[#FBFBFB]",
-  [SeverityTypeEnum.High]: "bg-[#FFDDD8] text-[#661616]",
-  [SeverityTypeEnum.Medium]: "bg-[#FFBB5C] text-[#F8F7F9]",
-  [SeverityTypeEnum.Low]: "bg-[#5CA7FF] text-[#FBFBFB]",
   [SeverityTypeEnum.Info]: "bg-[#A8D3FF] text-[#0D3C73]",
+  [SeverityTypeEnum.Low]: "bg-[#5CA7FF] text-[#FBFBFB]",
+  [SeverityTypeEnum.Medium]: "bg-[#FFBB5C] text-[#F8F7F9]",
+  [SeverityTypeEnum.High]: "bg-[#FFDDD8] text-[#661616]",
+  [SeverityTypeEnum.Critic]: "bg-[#FF5C63] text-[#FBFBFB]",
 };
 
 const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity }) => {
