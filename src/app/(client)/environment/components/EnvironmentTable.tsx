@@ -41,7 +41,6 @@ const EnvironmentTable = ({
 
   return (
     <div className="w-full overflow-x-auto md:bg-white rounded-md">
-      <h1 className="hidden lg:block m-4 font-semibold">Nome Empresa S.A</h1>
       <table className="min-w-full hidden md:table">
         <thead className="border-none">
           <tr className="text-[#636267] text-center">

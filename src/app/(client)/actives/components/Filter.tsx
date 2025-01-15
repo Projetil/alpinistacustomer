@@ -30,12 +30,12 @@ import { toast } from "react-toastify";
 
 interface FilterProps {
   onSearch: (searchText: string) => void;
-  onSeverityChange: (severity: SeverityTypeEnum | null) => void;
+  onSeverityChange: (severity: SeverityTypeEnum | undefined) => void;
   onApplyFilters: (filters: {
     issues: string;
     ip: string;
     port: string;
-    severity: SeverityTypeEnum | null;
+    severity: SeverityTypeEnum | undefined;
   }) => void;
   permissionPage: IPermissionPage | undefined;
 }
@@ -47,8 +47,9 @@ const Filter: React.FC<FilterProps> = ({
   permissionPage,
 }) => {
   const [searchText, setSearchText] = useState("");
-  const [selectedSeverity, setSelectedSeverity] =
-    useState<SeverityTypeEnum | null>(null);
+  const [selectedSeverity, setSelectedSeverity] = useState<
+    SeverityTypeEnum | undefined
+  >();
   const [ipValue, setIpValue] = useState("");
   const [portValue, setPortValue] = useState("");
   const [issuesAndRisks, setIssuesAndRisks] = useState("");
@@ -68,7 +69,7 @@ const Filter: React.FC<FilterProps> = ({
   };
 
   const handleSeverityChange = (severity: SeverityTypeEnum) => {
-    const newValue = selectedSeverity === severity ? null : severity;
+    const newValue = selectedSeverity === severity ? undefined : severity;
     setSelectedSeverity(newValue);
     onSeverityChange(newValue);
   };
@@ -77,9 +78,9 @@ const Filter: React.FC<FilterProps> = ({
     setIssuesAndRisks("");
     setIpValue("");
     setPortValue("");
-    setSelectedSeverity(null);
+    setSelectedSeverity(undefined);
     setSearchText("");
-    onSeverityChange(null);
+    onSeverityChange(undefined);
   };
 
   const severityLabels = {

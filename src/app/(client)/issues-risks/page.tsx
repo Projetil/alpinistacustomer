@@ -92,7 +92,6 @@ export default function CompanyIndPage() {
 
   useEffect(() => {
     if (currentPage) {
-      console.log(currentPage);
       if (currentPage.hasAcess === false) {
         toast.warning("Você não tem permissão para acessar essa página");
         navigation.push("/home");

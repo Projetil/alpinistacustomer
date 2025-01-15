@@ -13,8 +13,6 @@ import {
   Legend,
 } from "recharts";
 
-
-
 const colors = {
   critico: "#ff6868",
   alto: "#ffd9d9",
@@ -23,21 +21,37 @@ const colors = {
 };
 
 interface HorizontalBarProps {
-  timeCorrection?: ITimeCorrection[]
+  timeCorrection?: ITimeCorrection[];
 }
 
-const HorizontalBarChart: React.FC<HorizontalBarProps> = ({timeCorrection}) => {
+const HorizontalBarChart: React.FC<HorizontalBarProps> = ({
+  timeCorrection,
+}) => {
   const totalDaysToFix = timeCorrection
     ? timeCorrection.reduce((sum, tc) => sum + (tc.daysToFix || 0), 0)
     : 0;
 
   const data = [
-    { name: "Crítico", critico: timeCorrection ? timeCorrection.find((tc) => tc.severity ===  5)?.daysToFix : 0 },
-    { name: "Alto", alto: timeCorrection ? timeCorrection.find((tc) => tc.severity === 4)?.daysToFix : 0 },
-    { name: "Médio", medio: timeCorrection ? timeCorrection.find((tc) => tc.severity ===  3)?.daysToFix : 0  },
-    { name: "Geral", geral: timeCorrection ?  totalDaysToFix : 0},
+    {
+      name: "Crítico",
+      critico: timeCorrection
+        ? timeCorrection.find((tc) => tc.severity === 5)?.daysToFix
+        : 0,
+    },
+    {
+      name: "Alto",
+      alto: timeCorrection
+        ? timeCorrection.find((tc) => tc.severity === 4)?.daysToFix
+        : 0,
+    },
+    {
+      name: "Médio",
+      medio: timeCorrection
+        ? timeCorrection.find((tc) => tc.severity === 3)?.daysToFix
+        : 0,
+    },
+    { name: "Geral", geral: timeCorrection ? totalDaysToFix : 0 },
   ];
-  console.log(timeCorrection)
   return (
     <div className="p-4 bg-white rounded-lg w-full max-w-2xl lg:max-w-none">
       <div className="flex justify-between items-center mb-4">
@@ -77,11 +91,29 @@ const HorizontalBarChart: React.FC<HorizontalBarProps> = ({timeCorrection}) => {
             fill={colors.critico}
             name="Crítico"
             barSize={20}
-            style={{ transform: 'translateY(6%)' }}
+            style={{ transform: "translateY(6%)" }}
           />
-          <Bar dataKey="alto"  fill={colors.alto} name="Alto" barSize={20} style={{ transform: 'translateY(2%)' }}/>
-          <Bar dataKey="medio" fill={colors.medio} name="Médio" barSize={20} style={{ transform: 'translateY(-2%)' }}/>
-          <Bar dataKey="geral" fill={colors.geral} name="Geral" barSize={20} style={{ transform: 'translateY(-5%)' }}/>
+          <Bar
+            dataKey="alto"
+            fill={colors.alto}
+            name="Alto"
+            barSize={20}
+            style={{ transform: "translateY(2%)" }}
+          />
+          <Bar
+            dataKey="medio"
+            fill={colors.medio}
+            name="Médio"
+            barSize={20}
+            style={{ transform: "translateY(-2%)" }}
+          />
+          <Bar
+            dataKey="geral"
+            fill={colors.geral}
+            name="Geral"
+            barSize={20}
+            style={{ transform: "translateY(-5%)" }}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

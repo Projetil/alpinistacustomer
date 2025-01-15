@@ -75,9 +75,6 @@ export default function LineChartTimeLineManagment({
   }, [intrusionMonth, intrusionYear]);
 
   const handleMonthChange = (isForward: boolean) => {
-    console.log(vulnerabilityYear);
-    console.log(vulnerabilityMonth);
-
     if (isVulne) {
       let newMonth = isForward
         ? vulnerabilityMonth + 1

@@ -1,21 +1,21 @@
 trigger:
 - main
- 
+
 pool:
-  vmImage: ubuntu-latest
- 
-variables:
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
- 
+  vmImage: 'ubuntu-latest'
+
 steps:
-- task: vercel-deployment-task@1
-  name: 'Deploy'
-  inputs:
-    vercelProjectId: prj_rQtWrbrm7dP9dOEUApuLnIr5guHG
-    vercelOrgId: 'NvtsBqIJ8SnjeBRgPWHKRmlU' 
-    vercelToken: $(VERCEL_TOKEN)
-    production: true
-- task: vercel-azdo-pr-comment-task@1
-  inputs:
-    azureToken: $(AZURE_TOKEN)
-    deploymentTaskMessage: $(Deploy.deploymentTaskMessage)
+- script: |
+    git config --global user.name "Azure DevOps"
+    git config --global user.email "projetil.tech@outlook.com"
+    echo "https://$(GITHUB_TOKEN)@github.com" > ~/.git-credentials
+    git config --global credential.helper store
+    git clone --branch main https://$(GITHUB_TOKEN)@github.com/Projetil/alpinistacustomer
+    rsync -av --exclude='.git' . ./alpinistacustomer
+    cd alpinistacustomer
+    git pull
+    ls
+    git add .
+    git commit -m "Sync from Azure DevOps"
+    git push origin main --force
+  displayName: 'Sync to GitHub'

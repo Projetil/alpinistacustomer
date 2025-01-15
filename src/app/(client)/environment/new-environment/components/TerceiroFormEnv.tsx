@@ -3,7 +3,9 @@ import { LoadingSpinner } from "@/components/default/Spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCustomerContext } from "@/contexts/CustomerContext";
+import AssetsService from "@/services/AssetsService";
 import EnvironmentService from "@/services/EnvironmentsService";
+import { ICompanyAssets } from "@/types/ICompanyAssets";
 import { ICreateExternalEnv, IEnvironment } from "@/types/IEnvironment";
 import { formatPhone } from "@/utils/formatString";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,6 +58,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
   const [selectedCount, setSelectedCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingButtons, setLoadingButtons] = useState(false);
+  const [assets, setAssets] = useState<ICompanyAssets[]>([]);
   const { customers } = useCustomerContext();
   const {
     register,
@@ -73,7 +76,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
 
   useEffect(() => {
     setSelectedCount(
-      ativos?.filter((x) => x.toString() === "true").length || 0
+      ativos?.filter((x) => x.toString() != "false").length || 0
     );
   }, [ativos, loadingButtons]);
 
@@ -141,6 +144,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           name: data.name,
           status: Number(data.status),
           severity: Number(data.severity),
+          ativos: data.ativos,
           type: 2,
           externalEnvironment: externalEnv,
           companyId: customers ? Number(customers.companyId) : 0,
@@ -155,6 +159,19 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
       }
     }
   };
+
+  const fetchAssets = async () => {
+    try {
+      const res = await AssetsService.GetByCompanyId(customers?.companyId ?? 0);
+      setAssets(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAssets();
+  }, []);
 
   useMemo(() => {
     if (dataEnv) {
@@ -592,7 +609,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               />
               <p className="p-2">{selectedCount} selecionados</p>
               <div className="flex gap-4 flex-wrap max-h-[160px] overflow-y-auto">
-                {[...Array(30)].map((_, index) => (
+                {assets.map((asset, index) => (
                   <div
                     key={index}
                     className="w-[230px] p-2 flex gap-2 items-center justify-center"
@@ -601,6 +618,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
                       type="checkbox"
                       {...register(`ativos.${index}` as const)}
                       id={`${index}`}
+                      value={asset.id}
                       onClick={() => setLoadingButtons(!loadingButtons)}
                       className="peer h-4 w-4 border border-gray-300 rounded-md text-blue-600 focus:ring-blue-500"
                     />
@@ -608,7 +626,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
                       htmlFor={`${index}`}
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
-                      someone@example.com
+                      {asset.hostname}
                     </Label>
                   </div>
                 ))}
