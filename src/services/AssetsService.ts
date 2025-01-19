@@ -335,9 +335,13 @@ const AssetsService = {
       }
     }
   },
-  GetByCompanyId: async (companyId: number) => {
+  GetByCompanyId: async (companyId: number, hostname?: string) => {
     try {
-      const res = await api.get(`${endpoint}/Company/${companyId}`);
+      const res = await api.get(
+        `${endpoint}/Company/${companyId}${
+          hostname ? `?hostname=${hostname}` : ""
+        }`
+      );
       return res.data as ICompanyAssets[];
     } catch (error: any) {
       switch (error.statusCode) {

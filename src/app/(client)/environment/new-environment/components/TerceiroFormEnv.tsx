@@ -58,6 +58,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
   const [selectedCount, setSelectedCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingButtons, setLoadingButtons] = useState(false);
+  const [filterName, setFilterName] = useState<string | undefined>();
   const [assets, setAssets] = useState<ICompanyAssets[]>([]);
   const { customers } = useCustomerContext();
   const {
@@ -84,11 +85,13 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
     if (dataEnv) {
       try {
         setLoading(true);
+        data.ativos = data.ativos.filter((ativo) => ativo !== "false");
         await EnvironmentService.Put(
           {
             name: data.name,
             severity: Number(data.severity),
             status: Number(data.status),
+            ativos: data.ativos,
             type: 2,
             externalEnvironment: {
               id: dataEnv.externalEnvironment?.id || 0,
@@ -140,6 +143,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           financialRespEmail: data.financialRespEmail,
           financialRespPosition: data.financialRespPosition,
         };
+        data.ativos = data.ativos.filter((ativo) => ativo !== "false");
         await EnvironmentService.Post({
           name: data.name,
           status: Number(data.status),
@@ -162,7 +166,10 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
 
   const fetchAssets = async () => {
     try {
-      const res = await AssetsService.GetByCompanyId(customers?.companyId ?? 0);
+      const res = await AssetsService.GetByCompanyId(
+        customers?.companyId ?? 0,
+        filterName
+      );
       setAssets(res);
     } catch (error) {
       console.log(error);
@@ -171,7 +178,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
 
   useEffect(() => {
     fetchAssets();
-  }, []);
+  }, [filterName]);
 
   useMemo(() => {
     if (dataEnv) {
@@ -603,6 +610,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
           <div className="p-4 bg-white w-full rounded-xl border border-[#3088EE]">
             <div className="w-full h-fit overflow-y-auto flex flex-col gap-3">
               <Input
+                onChange={(e) => setFilterName(e.target.value)}
                 className="md:w-2/3 m-1"
                 placeholder="Buscar ativo"
                 type="text"
