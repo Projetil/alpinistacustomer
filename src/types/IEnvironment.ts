@@ -76,6 +76,7 @@ export interface IUpdateEnvironment {
   type: number;
   severity: number;
   companyId: number;
+  ativos: string[];
   status: number;
   externalEnvironment?: {
     id: number;

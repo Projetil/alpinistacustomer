@@ -36,6 +36,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
   const [loading, setLoading] = useState(false);
   const { customers } = useCustomerContext();
   const [loadingButtons, setLoadingButtons] = useState(false);
+  const [filterName, setFilterName] = useState<string | undefined>();
   const [assets, setAssets] = useState<ICompanyAssets[]>([]);
   const {
     register,
@@ -60,9 +61,11 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
       try {
         setLoading(true);
         if (!customers) return;
+        data.ativos = data.ativos.filter((ativo) => ativo !== "false");
         await EnvironmentService.Put(
           {
             name: data.name,
+            ativos: data.ativos,
             severity: Number(data.severity),
             companyId: customers.companyId,
             status: Number(data.status),
@@ -83,6 +86,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
       try {
         setLoading(true);
         if (!customers) return;
+        data.ativos = data.ativos.filter((ativo) => ativo !== "false");
         await EnvironmentService.Post({
           name: data.name,
           ativos: data.ativos,
@@ -104,7 +108,10 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
 
   const fetchAssets = async () => {
     try {
-      const res = await AssetsService.GetByCompanyId(customers?.companyId ?? 0);
+      const res = await AssetsService.GetByCompanyId(
+        customers?.companyId ?? 0,
+        filterName
+      );
       setAssets(res);
     } catch (error) {
       console.log(error);
@@ -138,7 +145,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
 
   useEffect(() => {
     fetchAssets();
-  }, []);
+  }, [filterName]);
 
   useMemo(() => {
     if (dataEnv) {
@@ -217,6 +224,7 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
         <div className="p-4 bg-white w-full rounded-xl border border-[#3088EE]">
           <div className="w-full h-fit overflow-y-auto flex flex-col gap-3">
             <Input
+              onChange={(e) => setFilterName(e.target.value)}
               className="md:w-2/3 m-1"
               placeholder="Buscar ativo"
               type="text"
