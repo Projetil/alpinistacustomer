@@ -27,6 +27,8 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   const [selectedSeverity, setSelectedSeverity] = useState<
     SeverityTypeEnum | undefined
   >();
+  const [orderBy, setOrderBy] = useState<string | undefined>();
+  const [orderDirection, setOrderDirection] = useState<boolean>(false);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const { currentPage } = usePermissionContext();
   const [newActiveOpen, setNewActiveOpen] = useState(false);
@@ -69,7 +71,9 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
         searchPort,
         assetsType == 1 ? undefined : assetsType,
         searchDomain,
-        selectedSeverity
+        selectedSeverity,
+        orderBy,
+        orderDirection ? "asc" : "desc"
       );
       console.log(response);
       setTotalItems(response.totalItems);
@@ -92,6 +96,8 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
     searchPort,
     customers,
     newActiveOpen,
+    orderBy,
+    orderDirection,
   ]);
 
   return (
@@ -110,17 +116,35 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
             <thead className="border-none">
               <tr className="text-[#636267] text-center">
                 <th className="py-3 px-4  text-sm font-semibold  items-center">
-                  <div className="flex items-center gap-2">
+                  <div
+                    onClick={() => {
+                      setOrderDirection(!orderDirection);
+                      setOrderBy("hostname");
+                    }}
+                    className="flex items-center gap-2"
+                  >
                     ATIVOS <FaArrowsAltV />
                   </div>
                 </th>
                 <th className="py-3 px-4 text-sm font-semibold  items-center">
-                  <div className="flex items-center justify-start gap-2">
+                  <div
+                    onClick={() => {
+                      setOrderDirection(!orderDirection);
+                      setOrderBy("totalRisks");
+                    }}
+                    className="flex items-center justify-start gap-2"
+                  >
                     ISSUES/RISCOS <FaArrowsAltV />
                   </div>
                 </th>
                 <th className="py-3 px-4  text-sm font-semibold items-center">
-                  <div className="flex items-center gap-2">
+                  <div
+                    onClick={() => {
+                      setOrderDirection(!orderDirection);
+                      setOrderBy("severityType");
+                    }}
+                    className="flex items-center gap-2"
+                  >
                     SEVERIDADE <FaArrowsAltV />
                   </div>
                 </th>
@@ -142,7 +166,7 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                       </td>
                       <td className="py-3 px-4 text-sm">
                         <div className="flex justify-start">
-                          {asset.asset?.issuesOrRisks}
+                          {asset.asset?.totalRisks}
                         </div>
                       </td>
                       <td className="py-3 px-4 text-sm">
