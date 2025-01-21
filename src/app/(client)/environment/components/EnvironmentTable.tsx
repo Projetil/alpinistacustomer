@@ -59,7 +59,7 @@ const EnvironmentTable = ({
               <div
                 onClick={() => {
                   setAscending();
-                  setOrderBy("ativos");
+                  setOrderBy("totalAtivos");
                 }}
                 className="flex items-center gap-2 cursor-pointer"
               >
@@ -70,7 +70,7 @@ const EnvironmentTable = ({
               <div
                 onClick={() => {
                   setAscending();
-                  setOrderBy("issues");
+                  setOrderBy("totalRisk");
                 }}
                 className="flex items-center justify-start gap-2"
               >
@@ -104,12 +104,10 @@ const EnvironmentTable = ({
                   <div className="flex">{row.name}</div>
                 </td>
                 <td className="py-3 px-4 text-sm max-w-[200px]">
-                  <div className="flex">
-                    {row.status == 1 ? "Ativo" : "Inativo"}
-                  </div>
+                  <div className="flex">{row.totalAtivos}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <div className="flex justify-start">00</div>
+                  <div className="flex justify-start">{row.totalRisk}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
                   <SeverityBadge severity={row.severity} />

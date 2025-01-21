@@ -67,6 +67,7 @@ const AssetsService = {
       return res.data as IPagedAllAssets;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.log(error);
       switch (error.statusCode) {
         case HttpStatusCode.BadRequest:
           throw new ValidationError(error.body.erros);

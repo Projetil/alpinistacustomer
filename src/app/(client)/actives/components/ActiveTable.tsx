@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 
 const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
   const [assets, setAssets] = useState<IAllAssets[]>([]);
   const { customers } = useCustomerContext();
@@ -57,19 +58,27 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
 
   const getAssets = async () => {
     if (!customers) return;
-    const response = await AssetsService.GetAll(
-      page,
-      10,
-      Number(customers?.companyId),
-      searchIp,
-      searchIssues,
-      searchPort,
-      assetsType == 1 ? undefined : assetsType,
-      searchDomain,
-      selectedSeverity
-    );
-    setTotalItems(response.totalItems);
-    setAssets(response.items);
+    setLoading(true);
+    try {
+      const response = await AssetsService.GetAll(
+        page,
+        10,
+        Number(customers?.companyId),
+        searchIp,
+        searchIssues,
+        searchPort,
+        assetsType == 1 ? undefined : assetsType,
+        searchDomain,
+        selectedSeverity
+      );
+      console.log(response);
+      setTotalItems(response.totalItems);
+      setAssets(response.items);
+    } catch (error) {
+      console.error("Failed to fetch assets:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -118,87 +127,88 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
               </tr>
             </thead>
             <tbody>
-              {assets.map((asset) => (
-                <>
-                  <tr
-                    key={asset.asset?.id}
-                    className={`${
-                      asset.asset?.id == 0 ? "" : "border-t border-gray-200"
-                    }  text-[#636267] text-center cursor-pointer`}
-                    onClick={() => handleRowClick(asset.asset?.id)}
-                  >
-                    <td className="py-3 px-4 text-sm max-w-[200px]">
-                      <div className="flex">{asset.asset?.hostname}</div>
-                    </td>
-                    <td className="py-3 px-4 text-sm">
-                      <div className="flex justify-start">
-                        {asset.asset?.issuesOrRisks}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-sm">
-                      <SeverityBadge severity={asset.asset?.severityType} />
-                    </td>
-                  </tr>
-                  {expandedRows.has(asset.asset?.id) && (
-                    <>
-                      <tr className="border-t border-[#EEEEF0]">
-                        <td className="py-3 px-4 text-sm">
-                          <div className="flex flex-col gap-4">
-                            <p className="font-semibold text-sm text-[#818086]">
-                              CRIADO POR
-                            </p>
-                            <p className="text-sm text-[#050506]">
-                              {asset.asset?.createdByName}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-sm ">
-                          <div className="flex flex-col gap-4">
-                            <p className="font-semibold text-sm text-[#818086]">
-                              MODIFICADO POR
-                            </p>
-                            <p className="text-sm text-[#050506]">
-                              {asset.asset?.modifiedByName == "N/A"
-                                ? ""
-                                : asset.asset?.modifiedByName}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-sm">
-                          <button
-                            onClick={() => {
-                              if (currentPage) {
-                                if (
-                                  currentPage.funcs.find(
-                                    (x) => x.name === "Editar"
-                                  )?.hasAcess == false
-                                ) {
-                                  toast.warning(
-                                    "Você não tem permissão para acessar essa função"
-                                  );
-                                } else {
-                                  setEditFocus(asset.asset?.id);
-                                  setNewActiveOpen(true);
+              {loading ||
+                assets.map((asset) => (
+                  <>
+                    <tr
+                      key={asset.asset?.id}
+                      className={`${
+                        asset.asset?.id == 0 ? "" : "border-t border-gray-200"
+                      }  text-[#636267] text-center cursor-pointer`}
+                      onClick={() => handleRowClick(asset.asset?.id)}
+                    >
+                      <td className="py-3 px-4 text-sm max-w-[200px]">
+                        <div className="flex">{asset.asset?.hostname}</div>
+                      </td>
+                      <td className="py-3 px-4 text-sm">
+                        <div className="flex justify-start">
+                          {asset.asset?.issuesOrRisks}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-sm">
+                        <SeverityBadge severity={asset.asset?.severityType} />
+                      </td>
+                    </tr>
+                    {expandedRows.has(asset.asset?.id) && (
+                      <>
+                        <tr className="border-t border-[#EEEEF0]">
+                          <td className="py-3 px-4 text-sm">
+                            <div className="flex flex-col gap-4">
+                              <p className="font-semibold text-sm text-[#818086]">
+                                CRIADO POR
+                              </p>
+                              <p className="text-sm text-[#050506]">
+                                {asset.asset?.createdByName}
+                              </p>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-sm ">
+                            <div className="flex flex-col gap-4">
+                              <p className="font-semibold text-sm text-[#818086]">
+                                MODIFICADO POR
+                              </p>
+                              <p className="text-sm text-[#050506]">
+                                {asset.asset?.modifiedByName == "N/A"
+                                  ? ""
+                                  : asset.asset?.modifiedByName}
+                              </p>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-sm">
+                            <button
+                              onClick={() => {
+                                if (currentPage) {
+                                  if (
+                                    currentPage.funcs.find(
+                                      (x) => x.name === "Editar"
+                                    )?.hasAcess == false
+                                  ) {
+                                    toast.warning(
+                                      "Você não tem permissão para acessar essa função"
+                                    );
+                                  } else {
+                                    setEditFocus(asset.asset?.id);
+                                    setNewActiveOpen(true);
+                                  }
                                 }
-                              }
-                            }}
-                          >
-                            <LuPencil size={24} color="#1A69C4" />
-                          </button>
-                        </td>
-                      </tr>
-                      <div className="flex flex-col gap-4 py-3 px-4 text-sm ">
-                        <p className="font-semibold text-sm text-[#818086]">
-                          DESCRIÇÃO
-                        </p>
-                        <p className="text-sm text-[#050506]">
-                          {asset.asset?.description}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </>
-              ))}
+                              }}
+                            >
+                              <LuPencil size={24} color="#1A69C4" />
+                            </button>
+                          </td>
+                        </tr>
+                        <div className="flex flex-col gap-4 py-3 px-4 text-sm ">
+                          <p className="font-semibold text-sm text-[#818086]">
+                            DESCRIÇÃO
+                          </p>
+                          <p className="text-sm text-[#050506]">
+                            {asset.asset?.description}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ))}
             </tbody>
           </table>
         </div>

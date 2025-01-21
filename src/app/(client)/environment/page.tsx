@@ -47,7 +47,9 @@ export default function EnvironmentPage() {
         pageInter,
         10,
         2,
-        customers?.companyId
+        customers?.companyId,
+        orderBy,
+        ascending ? "asc" : "desc"
       );
       setExternalEnv(res);
     } catch (error) {
