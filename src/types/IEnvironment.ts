@@ -23,6 +23,8 @@ export interface IEnvironment {
   type: number;
   severity: number;
   status: number;
+  totalAtivos?: number;
+  totalRisk?: number;
   externalEnvironment?: IExternalEnvironment;
 }
 

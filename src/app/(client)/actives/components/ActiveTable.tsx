@@ -68,6 +68,7 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
       searchDomain,
       selectedSeverity
     );
+    console.log(response);
     setTotalItems(response.totalItems);
     setAssets(response.items);
   };
