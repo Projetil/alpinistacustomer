@@ -19,6 +19,7 @@ export interface IAllAssets {
     description: string;
     createdByName: string;
     modifiedByName: string;
+    totalRisks: number;
   };
   iPs: [
     {

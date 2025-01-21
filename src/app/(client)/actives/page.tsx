@@ -35,6 +35,7 @@ import EnvironmentService from "@/services/EnvironmentsService";
 import { usePermissionContext } from "@/contexts/PermissionContext";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useCustomerContext } from "@/contexts/CustomerContext";
 
 const tabs = [
   { value: 1, name: "Todos" },
@@ -62,10 +63,20 @@ export default function ActivesPage() {
   const [externalEnv, setExternalEnv] = useState<IPagedEnvironment>();
   const { permission, getPermissions, currentPage } = usePermissionContext();
   const [openDialog, setOpenDialog] = useState(false);
+  const [orderBy, setOrderBy] = useState("name");
+  const [ascending, setAscending] = useState(true);
+  const { customers } = useCustomerContext();
 
   const fetchEnvsIntern = async () => {
     try {
-      const res = await EnvironmentService.GetAll(pageInter, 10, 1);
+      const res = await EnvironmentService.GetAll(
+        pageInter,
+        10,
+        1,
+        customers?.companyId,
+        orderBy,
+        ascending ? "asc" : "desc"
+      );
       setInterEnv(res);
     } catch (error) {
       console.log(error);
@@ -74,7 +85,14 @@ export default function ActivesPage() {
 
   const fetchEnvsExternal = async () => {
     try {
-      const res = await EnvironmentService.GetAll(pageInter, 10, 2);
+      const res = await EnvironmentService.GetAll(
+        pageInter,
+        10,
+        2,
+        customers?.companyId,
+        orderBy,
+        ascending ? "asc" : "desc"
+      );
       setExternalEnv(res);
     } catch (error) {
       console.log(error);
@@ -83,11 +101,11 @@ export default function ActivesPage() {
 
   useEffect(() => {
     fetchEnvsIntern();
-  }, [pageInter, loading]);
+  }, [pageInter, loading, orderBy, ascending]);
 
   useEffect(() => {
     fetchEnvsExternal();
-  }, [pageExternal, loading]);
+  }, [pageExternal, loading, orderBy, ascending]);
 
   useEffect(() => {
     if (permission) {
@@ -354,12 +372,8 @@ export default function ActivesPage() {
                 pageInter={pageInter}
                 setPageInter={setPageInter}
                 interns={interEnv}
-                setOrderBy={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-                setAscending={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
+                setOrderBy={setOrderBy}
+                setAscending={() => setAscending(!ascending)}
               />
             </div>
           )}
@@ -370,12 +384,8 @@ export default function ActivesPage() {
                 pageInter={pageExternal}
                 setPageInter={setPageExternal}
                 interns={externalEnv}
-                setOrderBy={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-                setAscending={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
+                setOrderBy={setOrderBy}
+                setAscending={() => setAscending(!ascending)}
               />
             </div>
           )}

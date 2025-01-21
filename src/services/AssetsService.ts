@@ -28,7 +28,9 @@ const AssetsService = {
     Port?: string,
     activeType?: ActiveTypeEnum,
     domainName?: string,
-    severityType?: SeverityTypeEnum
+    severityType?: SeverityTypeEnum,
+    orderBy?: string,
+    orderDirection?: string
   ) => {
     try {
       const params = new URLSearchParams({
@@ -36,6 +38,14 @@ const AssetsService = {
         pageSize: pageSize.toString(),
         companyId: companyId.toString(),
       });
+
+      if (orderBy) {
+        params.append("OrderBy", orderBy);
+      }
+
+      if (orderDirection) {
+        params.append("OrderDirection", orderDirection);
+      }
 
       if (domainName) {
         params.append("domainName", domainName);
