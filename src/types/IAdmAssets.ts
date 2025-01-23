@@ -18,6 +18,7 @@ export interface IUpdateAssetsAdm {
   activetype: number;
   modifiedBy: number;
   isIgnored: boolean;
+  ip: string;
   description?: string;
   severityType?: number;
   emailAddress?: string;
