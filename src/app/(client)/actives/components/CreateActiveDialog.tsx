@@ -49,12 +49,10 @@ export type NewActiveValues = z.infer<typeof newActiveSchema>;
 const CreteActiveDialog = ({
   newActiveOpen,
   setNewActiveOpen,
-  companyId,
   editFocus,
 }: {
   newActiveOpen: boolean;
   setNewActiveOpen: Dispatch<SetStateAction<boolean>>;
-  companyId: number;
   editFocus: number;
 }) => {
   const [selectedActiveOption, setSelectedActiveOption] = useState("");
@@ -63,8 +61,7 @@ const CreteActiveDialog = ({
     resolver: zodResolver(newActiveSchema),
   });
   const { data: session } = useSession();
-  const [assetsAdm, setAssetsAdm] = useState<IAssetsAdm>();
-
+  const [assetsAdm, setAssetsAdm] = useState<IAssetsAdm[]>([]);
   const {
     register,
     handleSubmit,
@@ -74,29 +71,30 @@ const CreteActiveDialog = ({
 
   const onSubmit = async (data: NewActiveValues) => {
     try {
-      await AssetsService.Put(
-        {
-          id: editFocus,
-          companyId: companyId,
-          hostname: data.domain,
-          activetype: Number(editType),
-          emailAddress: data.email,
-          severityType: data.severity ? Number(data.severity) : undefined,
-          description: data.description,
-          assetIps: data.assetIps.map((ip) => ({
-            id: ip.id ? Number(ip.id) : 0,
-            ip: ip.ip,
-            assetIpPorts: ip.assetIpPorts.map((port) => ({
-              id: port.id ? Number(port.id) : 0,
-              port: port.port,
-            })),
-          })),
-          modifiedBy: Number(session?.user.id),
-          isIgnored: data.ignored ? data.ignored : false,
-        },
-        editFocus
+      await Promise.all(
+        data.assetIps.map(async (ip) => {
+          await AssetsService.Put(
+            {
+              id: editFocus,
+              hostname: data.domain,
+              activetype:
+                data.type == selectedActiveOption
+                  ? Number(editType)
+                  : Number(data.type),
+              emailAddress: data.email,
+              severityType: data.severity ? Number(data.severity) : undefined,
+              description: data.description,
+              assetIpPorts: ip.assetIpPorts.map((port) => ({
+                id: port.id ? Number(port.id) : 0,
+                port: port.port,
+              })),
+              modifiedBy: Number(session?.user.id),
+              isIgnored: false,
+            },
+            editFocus
+          );
+        })
       );
-
       toast.success("Ativo editado com sucesso");
       setNewActiveOpen(false);
       reset();
@@ -106,27 +104,29 @@ const CreteActiveDialog = ({
     }
   };
 
-  const fetchDataEdit = async (companyId: number) => {
-    const response = await AssetsService.Get(companyId);
+  const fetchDataEdit = async (id: number) => {
+    const response = await AssetsService.GetByHostname(id);
     if (response) {
       setAssetsAdm(response);
     }
   };
 
   useEffect(() => {
-    if (assetsAdm) {
+    if (assetsAdm.length > 0) {
       reset({
-        domain: assetsAdm.hostname,
-        severity: assetsAdm.severityType
-          ? assetsAdm.severityType.toString()
+        domain: assetsAdm[0].hostname,
+        severity: assetsAdm[0].severityType
+          ? assetsAdm[0].severityType.toString()
           : "",
         type:
-          assetsAdm.activetype == 1 || assetsAdm.activetype == 2
+          assetsAdm[0].activetype == 1 ||
+          assetsAdm[0].activetype == 2 ||
+          assetsAdm[0].activetype == 3
             ? "1"
-            : (assetsAdm.activetype - 1).toString(),
-        email: assetsAdm.emailAddress,
-        description: assetsAdm.description,
-        assetIps: assetsAdm.ips?.map((ip) => ({
+            : (assetsAdm[0].activetype - 2).toString(),
+        email: assetsAdm[0].emailAddress ? assetsAdm[0].emailAddress : "",
+        description: assetsAdm[0].description ? assetsAdm[0].description : "",
+        assetIps: assetsAdm?.map((ip) => ({
           id: ip.id?.toString(),
           ip: ip.ip,
           assetIpPorts: ip.ports.map((port) => ({
@@ -136,11 +136,11 @@ const CreteActiveDialog = ({
         })),
       });
       setSelectedActiveOption(
-        assetsAdm.activetype == 1 || assetsAdm.activetype == 2
+        assetsAdm[0].activetype == 1 || assetsAdm[0].activetype == 2
           ? "1"
-          : (assetsAdm.activetype - 1).toString()
+          : (assetsAdm[0].activetype - 1).toString()
       );
-      setEditType(assetsAdm.activetype.toString());
+      setEditType(assetsAdm[0].activetype.toString());
     }
   }, [assetsAdm]);
 
@@ -149,7 +149,7 @@ const CreteActiveDialog = ({
       fetchDataEdit(editFocus);
     }
     if (editFocus === 0) {
-      setAssetsAdm(undefined);
+      setAssetsAdm([]);
       reset({
         domain: "",
         severity: "",

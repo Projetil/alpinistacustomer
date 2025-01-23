@@ -75,7 +75,7 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
         orderBy,
         orderDirection ? "asc" : "desc"
       );
-      console.log(response);
+
       setTotalItems(response.totalItems);
       setAssets(response.items);
     } catch (error) {
@@ -86,7 +86,7 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   };
 
   useEffect(() => {
-    if (customers) getAssets();
+    getAssets();
   }, [
     page,
     searchDomain,
@@ -94,7 +94,6 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
     searchIp,
     searchIssues,
     searchPort,
-    customers,
     newActiveOpen,
     orderBy,
     orderDirection,
@@ -124,6 +123,17 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                     className="flex items-center gap-2"
                   >
                     ATIVOS <FaArrowsAltV />
+                  </div>
+                </th>
+                <th className="py-3 px-4  text-sm font-semibold  items-center">
+                  <div
+                    onClick={() => {
+                      setOrderDirection(!orderDirection);
+                      setOrderBy("ip");
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    IP <FaArrowsAltV />
                   </div>
                 </th>
                 <th className="py-3 px-4 text-sm font-semibold  items-center">
@@ -163,6 +173,9 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                     >
                       <td className="py-3 px-4 text-sm max-w-[200px]">
                         <div className="flex">{asset.asset?.hostname}</div>
+                      </td>
+                      <td className="py-3 px-4 text-sm max-w-[200px]">
+                        <div className="flex">{asset.asset?.ip}</div>
                       </td>
                       <td className="py-3 px-4 text-sm">
                         <div className="flex justify-start">
@@ -260,7 +273,6 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
       <CreteActiveDialog
         newActiveOpen={newActiveOpen}
         setNewActiveOpen={() => setNewActiveOpen(!newActiveOpen)}
-        companyId={customers?.companyId ? customers?.companyId : 0}
         editFocus={editFocus}
       />
     </div>
