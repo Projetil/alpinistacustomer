@@ -82,6 +82,7 @@ const CreteActiveDialog = ({
                   ? Number(editType)
                   : Number(data.type),
               emailAddress: data.email,
+              ip: ip.ip,
               severityType: data.severity ? Number(data.severity) : undefined,
               description: data.description,
               assetIpPorts: ip.assetIpPorts.map((port) => ({
