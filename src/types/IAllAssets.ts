@@ -15,29 +15,13 @@ export interface IAllAssets {
     expiryDate: string | null;
     isIgnored: boolean;
     createdBy: number;
+    ip: string;
     modifiedBy: number;
     description: string;
     createdByName: string;
     modifiedByName: string;
     totalRisks: number;
   };
-  iPs: [
-    {
-      id: number;
-      assetId: number;
-      ip: string;
-      createdAt: string;
-      updatedAt: string | null;
-      ports: {
-        id: number;
-        assetIpId: number;
-        port: string;
-        activetype: number;
-        createdAt: string;
-        updatedAt: string | null;
-      }[];
-    }
-  ];
 }
 
 export interface IPagedAllAssets {
