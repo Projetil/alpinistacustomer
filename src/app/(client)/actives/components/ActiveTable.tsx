@@ -125,17 +125,19 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                     ATIVOS <FaArrowsAltV />
                   </div>
                 </th>
-                <th className="py-3 px-4  text-sm font-semibold  items-center">
-                  <div
-                    onClick={() => {
-                      setOrderDirection(!orderDirection);
-                      setOrderBy("ip");
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    IP <FaArrowsAltV />
-                  </div>
-                </th>
+                {assetsType !== 6 && (
+                  <th className="py-3 px-4  text-sm font-semibold  items-center">
+                    <div
+                      onClick={() => {
+                        setOrderDirection(!orderDirection);
+                        setOrderBy("ip");
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      IP <FaArrowsAltV />
+                    </div>
+                  </th>
+                )}
                 <th className="py-3 px-4 text-sm font-semibold  items-center">
                   <div
                     onClick={() => {
@@ -174,9 +176,11 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                       <td className="py-3 px-4 text-sm max-w-[200px]">
                         <div className="flex">{asset.asset?.hostname}</div>
                       </td>
-                      <td className="py-3 px-4 text-sm max-w-[200px]">
-                        <div className="flex">{asset.asset?.ip}</div>
-                      </td>
+                      {assetsType !== 6 && (
+                        <td className="py-3 px-4 text-sm max-w-[200px]">
+                          <div className="flex">{asset.asset?.ip}</div>
+                        </td>
+                      )}
                       <td className="py-3 px-4 text-sm">
                         <div className="flex justify-start">
                           {asset.asset?.totalRisks}

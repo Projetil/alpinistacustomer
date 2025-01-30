@@ -4,11 +4,11 @@ import { FaArrowsAltV } from "react-icons/fa";
 import CardMobile from "./CardMobileTable";
 import { SeverityTypeEnum } from "@/enums/SeverityTypeEnum";
 import { useEffect, useState } from "react";
-import AssetsService from "@/services/AssetsService";
 import { useCustomerContext } from "@/contexts/CustomerContext";
 import { ICompanyMobileAppAssets } from "@/types/IMobileAssets";
 import Filter from "./Filter";
 import { usePermissionContext } from "@/contexts/PermissionContext";
+import CompanyService from "@/services/CompanyService";
 
 const MobileTable = () => {
   const [page, setPage] = useState(1);
@@ -28,16 +28,11 @@ const MobileTable = () => {
   const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
 
   const getInfraAssets = async () => {
-    const response = await AssetsService.GetMobiles(
-      Number(customers?.companyId),
-      page,
-      10,
-      searchText,
-      sortColumn,
-      sortDirection
+    const response = await CompanyService.GetMobileCompany(
+      Number(customers?.companyId)
     );
-    setTotalItems(response.totalItems);
-    setMobileAssets(response.items);
+    setTotalItems(10);
+    setMobileAssets(response);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -89,7 +84,11 @@ const MobileTable = () => {
                     />
                   </div>
                 </th>
-
+                <th className="py-3 px-4  text-sm font-semibold items-center">
+                  <div className="flex items-center gap-2">
+                    ISSUES/RISCOS <FaArrowsAltV />
+                  </div>
+                </th>
                 <th className="py-3 px-4  text-sm font-semibold items-center">
                   <div className="flex items-center gap-2">
                     SEVERIDADE <FaArrowsAltV />
