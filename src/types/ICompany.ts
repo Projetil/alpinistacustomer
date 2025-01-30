@@ -31,3 +31,11 @@ export interface IPagedCompany {
   totalItems: number;
   items: ICompany[];
 }
+
+export interface ICompanyMobileAppAssets {
+  id: number;
+  companyId: number;
+  storeAppUrl: string;
+  appName: string;
+  store: number;
+}
