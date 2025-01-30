@@ -174,7 +174,9 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                       onClick={() => handleRowClick(asset.asset?.id)}
                     >
                       <td className="py-3 px-4 text-sm max-w-[200px]">
-                        <div className="flex">{asset.asset?.hostname}</div>
+                        <div className="flex breake-all text-start">
+                          {asset.asset?.hostname}
+                        </div>
                       </td>
                       {assetsType !== 6 && (
                         <td className="py-3 px-4 text-sm max-w-[200px]">
