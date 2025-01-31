@@ -265,6 +265,17 @@ const CreteActiveDialog = ({
                 )}
               </div>
             </div>
+            {selectedActiveOption == "4" && (
+              <div className="w-full gap-3 flex flex-col md:flex-row mt-6">
+                <div className="flex flex-col w-full md:w-1/2 mx-1">
+                  <label htmlFor="severity" className="font-semibold">
+                    Nome completo
+                    <span className="text-red-700 ">*</span>
+                  </label>
+                  <Input disabled className="placeholder:text-[#636267]" />
+                </div>
+              </div>
+            )}
             <div className="w-full gap-4 flex flex-col md:flex-row">
               <IPManager selectedActiveOption={selectedActiveOption} />
             </div>

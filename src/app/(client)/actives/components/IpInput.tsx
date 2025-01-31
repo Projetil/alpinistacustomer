@@ -83,7 +83,7 @@ const IPInput: React.FC<IPInputProps> = ({
               +
             </Button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-[90px] overflow-y-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 h-full overflow-y-auto">
             {fields.map((field, portIndex) => (
               <div key={field.id} className="relative w-30">
                 {selectedActiveOption === "Web" ? (

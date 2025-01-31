@@ -9,16 +9,11 @@ interface IPManagerProps {
 }
 
 const IPManager: React.FC<IPManagerProps> = ({ selectedActiveOption }) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "assetIps",
   });
-
-  console.log(errors);
 
   const addIpInput = () => {
     append({ ip: "", assetIpPorts: [] });

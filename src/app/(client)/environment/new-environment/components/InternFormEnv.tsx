@@ -230,11 +230,11 @@ const InternFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
               type="text"
             />
             <p className="p-2">{selectedCount} selecionados</p>
-            <div className="flex gap-4 flex-wrap max-h-[160px] overflow-y-auto">
+            <div className="flex gap-4 flex-wrap max-h-[160px] overflow-y-auto ">
               {assets.map((asset, index) => (
                 <div
                   key={index}
-                  className="w-[230px] p-2 flex gap-2 items-center justify-center"
+                  className="p-2 flex gap-2 items-center justify-center"
                 >
                   <input
                     type="checkbox"

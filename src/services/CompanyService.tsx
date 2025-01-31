@@ -2,7 +2,10 @@ import { ICompany, ICreateCompany, IPagedCompany } from "@/types/ICompany";
 import { api } from "./api";
 import { HttpStatusCode } from "axios";
 import { NotFoundError, UnexpectedError, ValidationError } from "@/errors";
-import { ICompanyMobileAppAssets } from "@/types/IMobileAssets";
+import {
+  ICompanyRequestMobileDto,
+  IPagedMobileAssets,
+} from "@/types/IMobileAssets";
 
 const endpoint = "/Companies";
 
@@ -95,10 +98,24 @@ const CompanyService = {
       }
     }
   },
-  GetMobileCompany: async (companyId: number) => {
+  GetMobileCompany: async (request: ICompanyRequestMobileDto) => {
     try {
-      const res = await api.get(`CompanyMobileAppAssets/company/${companyId}`);
-      return res.data as ICompanyMobileAppAssets[];
+      const params = new URLSearchParams();
+      if (request.pageNumber)
+        params.append("pageNumber", String(request.pageNumber));
+      if (request.pageSize) params.append("pageSize", String(request.pageSize));
+      if (request.companyId)
+        params.append("companyId", String(request.companyId));
+      if (request.appName) params.append("appName", String(request.appName));
+      if (request.sortColumn)
+        params.append("sortColumn", String(request.sortColumn));
+      if (request.sortDirection)
+        params.append("sortDirection", String(request.sortDirection));
+
+      const res = await api.get(
+        `CompanyMobileAppAssets/company?${params.toString()}`
+      );
+      return res.data as IPagedMobileAssets;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       switch (error.statusCode) {

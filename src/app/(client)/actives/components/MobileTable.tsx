@@ -28,11 +28,16 @@ const MobileTable = () => {
   const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
 
   const getInfraAssets = async () => {
-    const response = await CompanyService.GetMobileCompany(
-      Number(customers?.companyId)
-    );
-    setTotalItems(10);
-    setMobileAssets(response);
+    const response = await CompanyService.GetMobileCompany({
+      companyId: customers?.companyId || 0,
+      pageNumber: page,
+      pageSize: 10,
+      appName: searchText,
+      sortColumn: sortColumn,
+      sortDirection: sortDirection,
+    });
+    setTotalItems(response.totalItems);
+    setMobileAssets(response.items);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -97,7 +102,7 @@ const MobileTable = () => {
               </tr>
             </thead>
             <tbody>
-              {mobileAssets.map((row, index) => (
+              {mobileAssets?.map((row, index) => (
                 <tr
                   key={index}
                   className={`${
@@ -116,7 +121,7 @@ const MobileTable = () => {
           </table>
         </div>
         <div className="flex flex-col gap-4 md:hidden p-4">
-          {mobileAssets.map((x, index) => {
+          {mobileAssets?.map((x, index) => {
             return <CardMobile key={index} active={x.appName} severity={"1"} />;
           })}
         </div>
