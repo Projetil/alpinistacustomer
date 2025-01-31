@@ -13,6 +13,7 @@ import { usePermissionContext } from "@/contexts/PermissionContext";
 import { LuPencil } from "react-icons/lu";
 import CreteActiveDialog from "./CreateActiveDialog";
 import { toast } from "react-toastify";
+import { formatDateAndHours } from "@/utils/formatString";
 
 const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   const [page, setPage] = useState(1);
@@ -27,7 +28,7 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   const [selectedSeverity, setSelectedSeverity] = useState<
     SeverityTypeEnum | undefined
   >();
-  const [orderBy, setOrderBy] = useState<string | undefined>();
+  const [orderBy, setOrderBy] = useState<string>("HostName");
   const [orderDirection, setOrderDirection] = useState<boolean>(false);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const { currentPage } = usePermissionContext();
@@ -114,11 +115,11 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
           <table className="min-w-full hidden md:table">
             <thead className="border-none">
               <tr className="text-[#636267] text-center">
-                <th className="py-3 px-4  text-sm font-semibold  items-center">
+                <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
                   <div
                     onClick={() => {
                       setOrderDirection(!orderDirection);
-                      setOrderBy("hostname");
+                      setOrderBy("HostName");
                     }}
                     className="flex items-center gap-2"
                   >
@@ -126,11 +127,11 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                   </div>
                 </th>
                 {assetsType !== 6 && (
-                  <th className="py-3 px-4  text-sm font-semibold  items-center">
+                  <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
                     <div
                       onClick={() => {
                         setOrderDirection(!orderDirection);
-                        setOrderBy("ip");
+                        setOrderBy("Ip");
                       }}
                       className="flex items-center gap-2"
                     >
@@ -138,28 +139,67 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                     </div>
                   </th>
                 )}
-                <th className="py-3 px-4 text-sm font-semibold  items-center">
+                <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
                   <div
                     onClick={() => {
                       setOrderDirection(!orderDirection);
-                      setOrderBy("totalRisks");
+                      setOrderBy("TotalRisks");
                     }}
                     className="flex items-center justify-start gap-2"
                   >
                     ISSUES/RISCOS <FaArrowsAltV />
                   </div>
                 </th>
-                <th className="py-3 px-4  text-sm font-semibold items-center">
+                {assetsType === 5 && (
+                  <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                    <div
+                      onClick={() => {
+                        setOrderDirection(!orderDirection);
+                        setOrderBy("CreatedAt");
+                      }}
+                      className="flex items-center justify-start gap-2"
+                    >
+                      CRIADO EM <FaArrowsAltV />
+                    </div>
+                  </th>
+                )}
+                {assetsType === 5 && (
+                  <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                    <div
+                      onClick={() => {
+                        setOrderDirection(!orderDirection);
+                        setOrderBy("CreatedAt");
+                      }}
+                      className="flex items-center justify-start gap-2"
+                    >
+                      EXPIRA EM <FaArrowsAltV />
+                    </div>
+                  </th>
+                )}
+                <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
                   <div
                     onClick={() => {
                       setOrderDirection(!orderDirection);
-                      setOrderBy("severityType");
+                      setOrderBy("SeverityType");
                     }}
                     className="flex items-center gap-2"
                   >
                     SEVERIDADE <FaArrowsAltV />
                   </div>
                 </th>
+                {assetsType === 5 && (
+                  <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                    <div
+                      onClick={() => {
+                        setOrderDirection(!orderDirection);
+                        setOrderBy("DomainStatus");
+                      }}
+                      className="flex items-center justify-start gap-2"
+                    >
+                      STATUS <FaArrowsAltV />
+                    </div>
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -170,10 +210,10 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                       key={asset.asset?.id}
                       className={`${
                         asset.asset?.id == 0 ? "" : "border-t border-gray-200"
-                      }  text-[#636267] text-center cursor-pointer`}
+                      }  text-[#636267] text-center cursor-pointer `}
                       onClick={() => handleRowClick(asset.asset?.id)}
                     >
-                      <td className="py-3 px-4 text-sm max-w-[200px]">
+                      <td className="py-3 px-4 text-sm">
                         <div className="flex breake-all text-start">
                           {asset.asset?.hostname}
                         </div>
@@ -188,9 +228,34 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                           {asset.asset?.totalRisks}
                         </div>
                       </td>
+                      {assetsType === 5 && (
+                        <td className="py-3 px-4 text-sm">
+                          <div className="flex justify-start">
+                            {asset.asset?.createdAt
+                              ? formatDateAndHours(asset.asset?.createdAt)
+                              : ""}
+                          </div>
+                        </td>
+                      )}
+                      {assetsType === 5 && (
+                        <td className="py-3 px-4 text-sm">
+                          <div className="flex justify-start">
+                            {asset.asset?.expiryDate
+                              ? formatDateAndHours(asset.asset?.expiryDate)
+                              : ""}
+                          </div>
+                        </td>
+                      )}
                       <td className="py-3 px-4 text-sm">
                         <SeverityBadge severity={asset.asset?.severityType} />
                       </td>
+                      {assetsType === 5 && (
+                        <td className="py-3 px-4 text-sm">
+                          <div className="flex justify-start">
+                            {asset.asset?.domainStatus}
+                          </div>
+                        </td>
+                      )}
                     </tr>
                     {expandedRows.has(asset.asset?.id) && (
                       <>
@@ -201,7 +266,9 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
                                 CRIADO POR
                               </p>
                               <p className="text-sm text-[#050506]">
-                                {asset.asset?.createdByName}
+                                {asset.asset?.createdByName == "N/A"
+                                  ? "Sistema"
+                                  : asset.asset?.createdByName}
                               </p>
                             </div>
                           </td>

@@ -620,7 +620,7 @@ const ExternalFormEnv = ({ dataEnv }: { dataEnv?: IEnvironment }) => {
                 {assets.map((asset, index) => (
                   <div
                     key={index}
-                    className="w-[230px] p-2 flex gap-2 items-center justify-center"
+                    className="p-2 flex gap-2 items-center justify-center"
                   >
                     <input
                       type="checkbox"
