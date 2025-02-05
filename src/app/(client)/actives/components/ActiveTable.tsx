@@ -14,6 +14,8 @@ import { LuPencil } from "react-icons/lu";
 import CreteActiveDialog from "./CreateActiveDialog";
 import { toast } from "react-toastify";
 import { formatDateAndHours } from "@/utils/formatString";
+import { LoadingSpinner } from "@/components/default/Spinner";
+import { useDebounce } from "@/contexts/SearchContext";
 
 const ActiveTable = ({ assetsType }: { assetsType: number }) => {
   const [page, setPage] = useState(1);
@@ -85,9 +87,10 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
       setLoading(false);
     }
   };
+  const { debouncedFunction } = useDebounce(getAssets, 400);
 
   useEffect(() => {
-    getAssets();
+    debouncedFunction();
   }, [
     page,
     searchDomain,
@@ -111,217 +114,223 @@ const ActiveTable = ({ assetsType }: { assetsType: number }) => {
         onApplyFilters={handleApplyFilters}
       />
       <div className="w-full md:bg-white rounded-md">
-        <div className="overflow-x-auto">
-          <table className="min-w-full hidden md:table">
-            <thead className="border-none">
-              <tr className="text-[#636267] text-center">
-                <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
-                  <div
-                    onClick={() => {
-                      setOrderDirection(!orderDirection);
-                      setOrderBy("HostName");
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    ATIVOS <FaArrowsAltV />
-                  </div>
-                </th>
-                {assetsType !== 6 && (
+        {loading ? (
+          <div className="flex justify-center w-full mt-10 pt-10">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full hidden md:table">
+              <thead className="border-none">
+                <tr className="text-[#636267] text-center">
                   <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
                     <div
                       onClick={() => {
                         setOrderDirection(!orderDirection);
-                        setOrderBy("Ip");
+                        setOrderBy("HostName");
                       }}
                       className="flex items-center gap-2"
                     >
-                      IP <FaArrowsAltV />
+                      ATIVOS <FaArrowsAltV />
                     </div>
                   </th>
-                )}
-                <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
-                  <div
-                    onClick={() => {
-                      setOrderDirection(!orderDirection);
-                      setOrderBy("TotalRisks");
-                    }}
-                    className="flex items-center justify-start gap-2"
-                  >
-                    ISSUES/RISCOS <FaArrowsAltV />
-                  </div>
-                </th>
-                {assetsType === 5 && (
+                  {assetsType !== 6 && (
+                    <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
+                      <div
+                        onClick={() => {
+                          setOrderDirection(!orderDirection);
+                          setOrderBy("Ip");
+                        }}
+                        className="flex items-center gap-2"
+                      >
+                        IP <FaArrowsAltV />
+                      </div>
+                    </th>
+                  )}
                   <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
                     <div
                       onClick={() => {
                         setOrderDirection(!orderDirection);
-                        setOrderBy("CreatedAt");
+                        setOrderBy("TotalRisks");
                       }}
                       className="flex items-center justify-start gap-2"
                     >
-                      CRIADO EM <FaArrowsAltV />
+                      ISSUES/RISCOS <FaArrowsAltV />
                     </div>
                   </th>
-                )}
-                {assetsType === 5 && (
-                  <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                  {assetsType === 5 && (
+                    <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                      <div
+                        onClick={() => {
+                          setOrderDirection(!orderDirection);
+                          setOrderBy("CreatedAt");
+                        }}
+                        className="flex items-center justify-start gap-2"
+                      >
+                        CRIADO EM <FaArrowsAltV />
+                      </div>
+                    </th>
+                  )}
+                  {assetsType === 5 && (
+                    <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                      <div
+                        onClick={() => {
+                          setOrderDirection(!orderDirection);
+                          setOrderBy("CreatedAt");
+                        }}
+                        className="flex items-center justify-start gap-2"
+                      >
+                        EXPIRA EM <FaArrowsAltV />
+                      </div>
+                    </th>
+                  )}
+                  <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
                     <div
                       onClick={() => {
                         setOrderDirection(!orderDirection);
-                        setOrderBy("CreatedAt");
+                        setOrderBy("SeverityType");
                       }}
-                      className="flex items-center justify-start gap-2"
+                      className="flex items-center gap-2"
                     >
-                      EXPIRA EM <FaArrowsAltV />
+                      SEVERIDADE <FaArrowsAltV />
                     </div>
                   </th>
-                )}
-                <th className="py-3 px-4  text-sm font-semibold cursor-pointer items-center">
-                  <div
-                    onClick={() => {
-                      setOrderDirection(!orderDirection);
-                      setOrderBy("SeverityType");
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    SEVERIDADE <FaArrowsAltV />
-                  </div>
-                </th>
-                {assetsType === 5 && (
-                  <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
-                    <div
-                      onClick={() => {
-                        setOrderDirection(!orderDirection);
-                        setOrderBy("DomainStatus");
-                      }}
-                      className="flex items-center justify-start gap-2"
-                    >
-                      STATUS <FaArrowsAltV />
-                    </div>
-                  </th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {loading ||
-                assets.map((asset) => (
-                  <>
-                    <tr
-                      key={asset.asset?.id}
-                      className={`${
-                        asset.asset?.id == 0 ? "" : "border-t border-gray-200"
-                      }  text-[#636267] text-center cursor-pointer `}
-                      onClick={() => handleRowClick(asset.asset?.id)}
-                    >
-                      <td className="py-3 px-4 text-sm">
-                        <div className="flex breake-all text-start">
-                          {asset.asset?.hostname}
-                        </div>
-                      </td>
-                      {assetsType !== 6 && (
-                        <td className="py-3 px-4 text-sm max-w-[200px]">
-                          <div className="flex">{asset.asset?.ip}</div>
-                        </td>
-                      )}
-                      <td className="py-3 px-4 text-sm">
-                        <div className="flex justify-start">
-                          {asset.asset?.totalRisks}
-                        </div>
-                      </td>
-                      {assetsType === 5 && (
+                  {assetsType === 5 && (
+                    <th className="py-3 px-4 text-sm font-semibold cursor-pointer items-center">
+                      <div
+                        onClick={() => {
+                          setOrderDirection(!orderDirection);
+                          setOrderBy("DomainStatus");
+                        }}
+                        className="flex items-center justify-start gap-2"
+                      >
+                        STATUS <FaArrowsAltV />
+                      </div>
+                    </th>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {assets &&
+                  assets.map((asset) => (
+                    <>
+                      <tr
+                        key={asset.asset?.id}
+                        className={`${
+                          asset.asset?.id == 0 ? "" : "border-t border-gray-200"
+                        }  text-[#636267] text-center cursor-pointer `}
+                        onClick={() => handleRowClick(asset.asset?.id)}
+                      >
                         <td className="py-3 px-4 text-sm">
-                          <div className="flex justify-start">
-                            {asset.asset?.createdAt
-                              ? formatDateAndHours(asset.asset?.createdAt)
-                              : ""}
+                          <div className="flex breake-all text-start">
+                            {asset.asset?.hostname}
                           </div>
                         </td>
-                      )}
-                      {assetsType === 5 && (
+                        {assetsType !== 6 && (
+                          <td className="py-3 px-4 text-sm max-w-[200px]">
+                            <div className="flex">{asset.asset?.ip}</div>
+                          </td>
+                        )}
                         <td className="py-3 px-4 text-sm">
                           <div className="flex justify-start">
-                            {asset.asset?.expiryDate
-                              ? formatDateAndHours(asset.asset?.expiryDate)
-                              : ""}
+                            {asset.asset?.totalRisks}
                           </div>
                         </td>
-                      )}
-                      <td className="py-3 px-4 text-sm">
-                        <SeverityBadge severity={asset.asset?.severityType} />
-                      </td>
-                      {assetsType === 5 && (
-                        <td className="py-3 px-4 text-sm">
-                          <div className="flex justify-start">
-                            {asset.asset?.domainStatus}
-                          </div>
-                        </td>
-                      )}
-                    </tr>
-                    {expandedRows.has(asset.asset?.id) && (
-                      <>
-                        <tr className="border-t border-[#EEEEF0]">
+                        {assetsType === 5 && (
                           <td className="py-3 px-4 text-sm">
-                            <div className="flex flex-col gap-4">
-                              <p className="font-semibold text-sm text-[#818086]">
-                                CRIADO POR
-                              </p>
-                              <p className="text-sm text-[#050506]">
-                                {asset.asset?.createdByName == "N/A"
-                                  ? "Sistema"
-                                  : asset.asset?.createdByName}
-                              </p>
+                            <div className="flex justify-start">
+                              {asset.asset?.createdAt
+                                ? formatDateAndHours(asset.asset?.createdAt)
+                                : ""}
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-sm ">
-                            <div className="flex flex-col gap-4">
-                              <p className="font-semibold text-sm text-[#818086]">
-                                MODIFICADO POR
-                              </p>
-                              <p className="text-sm text-[#050506]">
-                                {asset.asset?.modifiedByName == "N/A"
-                                  ? ""
-                                  : asset.asset?.modifiedByName}
-                              </p>
+                        )}
+                        {assetsType === 5 && (
+                          <td className="py-3 px-4 text-sm">
+                            <div className="flex justify-start">
+                              {asset.asset?.expiryDate
+                                ? formatDateAndHours(asset.asset?.expiryDate)
+                                : ""}
                             </div>
                           </td>
+                        )}
+                        <td className="py-3 px-4 text-sm">
+                          <SeverityBadge severity={asset.asset?.severityType} />
+                        </td>
+                        {assetsType === 5 && (
                           <td className="py-3 px-4 text-sm">
-                            <button
-                              onClick={() => {
-                                if (currentPage) {
-                                  if (
-                                    currentPage.funcs.find(
-                                      (x) => x.name === "Editar"
-                                    )?.hasAcess == false
-                                  ) {
-                                    toast.warning(
-                                      "Você não tem permissão para acessar essa função"
-                                    );
-                                  } else {
-                                    setEditFocus(asset.asset?.id);
-                                    setNewActiveOpen(true);
+                            <div className="flex justify-start">
+                              {asset.asset?.domainStatus}
+                            </div>
+                          </td>
+                        )}
+                      </tr>
+                      {expandedRows.has(asset.asset?.id) && (
+                        <>
+                          <tr className="border-t border-[#EEEEF0]">
+                            <td className="py-3 px-4 text-sm">
+                              <div className="flex flex-col gap-4">
+                                <p className="font-semibold text-sm text-[#818086]">
+                                  CRIADO POR
+                                </p>
+                                <p className="text-sm text-[#050506]">
+                                  {asset.asset?.createdByName == "N/A"
+                                    ? "Sistema"
+                                    : asset.asset?.createdByName}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 text-sm ">
+                              <div className="flex flex-col gap-4">
+                                <p className="font-semibold text-sm text-[#818086]">
+                                  MODIFICADO POR
+                                </p>
+                                <p className="text-sm text-[#050506]">
+                                  {asset.asset?.modifiedByName == "N/A"
+                                    ? ""
+                                    : asset.asset?.modifiedByName}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 text-sm">
+                              <button
+                                onClick={() => {
+                                  if (currentPage) {
+                                    if (
+                                      currentPage.funcs.find(
+                                        (x) => x.name === "Editar"
+                                      )?.hasAcess == false
+                                    ) {
+                                      toast.warning(
+                                        "Você não tem permissão para acessar essa função"
+                                      );
+                                    } else {
+                                      setEditFocus(asset.asset?.id);
+                                      setNewActiveOpen(true);
+                                    }
                                   }
-                                }
-                              }}
-                            >
-                              <LuPencil size={24} color="#1A69C4" />
-                            </button>
-                          </td>
-                        </tr>
-                        <div className="flex flex-col gap-4 py-3 px-4 text-sm ">
-                          <p className="font-semibold text-sm text-[#818086]">
-                            DESCRIÇÃO
-                          </p>
-                          <p className="text-sm text-[#050506]">
-                            {asset.asset?.description}
-                          </p>
-                        </div>
-                      </>
-                    )}
-                  </>
-                ))}
-            </tbody>
-          </table>
-        </div>
+                                }}
+                              >
+                                <LuPencil size={24} color="#1A69C4" />
+                              </button>
+                            </td>
+                          </tr>
+                          <div className="flex flex-col gap-4 py-3 px-4 text-sm ">
+                            <p className="font-semibold text-sm text-[#818086]">
+                              DESCRIÇÃO
+                            </p>
+                            <p className="text-sm text-[#050506]">
+                              {asset.asset?.description}
+                            </p>
+                          </div>
+                        </>
+                      )}
+                    </>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         <div className="flex flex-col gap-4 md:hidden p-4">
           {assets.map((x, index) => {
             return (
