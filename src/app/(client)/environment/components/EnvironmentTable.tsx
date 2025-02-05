@@ -3,13 +3,13 @@ import { Pagination } from "@/components/default/Pagination";
 import { FaArrowsAltV } from "react-icons/fa";
 import { activeTableData } from "@/app/data/tablesData";
 import CardEnvironment from "./CardEnvironmentTableMobile";
-import SeverityBadge from "../../components/SeverityBadge";
 import PopoverEnvironment from "./PopoverEnvironment";
 import { Dispatch, SetStateAction } from "react";
 import { IPagedEnvironment } from "@/types/IEnvironment";
 import EnvironmentService from "@/services/EnvironmentsService";
 import { toast } from "react-toastify";
 import { IPermissionPage } from "@/types/IPermission";
+import SeverityEnvBag from "@/components/default/SeverityEnvBadge";
 
 const EnvironmentTable = ({
   pageInter,
@@ -110,7 +110,7 @@ const EnvironmentTable = ({
                   <div className="flex justify-start">{row.totalRisk}</div>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <SeverityBadge severity={row.severity} />
+                  <SeverityEnvBag severity={row.severity} />
                 </td>
                 <td className="py-3 px-4 flex items-center justify-center">
                   <PopoverEnvironment

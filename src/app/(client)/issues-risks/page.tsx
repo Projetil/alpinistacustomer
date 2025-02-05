@@ -4,7 +4,6 @@ import { jsPDF } from "jspdf";
 import { GoChecklist } from "react-icons/go";
 import html2canvas from "html2canvas";
 import { useRouter } from "next/navigation";
-import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,6 @@ import { toast } from "react-toastify";
 
 export default function CompanyIndPage() {
   const { customers } = useCustomerContext();
-  const navigate = useRouter();
   const navigation = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
@@ -42,7 +40,7 @@ export default function CompanyIndPage() {
         page,
         10,
         undefined,
-        customers?.id,
+        customers?.companyId,
         orderColumn,
         orderDirection ? "asc" : "desc"
       );
@@ -77,6 +75,7 @@ export default function CompanyIndPage() {
   };
 
   useEffect(() => {
+    console.log("entrei");
     fetchRisks();
   }, [page, openModal, orderColumn, orderDirection]);
 
@@ -135,11 +134,7 @@ export default function CompanyIndPage() {
         </div>
       </section>
       <section>
-        <button
-          className="flex items-center justify-start gap-4"
-          onClick={() => navigate.push(`/issues-risks`)}
-        >
-          <FaRegArrowAltCircleLeft size={28} color="#C9001C" />
+        <button className="flex items-center justify-start gap-4">
           <p className="font-semibold text-[#8C8B91]">
             Issues e Riscos / {companyName}
           </p>
